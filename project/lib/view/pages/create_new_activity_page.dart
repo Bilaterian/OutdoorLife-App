@@ -2,7 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 class CreateNewActivityPage extends StatefulWidget {
-  const CreateNewActivityPage({Key? key}) : super(key: key);
+  CreateNewActivityPage({Key? key}) : super(key: key);
+  List<bool> check_circle_selected = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
+  List<bool> close_selected = [false, false, false, false, false, false, false];
+  RangeValues _currentRangeValues = const RangeValues(0, 80);
+  String sliderLabel(int number) {
+    int adjusted_num = 0;
+
+    if (number < 40) {
+      adjusted_num = 40 - number;
+      return "-" + adjusted_num.toString();
+    } else {
+      adjusted_num = number - 40;
+      return adjusted_num.toString();
+    }
+  }
+
   @override
   _CreateNewActivityPageState createState() => _CreateNewActivityPageState();
 }
@@ -18,204 +41,218 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
         ),
         title: const Text("Create New Activity"),
       ),
-      body: buildNewActivityDetails(),
+      body: buildNewActivityDetails(context),
     );
   }
-}
 
-Widget buildNewActivityDetails() {
-  RangeValues _currentRangeValues = const RangeValues(0, 40);
-  List<int> check_circle_selected = [0, 0, 0, 0, 0, 0, 0];
-  return Column(
-    children: [
-      Padding(
-        padding: const EdgeInsets.only(
-          top: 10,
-          left: 20,
-        ),
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: Text(
-            'Name',
-            style: TextStyle(fontSize: 20),
+  Widget buildNewActivityDetails(BuildContext context) {
+    return Column(
+      children: [
+        const Padding(
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 20,
+          ),
+          child: Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              'Name',
+              style: TextStyle(fontSize: 20),
+            ),
           ),
         ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20),
-        child: TextFormField(
-          decoration: const InputDecoration(
-            border: UnderlineInputBorder(),
-            labelText: 'Enter the activity name',
+        Padding(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: TextFormField(
+            decoration: const InputDecoration(
+              border: UnderlineInputBorder(),
+              labelText: 'Enter the activity name',
+            ),
           ),
         ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom: BorderSide(
-                width: 1.0,
-                color: Colors.black.withOpacity(0.5),
+        Padding(
+          padding: const EdgeInsets.only(top: 20, left: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                  width: 1.0,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ),
+            child: const Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Icon',
+                style: TextStyle(fontSize: 20),
               ),
             ),
           ),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              'Icon',
-              style: TextStyle(fontSize: 20),
-            ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(top: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: const [
+              Icon(Icons.directions_run, size: 30),
+              Icon(Icons.sports_football, size: 30),
+              Icon(Icons.sports_basketball, size: 30),
+              Icon(Icons.sports_cricket, size: 30),
+              Icon(Icons.sports_golf, size: 30),
+            ],
           ),
         ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Icon(Icons.directions_run, size: 30),
-            Icon(Icons.sports_football, size: 30),
-            Icon(Icons.sports_basketball, size: 30),
-            Icon(Icons.sports_cricket, size: 30),
-            Icon(Icons.sports_golf, size: 30),
-          ],
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Icon(Icons.sports_hockey, size: 30),
-            Icon(Icons.sports_handball, size: 30),
-            Icon(Icons.sports_kabaddi, size: 30),
-            Icon(Icons.sports_mma, size: 30),
-            Icon(Icons.sports_soccer, size: 30),
-          ],
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom:
-                  BorderSide(width: 1.0, color: Colors.black.withOpacity(0.5)),
-            ),
-          ),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              'Weather',
-              style: TextStyle(fontSize: 20),
-            ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: const [
+              Icon(Icons.sports_hockey, size: 30),
+              Icon(Icons.sports_handball, size: 30),
+              Icon(Icons.sports_kabaddi, size: 30),
+              Icon(Icons.sports_mma, size: 30),
+              Icon(Icons.sports_soccer, size: 30),
+            ],
           ),
         ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Icon(WeatherIcons.day_sunny, size: 30),
-            Icon(WeatherIcons.day_cloudy, size: 30),
-            Icon(WeatherIcons.day_cloudy_windy, size: 30),
-            Icon(WeatherIcons.day_sunny, size: 30),
-            Icon(WeatherIcons.day_hail, size: 30),
-            Icon(WeatherIcons.day_rain, size: 30),
-            Icon(WeatherIcons.day_sunny, size: 30),
-          ],
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            for (int i = 0; i < 7; i++)
-              IconButton(
-                icon: Icon(Icons.check_circle_outline,
-                    size: 30,
-                    color: check_circle_selected[i] == 0
-                        ? Colors.black
-                        : Colors.green),
-                onPressed: () {
-                  setState(() {
-                    check_circle_selected[i] = 1;
-                    print("Monica");
-                  });
-                },
+        Padding(
+          padding: const EdgeInsets.only(top: 20, left: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                    width: 1.0, color: Colors.black.withOpacity(0.5)),
               ),
-          ],
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 5),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            for (int i = 0; i < 7; i++) Icon(Icons.close, size: 30),
-          ],
-        ),
-      ),
-      Padding(
-        padding: const EdgeInsets.only(top: 20, left: 20),
-        child: Container(
-          decoration: BoxDecoration(
-            border: Border(
-              bottom:
-                  BorderSide(width: 1.0, color: Colors.black.withOpacity(0.5)),
             ),
-          ),
-          child: Align(
-            alignment: Alignment.topLeft,
-            child: Text(
-              'Temperature',
-              style: TextStyle(fontSize: 20),
+            child: const Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Weather',
+                style: TextStyle(fontSize: 20),
+              ),
             ),
           ),
         ),
-      ),
-      Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: ElevatedButton(
-          onPressed: () {},
-          child: Text('Save'),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: const [
+              Icon(WeatherIcons.day_sunny, size: 30),
+              Icon(WeatherIcons.day_cloudy, size: 30),
+              Icon(WeatherIcons.day_cloudy_windy, size: 30),
+              Icon(WeatherIcons.day_sunny, size: 30),
+              Icon(WeatherIcons.day_hail, size: 30),
+              Icon(WeatherIcons.day_rain, size: 30),
+              Icon(WeatherIcons.day_sunny, size: 30),
+            ],
+          ),
         ),
-      ),
-      Expanded(
-        child: RangeSlider(
-            values: _currentRangeValues,
-            max: 100,
-            divisions: 5,
+        Padding(
+          padding: const EdgeInsets.only(top: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              for (int i = 0; i < 7; i++)
+                // buildIconButton(widget.check_circle_selected[i], Colors.green),
+                IconButton(
+                  icon: Icon(Icons.check_circle_outline,
+                      size: 30,
+                      color: widget.check_circle_selected[i] == false
+                          ? Colors.black
+                          : Colors.green),
+                  onPressed: () {
+                    setState(() {
+                      widget.check_circle_selected[i] =
+                          !widget.check_circle_selected[i];
+                    });
+                  },
+                ),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              for (int i = 0; i < 7; i++)
+                IconButton(
+                  icon: Icon(Icons.close,
+                      size: 30,
+                      color: widget.close_selected[i] == false
+                          ? Colors.black
+                          : Colors.red),
+                  onPressed: () {
+                    setState(() {
+                      widget.close_selected[i] = !widget.close_selected[i];
+                    });
+                  },
+                ),
+              // Icon(Icons.close, size: 30),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 20, left: 20),
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(
+                    width: 1.0, color: Colors.black.withOpacity(0.5)),
+              ),
+            ),
+            child: const Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                'Temperature',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: RangeSlider(
+            values: widget._currentRangeValues,
+            min: 0,
+            max: 80,
+            divisions: 80,
             labels: RangeLabels(
-              _currentRangeValues.start.round().toString(),
-              _currentRangeValues.end.round().toString(),
+              widget.sliderLabel(widget._currentRangeValues.start.round()),
+              widget.sliderLabel(widget._currentRangeValues.end.round()),
             ),
             onChanged: (RangeValues values) {
               setState(() {
-                _currentRangeValues = values;
+                widget._currentRangeValues = values;
               });
-            }),
-      ),
-    ],
-  );
+            },
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 10),
+          child: ElevatedButton(
+            onPressed: () {},
+            child: const Text('Save'),
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Widget buildIconButton(bool isSelected, Color selectedColor) {
+  //   return IconButton(
+  //     icon: Icon(
+  //       Icons.check_circle_outline,
+  //       size: 30,
+  //       color: isSelected == false ? Colors.black : Colors.green,
+  //     ),
+  //     onPressed: () {
+  //       setState(() {
+  //         isSelected = !isSelected;
+  //       });
+  //     },
+  //   );
+  // }
 }
-
-void setState(Null Function() param0) {}
-
-// Widget buildIconButton(List selected) {
-//   return IconButton(
-//     icon: Icon(Icons.check_circle_outline,
-//         size: 30,
-//         color: check_circle_selected[i] == 0 ? Colors.black : Colors.green),
-//     onPressed: () {
-//       setState(() {
-//         check_circle_selected[i] = 1;
-//         print("Monica");
-//       });
-//     },
-//   );
-// }

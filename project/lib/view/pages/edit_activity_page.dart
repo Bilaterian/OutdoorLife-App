@@ -40,7 +40,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           onPressed: () {},
           icon: Icon(Icons.home, color: Colors.white),
         ),
-        title: const Text("Create New Activity"),
+        title: const Text("Edit Activity"),
       ),
       body: buildNewActivityDetails(context),
     );
@@ -245,19 +245,4 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
       },
     );
   }
-
-  // IconButton _buildIconButton(bool isSelected, Color selectedColor) {
-  //   return IconButton(
-  //     icon: Icon(
-  //       Icons.check_circle_outline,
-  //       size: 30,
-  //       color: isSelected == false ? Colors.black : Colors.green,
-  //     ),
-  //     onPressed: () {
-  //       setState(() {
-  //         isSelected = !isSelected;
-  //       });
-  //     },
-  //   );
-  // }
 }

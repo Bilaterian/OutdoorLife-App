@@ -1,4 +1,4 @@
-package com.example.richard_nguyen_lab_two_b
+package com.example.activityforecast
 
 import io.flutter.embedding.android.FlutterActivity
 

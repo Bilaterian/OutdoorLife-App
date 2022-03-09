@@ -5,18 +5,24 @@ import 'dart:ui';
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  Widget activityBox({size1: 82.0, size2: 82.0, colour: Colors.green, icon: Icons.directions_walk, text: "Walk", valid: Icons.check}) {
+  static String selectedActivity = "Bike";
+
+  Widget activityBox({size1: 82.0, size2: 82.0, colour: Colors.deepPurple, icon: Icons.directions_walk, text: "Walk", valid: Icons.check}) {
     return SizedBox.fromSize(
       size: Size(size1, size2), // button width and height
       child: Material(
       color: colour, // button color
       child: InkWell(
-        onTap: () {}, // button pressed
+        onTap: () {
+          selectedActivity = text;
+          print("new selected activity: " + text);
+        }, // button pressed
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Icon(icon), // icon
             Text(text), // text
+            Icon(valid)
           ],
         ),
       ),
@@ -59,7 +65,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String selectedActivity = "Bike";
 
     return MaterialApp(
       theme: new ThemeData(scaffoldBackgroundColor: Colors.deepPurpleAccent),
@@ -73,9 +78,9 @@ class MyApp extends StatelessWidget {
               children: <Widget>[
                 activityBox(icon: Icons.directions_bike, text: "Bike", valid: Icons.check),
                 activityBox(icon: Icons.directions_boat, text: "Boat", valid: Icons.check),
-                activityBox(colour: Colors.red, icon: Icons.snowboarding, text: "Snowboard", valid: Icons.check),
+                activityBox(colour: Colors.deepPurple, icon: Icons.snowboarding, text: "Snowboard", valid: Icons.check),
                 activityBox(icon: Icons.add_photo_alternate, text: "Example", valid: Icons.clear_rounded),
-                activityBox(size1: 83.0, colour: Colors.red, icon: Icons.wash, text: "Example", valid: Icons.check),
+                activityBox(size1: 82.0, colour: Colors.deepPurple, icon: Icons.wash, text: "Example", valid: Icons.check),
               ]
           ),
           Row(
@@ -89,7 +94,9 @@ class MyApp extends StatelessWidget {
                   child: Material(
                     color: Colors.deepPurple, // button color
                     child: InkWell(
-                      onTap: () {}, // button pressed
+                      onTap: () {
+                        print("Add Activity Button Pressed");
+                      }, // button pressed
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -104,32 +111,6 @@ class MyApp extends StatelessWidget {
 
           // Activity Forecast
           Row(children: <Widget>[
-            Expanded(
-                flex: 1,
-                child: Container(
-                    width: 1440 * 0.75,
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                      child: Text(
-                        selectedActivity + " Forecast",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                      ),
-                    ),
-                )
-            ),
-            Expanded(
-                flex: 1,
-                child: Container(
-                  width: 1440 * 0.25,
-                  child:               TextButton(
-                      child: Text("EDIT"),
-                      onPressed: () {
-                        print("Pressed");
-                      }
-                  ),
-                )
-            ),
-            /*
               Center(
                   child: Container(
                     padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
@@ -142,11 +123,9 @@ class MyApp extends StatelessWidget {
               TextButton(
                   child: Text("EDIT"),
                     onPressed: () {
-                      print("Pressed");
-                    }
+                      print("Edit Button Pressed");
+                  }
               ),
-
-             */
             ]
           ),
           Row(children: forecastRow(day: "Today", valid: Icons.check, weather: Icons.wb_sunny, temperature: "16°,13° low")),

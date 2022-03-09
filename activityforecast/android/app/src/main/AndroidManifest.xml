@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.richard_nguyen_lab_two_b">
+    package="com.example.activityforecast">
    <application
-        android:label="richard_nguyen_lab_two_b"
+        android:label="activityforecast"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

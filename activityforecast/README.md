@@ -1,4 +1,4 @@
-# richard_nguyen_lab_two_b
+# activityforecast
 
 CIS4030Lab2b
 

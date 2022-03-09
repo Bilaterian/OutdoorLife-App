@@ -1,11 +1,26 @@
 // main.dart
 import 'package:flutter/material.dart';
-import 'dart:ui';
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  //static String selectedActivity = "Bike";
 
-  static String selectedActivity = "Bike";
+  //_MyAppState createState() => _MyAppState();
+
+  @override
+  State<StatefulWidget> createState() {
+    return _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  //const MyApp({Key? key}) : super(key: key);
+
+  String selectedActivity = "Bike";
+  changeActivity(String activity) {
+    setState(() {
+      selectedActivity = activity;
+    });
+  }
 
   Widget activityBox({size1: 82.0, size2: 82.0, colour: Colors.deepPurple, icon: Icons.directions_walk, text: "Walk", valid: Icons.check}) {
     return SizedBox.fromSize(
@@ -13,10 +28,7 @@ class MyApp extends StatelessWidget {
       child: Material(
       color: colour, // button color
       child: InkWell(
-        onTap: () {
-          selectedActivity = text;
-          print("new selected activity: " + text);
-        }, // button pressed
+        onTap: () => changeActivity(text),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -36,7 +48,7 @@ class MyApp extends StatelessWidget {
         flex: 1,
         child: Container(
           width: 1440 * 0.25,
-          child: Text(day, textAlign: TextAlign.center)
+          child: Text(day, textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
         )
       ),
       Expanded(
@@ -57,7 +69,7 @@ class MyApp extends StatelessWidget {
         flex: 1,
         child: Container(
           width: 1440 * 0.25,
-          child: Text(temperature, textAlign: TextAlign.center)
+          child: Text(temperature, textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
         )
       ),
     ];
@@ -70,7 +82,7 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(scaffoldBackgroundColor: Colors.deepPurpleAccent),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Boxicons Plugin'),
+          title: const Text('OutdoorLife'),
         ),
         body: Column(children: <Widget>[
           // Activity Rows
@@ -79,18 +91,18 @@ class MyApp extends StatelessWidget {
                 activityBox(icon: Icons.directions_bike, text: "Bike", valid: Icons.check),
                 activityBox(icon: Icons.directions_boat, text: "Boat", valid: Icons.check),
                 activityBox(colour: Colors.deepPurple, icon: Icons.snowboarding, text: "Snowboard", valid: Icons.check),
-                activityBox(icon: Icons.add_photo_alternate, text: "Example", valid: Icons.clear_rounded),
-                activityBox(size1: 82.0, colour: Colors.deepPurple, icon: Icons.wash, text: "Example", valid: Icons.check),
+                activityBox(icon: Icons.add_photo_alternate, text: "Photos", valid: Icons.clear_rounded),
+                activityBox(size1: 83.0, colour: Colors.deepPurple, icon: Icons.wash, text: "Clean", valid: Icons.check),
               ]
           ),
           Row(
               children: <Widget>[
-                activityBox(icon: Icons.car_rental, text: "Example", valid: Icons.check),
-                activityBox(icon: Icons.self_improvement, text: "Example", valid: Icons.check),
-                activityBox(icon: Icons.campaign, text: "Example", valid: Icons.check),
-                activityBox(icon: Icons.airplanemode_active, text: "Example", valid: Icons.clear_rounded),
+                activityBox(icon: Icons.car_rental, text: "Drive", valid: Icons.check),
+                activityBox(icon: Icons.self_improvement, text: "Meditate", valid: Icons.check),
+                activityBox(icon: Icons.campaign, text: "Protest", valid: Icons.check),
+                activityBox(icon: Icons.airplanemode_active, text: "Travel", valid: Icons.clear_rounded),
                 SizedBox.fromSize(
-                  size: Size(82, 83), // button width and height
+                  size: Size(83.0, 82.0), // button width and height
                   child: Material(
                     color: Colors.deepPurple, // button color
                     child: InkWell(
@@ -110,23 +122,25 @@ class MyApp extends StatelessWidget {
           ),
 
           // Activity Forecast
-          Row(children: <Widget>[
-              Center(
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Center(
                   child: Container(
                     padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Text(
-                                selectedActivity + " Forecast",
+                    child: Text('$selectedActivity' + " Forecast",
                                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+
                     ),
                   ),
-              ),
-              TextButton(
-                  child: Text("EDIT"),
-                    onPressed: () {
-                      print("Edit Button Pressed");
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(primary: Colors.black),
+                  child: Text("EDIT", style: TextStyle(fontSize: 18)),
+                  onPressed: () {
+                    print("Edit Button Pressed");
                   }
-              ),
-            ]
+                )
+              ]
           ),
           Row(children: forecastRow(day: "Today", valid: Icons.check, weather: Icons.wb_sunny, temperature: "16°,13° low")),
           Row(children: forecastRow(day: "Fri", valid: Icons.clear_rounded, weather: Icons.wb_cloudy, temperature: "16°,13° low")),
@@ -142,5 +156,5 @@ class MyApp extends StatelessWidget {
 }
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }

@@ -1,10 +1,15 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:activityforecast/pages/manage_activities.dart';
+import 'package:activityforecast/view/pages/edit_activity_page.dart';
 
 class MyApp extends StatefulWidget {
   //static String selectedActivity = "Bike";
 
   //_MyAppState createState() => _MyAppState();
+
+  //@override
+  //State<MyApp> createState() => _MyAppState();
 
   @override
   State<StatefulWidget> createState() {
@@ -80,11 +85,19 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       theme: new ThemeData(scaffoldBackgroundColor: Colors.deepPurpleAccent),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('OutdoorLife'),
-        ),
-        body: Column(children: <Widget>[
+      routes: <String, WidgetBuilder>{
+        //"/": (BuildContext context) => MaterialApp(home: MyApp()),
+        "/ManageActivities": (BuildContext context) => MaterialApp(home: MainActivitiesPage(title: "Manage Activities")),
+        "/EditActivityPage": (BuildContext context) => MaterialApp(home: EditActivityPage()),
+      },
+      home: Builder(
+      builder: (context) =>
+    //home: Scaffold(
+      Scaffold(
+      appBar: AppBar(
+        title: const Text('OutdoorLife'),
+      ),
+      body: Column(children: <Widget>[
           // Activity Rows
           Row(
               children: <Widget>[
@@ -107,7 +120,8 @@ class _MyAppState extends State<MyApp> {
                     color: Colors.deepPurple, // button color
                     child: InkWell(
                       onTap: () {
-                        print("Add Activity Button Pressed");
+                        //print("Add Activity Button Pressed");
+                        Navigator.of(context).pushNamed("/ManageActivities");
                       }, // button pressed
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -137,7 +151,8 @@ class _MyAppState extends State<MyApp> {
                   style: TextButton.styleFrom(primary: Colors.black),
                   child: Text("EDIT", style: TextStyle(fontSize: 18)),
                   onPressed: () {
-                    print("Edit Button Pressed");
+                    //print("Edit Button Pressed");
+                    Navigator.of(context).pushNamed("/EditActivityPage");
                   }
                 )
               ]
@@ -151,6 +166,7 @@ class _MyAppState extends State<MyApp> {
           Row(children: forecastRow(day: "Wed", valid: Icons.check, weather: Icons.wb_sunny, temperature: "16°,13° low")),
         ])
       ),
+    )
     );
   }
 }

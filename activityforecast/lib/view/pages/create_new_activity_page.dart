@@ -1,3 +1,4 @@
+import 'package:activityforecast/components/themes/manage_activities_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:activityforecast/HomePage.dart';
 import 'package:weather_icons/weather_icons.dart';
@@ -53,6 +54,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< Updated upstream
       resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('Create New Activity'), actions: [
         IconButton(
@@ -63,6 +65,22 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           icon: Icon(Icons.home, color: Colors.white),
         ),
       ]),
+=======
+      backgroundColor: Color(0xff031342),
+      appBar: AppBar(
+          title: const Text('Create New Activity',
+              style: TextStyle(color: Color(0xff031342))),
+          backgroundColor: manageActivityColors['appBarColor'],
+          actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => HomePage()));
+              },
+              icon: Icon(Icons.home, color: Color(0xff031342)),
+            ),
+          ]),
+>>>>>>> Stashed changes
       body: buildNewActivityDetails(context),
     );
   }
@@ -79,15 +97,18 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
             alignment: Alignment.topLeft,
             child: Text(
               'Name',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 20, color: Colors.white),
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: TextFormField(
+            style: TextStyle(color: Colors.white),
             decoration: const InputDecoration(
-              border: UnderlineInputBorder(),
+              fillColor: Colors.white,
+              border: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white)),
               labelText: 'Enter the activity name',
             ),
           ),
@@ -107,42 +128,50 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
               alignment: Alignment.topLeft,
               child: Text(
                 'Icon',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              // activityIcon(Icons.directions_run),
-              Icon(Icons.directions_run, size: 30),
-              Icon(Icons.sports_football, size: 30),
-              Icon(Icons.sports_basketball, size: 30),
-              Icon(Icons.sports_cricket, size: 30),
-              Icon(Icons.sports_golf, size: 30),
-            ],
+          padding: EdgeInsets.only(top: 30),
+          child: Container(
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                // activityIcon(Icons.directions_run),
+                Icon(Icons.directions_run, size: 30, color: Color(0xff3a0266)),
+                Icon(Icons.sports_football, size: 30, color: Color(0xff3a0266)),
+                Icon(Icons.sports_basketball,
+                    size: 30, color: Color(0xff3a0266)),
+                Icon(Icons.sports_cricket, size: 30, color: Color(0xff3a0266)),
+                Icon(Icons.sports_golf, size: 30, color: Color(0xff3a0266)),
+              ],
+            ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const [
-              Icon(Icons.sports_hockey, size: 30),
-              Icon(Icons.sports_handball, size: 30),
-              Icon(Icons.sports_kabaddi, size: 30),
-              Icon(Icons.sports_mma, size: 30),
-              Icon(Icons.sports_soccer, size: 30),
-            ],
+          padding: const EdgeInsets.only(bottom: 30),
+          child: Container(
+            color: Colors.white,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                Icon(Icons.sports_hockey, size: 30, color: Color(0xff3a0266)),
+                Icon(Icons.sports_handball, size: 30, color: Color(0xff3a0266)),
+                Icon(Icons.sports_kabaddi, size: 30, color: Color(0xff3a0266)),
+                Icon(Icons.sports_mma, size: 30, color: Color(0xff3a0266)),
+                Icon(Icons.sports_soccer, size: 30, color: Color(0xff3a0266)),
+              ],
+            ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 20, left: 20),
           child: Container(
             decoration: BoxDecoration(
+              // color: Colors.white,
               border: Border(
                 bottom: BorderSide(
                     width: 1.0, color: Colors.black.withOpacity(0.5)),
@@ -152,7 +181,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
               alignment: Alignment.topLeft,
               child: Text(
                 'Weather',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
           ),
@@ -162,13 +191,37 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: const [
-              Icon(WeatherIcons.day_sunny, size: 30),
-              Icon(WeatherIcons.day_cloudy, size: 30),
-              Icon(WeatherIcons.day_cloudy_windy, size: 30),
-              Icon(WeatherIcons.day_sunny, size: 30),
-              Icon(WeatherIcons.day_hail, size: 30),
-              Icon(WeatherIcons.day_rain, size: 30),
-              Icon(WeatherIcons.day_sunny, size: 30),
+              Icon(
+                WeatherIcons.day_sunny,
+                size: 30,
+                color: Colors.white,
+              ),
+              Icon(
+                WeatherIcons.day_cloudy,
+                size: 30,
+                color: Colors.white,
+              ),
+              Icon(
+                WeatherIcons.day_cloudy_windy,
+                size: 30,
+                color: Colors.white,
+              ),
+              Icon(
+                WeatherIcons.day_sunny,
+                size: 30,
+                color: Colors.white,
+              ),
+              Icon(
+                WeatherIcons.day_hail,
+                size: 30,
+                color: Colors.white,
+              ),
+              Icon(
+                WeatherIcons.day_rain,
+                size: 30,
+                color: Colors.white,
+              ),
+              Icon(WeatherIcons.day_sunny, size: 30, color: Colors.white),
             ],
           ),
         ),
@@ -183,7 +236,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
                   icon: Icon(Icons.check_circle_outline,
                       size: 30,
                       color: widget.check_circle_selected[i] == false
-                          ? Colors.black
+                          ? Colors.white
                           : Colors.green),
                   onPressed: () {
                     setState(() {
@@ -206,7 +259,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
                   icon: Icon(Icons.close,
                       size: 30,
                       color: widget.close_selected[i] == false
-                          ? Colors.black
+                          ? Colors.white
                           : Colors.red),
                   onPressed: () {
                     setState(() {
@@ -232,7 +285,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
               alignment: Alignment.topLeft,
               child: Text(
                 'Temperature',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
           ),
@@ -244,6 +297,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: ElevatedButton(
+            style: ElevatedButton.styleFrom(primary: Color(0xff4ad7d9)),
             onPressed: () {
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => HomePage()));
@@ -257,6 +311,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
 
   RangeSlider _buildTemperatureSlider() {
     return RangeSlider(
+      activeColor: Colors.white,
       values: widget._currentRangeValues,
       min: 0,
       max: 80,

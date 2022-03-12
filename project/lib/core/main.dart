@@ -23,7 +23,8 @@ class MyApp extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const TopRow(),
-              const SizedBox(//replace this at some point with the weather
+              const SizedBox(
+                //replace this at some point with the weather
                 height: 300,
               ),
               MapDisplay(),

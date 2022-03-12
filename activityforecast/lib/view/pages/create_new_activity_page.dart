@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:activityforecast/main.dart';
-import 'package:activityforecast/components/activities.dart';
-
-//import 'package:weather_icons/weather_icons.dart';
+import 'package:activityforecast/HomePage.dart';
+import 'package:weather_icons/weather_icons.dart';
 
 class CreateNewActivityPage extends StatefulWidget {
   CreateNewActivityPage({Key? key}) : super(key: key);
@@ -55,16 +53,15 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
+      appBar: AppBar(title: const Text('Create New Activity'), actions: [
+        IconButton(
           onPressed: () {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => MyApp()));
+                .push(MaterialPageRoute(builder: (context) => HomePage()));
           },
           icon: Icon(Icons.home, color: Colors.white),
         ),
-        title: const Text("Create New Activity"),
-      ),
+      ]),
       body: buildNewActivityDetails(context),
     );
   }
@@ -164,13 +161,13 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: const [
-              // Icon(WeatherIcons.day_sunny, size: 30),
-              // Icon(WeatherIcons.day_cloudy, size: 30),
-              // Icon(WeatherIcons.day_cloudy_windy, size: 30),
-              // Icon(WeatherIcons.day_sunny, size: 30),
-              // Icon(WeatherIcons.day_hail, size: 30),
-              // Icon(WeatherIcons.day_rain, size: 30),
-              // Icon(WeatherIcons.day_sunny, size: 30),
+              Icon(WeatherIcons.day_sunny, size: 30),
+              Icon(WeatherIcons.day_cloudy, size: 30),
+              Icon(WeatherIcons.day_cloudy_windy, size: 30),
+              Icon(WeatherIcons.day_sunny, size: 30),
+              Icon(WeatherIcons.day_hail, size: 30),
+              Icon(WeatherIcons.day_rain, size: 30),
+              Icon(WeatherIcons.day_sunny, size: 30),
             ],
           ),
         ),
@@ -246,7 +243,10 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => HomePage()));
+            },
             child: const Text('Save'),
           ),
         ),

@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:activityforecast/main.dart';
+import 'package:activityforecast/HomePage.dart';
 import 'package:activityforecast/components/activities.dart';
 import 'package:activityforecast/components/current_activity_card.dart';
 import 'package:activityforecast/components/more_activity_card.dart';
@@ -10,8 +10,6 @@ import 'package:activityforecast/view/pages/create_new_activity_page.dart';
 
 class MainActivitiesPage extends StatefulWidget {
   MainActivitiesPage({Key? key, required this.title}) : super(key: key);
-
-  static const String routeName = "/ManageActivities";
 
   final String title;
   // final Color backgroundColor = const Color(0xff041b5c);
@@ -52,8 +50,13 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
                 actions: [
                   IconButton(
                       onPressed: () {
+<<<<<<< Updated upstream
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+=======
                         //Navigator.of(context).popUntil((route) => route.isFirst);
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => MyApp()));
+>>>>>>> Stashed changes
                       },
                       icon: Icon(Icons.home, color: widget.appBarIconColor))
                 ],
@@ -86,7 +89,8 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
           // Navigator.of(context).push(MaterialPageRoute(
           //     builder: (context) => Page()));
           //Navigator.of(context).pushNamed("/CreateNewActivity");
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateNewActivityPage()));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => CreateNewActivityPage()));
         },
         backgroundColor: widget.floatingButtonColor,
         child: const Icon(Icons.add_outlined, color: Colors.black),

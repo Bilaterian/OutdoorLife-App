@@ -1,77 +1,125 @@
 import 'dart:ui';
+<<<<<<< Updated upstream
+import 'package:activityforecast/HomePage.dart';
+=======
 
+import 'package:activityforecast/components/themes/manage_activities_colors.dart';
+>>>>>>> Stashed changes
 import 'package:flutter/material.dart';
 
-class SettingsPage extends StatelessWidget{
+class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context){
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  int selectedIndex = 0;
+  List selected = [false, false];
+
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Settings',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Color(0xff031342),
         appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.home),
-            onPressed: () => Navigator.pop(context, false),
-          ),
+<<<<<<< Updated upstream
           title: const Text('Settings'),
+          actions: [IconButton(
+            icon: const Icon(Icons.home),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage())),
+          ),]
+=======
+          backgroundColor: manageActivityColors['appBarColor'],
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.home, color: Color(0xff031342)),
+              onPressed: () => Navigator.pop(context, false),
+            )
+          ],
+          // leading: IconButton(
+          //   icon: const Icon(Icons.home, color: Color(0xff031342)),
+          //   onPressed: () => Navigator.pop(context, false),
+          // ),
+          title: const Text('Settings',
+              style: TextStyle(color: Color(0xff031342))),
+>>>>>>> Stashed changes
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Text(
                 "Temperature",
-              style: TextStyle(
-                fontSize: 15,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            Center(
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          selected[0] = !selected[0];
+                          selected[1] = false;
+                        });
+                      },
+                      child: Card(
+                        color: (selected[0]) ? Color(0xff4ad7d9) : Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: const Text(
+                            'Celsius(°C)',
+                            style: TextStyle(color: Colors.black),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Row(
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text(
-                          'Celsius(°C)',
-                          style: TextStyle(
-                            color: Color(0xff262626),
-                          ),
-                          textAlign: TextAlign.left,
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          primary: Color(0xffffffff)
-                      )
-                  ),
-                ),
-                Icon(Icons.check),
-              ],
-            ),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                      onPressed: () {},
+                    child: InkWell(
+                  onTap: () {
+                    setState(() {
+                      selected[1] = !selected[1];
+                      selected[0] = false;
+                    });
+                  },
+                  child: Card(
+                    color: (selected[1]) ? Color(0xff4ad7d9) : Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
                       child: const Text(
                         'Farenheit(°F)',
                         style: TextStyle(
-                          color: Color(0xff262626),
+                          color: Colors.black,
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      style: ElevatedButton.styleFrom(
-                          primary: Color(0xffffffff)
-                      )
+                    ),
                   ),
-                ),
-                Icon(Icons.check),
+                )),
               ],
             ),
-            Text(
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Text(
                 "Restore to Default Settings",
-              style: TextStyle(
-                fontSize: 15,
+                style: TextStyle(fontSize: 15, color: Colors.white),
               ),
             ),
             Container(
@@ -81,16 +129,11 @@ class SettingsPage extends StatelessWidget{
               ),
               child: ElevatedButton(
                   onPressed: () {},
-                  child: const Text(
-                      'Reset',
+                  child: const Text('Reset',
                       style: TextStyle(
                         color: Color(0xffffffff),
-                      )
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      primary: Color(0xff262626)
-                  )
-              ),
+                      )),
+                  style: ElevatedButton.styleFrom(primary: Color(0xff262626))),
             ),
           ],
         ),

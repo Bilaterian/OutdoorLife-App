@@ -86,6 +86,7 @@ class _MyAppState extends State<MyApp> {
 
     return MaterialApp(
       theme: new ThemeData(scaffoldBackgroundColor: Colors.deepPurpleAccent),
+      debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
         //"/": (BuildContext context) => MaterialApp(home: MyApp()),
         "/ManageActivities": (BuildContext context) => MaterialApp(home: MainActivitiesPage(title: "Manage Activities")),
@@ -95,17 +96,45 @@ class _MyAppState extends State<MyApp> {
       builder: (context) =>
     //home: Scaffold(
       Scaffold(
+        resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('OutdoorLife'),
+        actions: [
+          IconButton(
+              onPressed: () {
+                //Navigator.of(context).popUntil((route) => route.isFirst);
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage()));
+              },
+              icon: Icon(Icons.settings, color: Colors.black))
+        ],
       ),
       body: Column(children: <Widget>[
-        IconButton(
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage()));
-          },
-          icon: Icon(Icons.settings, color: Colors.white),
+        const TextField(
+          decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Search Map',
+          ),
         ),
+          /*
+          Row(
+            children: <Widget>[
+              const TextField(
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Search Map',
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage()));
+                },
+                icon: Icon(Icons.settings, color: Colors.black),
+              ),
+          ]
           // Activity Rows
+          ),
+
+           */
           Row(
               children: <Widget>[
                 activityBox(icon: Icons.directions_bike, text: "Bike", valid: Icons.check),

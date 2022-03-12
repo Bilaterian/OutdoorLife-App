@@ -53,6 +53,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(title: const Text('Create New Activity'), actions: [
         IconButton(
           onPressed: () {

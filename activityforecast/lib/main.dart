@@ -103,39 +103,21 @@ class _MyAppState extends State<MyApp> {
         actions: [
           IconButton(
               onPressed: () {
-                //Navigator.of(context).popUntil((route) => route.isFirst);
                 Navigator.of(context).pushNamed("/SettingsPage");
               },
               icon: Icon(Icons.settings, color: Colors.black))
         ],
       ),
       body: Column(children: <Widget>[
-        const TextField(
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: 'Search Map',
-          ),
-        ),
-          /*
-          Row(
-            children: <Widget>[
-              const TextField(
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Search Map',
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage()));
-                },
-                icon: Icon(Icons.settings, color: Colors.black),
-              ),
-          ]
-          // Activity Rows
+          // Location Text Field
+          const TextField(
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'Search Map',
+            ),
           ),
 
-           */
+          // Activities Validity
           Row(
               children: <Widget>[
                 activityBox(icon: Icons.directions_bike, text: "Bike", valid: Icons.check),
@@ -157,7 +139,6 @@ class _MyAppState extends State<MyApp> {
                     color: Colors.deepPurple, // button color
                     child: InkWell(
                       onTap: () {
-                        //print("Add Activity Button Pressed");
                         Navigator.of(context).pushNamed("/ManageActivities");
                       }, // button pressed
                       child: Column(
@@ -188,7 +169,6 @@ class _MyAppState extends State<MyApp> {
                   style: TextButton.styleFrom(primary: Colors.black),
                   child: Text("EDIT", style: TextStyle(fontSize: 18)),
                   onPressed: () {
-                    //print("Edit Button Pressed");
                     Navigator.of(context).pushNamed("/EditActivityPage");
                   }
                 )

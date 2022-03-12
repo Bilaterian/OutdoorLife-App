@@ -11,8 +11,6 @@ import 'package:activityforecast/view/pages/create_new_activity_page.dart';
 class MainActivitiesPage extends StatefulWidget {
   MainActivitiesPage({Key? key, required this.title}) : super(key: key);
 
-  static const String routeName = "/ManageActivities";
-
   final String title;
   // final Color backgroundColor = const Color(0xff041b5c);
 

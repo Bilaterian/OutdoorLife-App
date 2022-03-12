@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:activityforecast/main.dart';
+import 'package:activityforecast/components/activities.dart';
+
 //import 'package:weather_icons/weather_icons.dart';
 
 class CreateNewActivityPage extends StatefulWidget {
@@ -14,6 +16,7 @@ class CreateNewActivityPage extends StatefulWidget {
     false
   ];
   List<bool> close_selected = [false, false, false, false, false, false, false];
+
   RangeValues _currentRangeValues = const RangeValues(0, 80);
 
   String sliderLabel(int number) {
@@ -33,13 +36,30 @@ class CreateNewActivityPage extends StatefulWidget {
 }
 
 class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
+  // Widget activityIcon(IconData icon) {
+  //   return IconButton(
+  //     icon: Icon(Icons.check_circle_outline,
+  //         size: 30,
+  //         color: widget.check_circle_selected[i] == false
+  //             ? Colors.black
+  //             : Colors.green),
+  //     onPressed: () {
+  //       setState(() {
+  //         widget.check_circle_selected[i] = !widget.check_circle_selected[i];
+  //         widget.close_selected[i] = false;
+  //       });
+  //     },
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => MyApp()));
           },
           icon: Icon(Icons.home, color: Colors.white),
         ),
@@ -98,7 +118,8 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           padding: EdgeInsets.only(top: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const [
+            children: [
+              // activityIcon(Icons.directions_run),
               Icon(Icons.directions_run, size: 30),
               Icon(Icons.sports_football, size: 30),
               Icon(Icons.sports_basketball, size: 30),
@@ -143,16 +164,13 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: const [
-              /*
-              Icon(WeatherIcons.day_sunny, size: 30),
-              Icon(WeatherIcons.day_cloudy, size: 30),
-              Icon(WeatherIcons.day_cloudy_windy, size: 30),
-              Icon(WeatherIcons.day_sunny, size: 30),
-              Icon(WeatherIcons.day_hail, size: 30),
-              Icon(WeatherIcons.day_rain, size: 30),
-              Icon(WeatherIcons.day_sunny, size: 30),
-
-               */
+              // Icon(WeatherIcons.day_sunny, size: 30),
+              // Icon(WeatherIcons.day_cloudy, size: 30),
+              // Icon(WeatherIcons.day_cloudy_windy, size: 30),
+              // Icon(WeatherIcons.day_sunny, size: 30),
+              // Icon(WeatherIcons.day_hail, size: 30),
+              // Icon(WeatherIcons.day_rain, size: 30),
+              // Icon(WeatherIcons.day_sunny, size: 30),
             ],
           ),
         ),
@@ -161,7 +179,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              for (int i = 0; i < 7; i++)
+              for (var i = 0; i < 7; i++)
                 // _buildIconButton(widget.check_circle_selected[i], Colors.green),
                 IconButton(
                   icon: Icon(Icons.check_circle_outline,
@@ -173,6 +191,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
                     setState(() {
                       widget.check_circle_selected[i] =
                           !widget.check_circle_selected[i];
+                      widget.close_selected[i] = false;
                     });
                   },
                 ),
@@ -194,6 +213,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
                   onPressed: () {
                     setState(() {
                       widget.close_selected[i] = !widget.close_selected[i];
+                      widget.check_circle_selected[i] = false;
                     });
                   },
                 ),

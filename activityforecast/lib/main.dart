@@ -1,4 +1,4 @@
-// main.dart
+// main.dart hi
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:activityforecast/HomePage.dart';

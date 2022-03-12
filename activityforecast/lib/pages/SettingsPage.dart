@@ -1,10 +1,7 @@
 import 'dart:ui';
-<<<<<<< Updated upstream
 import 'package:activityforecast/HomePage.dart';
-=======
 
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
->>>>>>> Stashed changes
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -26,18 +23,12 @@ class _SettingsPageState extends State<SettingsPage> {
       home: Scaffold(
         backgroundColor: Color(0xff031342),
         appBar: AppBar(
-<<<<<<< Updated upstream
-          title: const Text('Settings'),
-          actions: [IconButton(
-            icon: const Icon(Icons.home),
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage())),
-          ),]
-=======
           backgroundColor: manageActivityColors['appBarColor'],
           actions: [
             IconButton(
               icon: const Icon(Icons.home, color: Color(0xff031342)),
-              onPressed: () => Navigator.pop(context, false),
+              onPressed: () => Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => HomePage())),
             )
           ],
           // leading: IconButton(
@@ -46,7 +37,6 @@ class _SettingsPageState extends State<SettingsPage> {
           // ),
           title: const Text('Settings',
               style: TextStyle(color: Color(0xff031342))),
->>>>>>> Stashed changes
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,

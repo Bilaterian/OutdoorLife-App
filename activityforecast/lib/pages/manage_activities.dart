@@ -50,13 +50,8 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
                 actions: [
                   IconButton(
                       onPressed: () {
-<<<<<<< Updated upstream
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
-=======
-                        //Navigator.of(context).popUntil((route) => route.isFirst);
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => MyApp()));
->>>>>>> Stashed changes
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => HomePage()));
                       },
                       icon: Icon(Icons.home, color: widget.appBarIconColor))
                 ],

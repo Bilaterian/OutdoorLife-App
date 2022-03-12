@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:activityforecast/main.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget{
@@ -15,7 +15,7 @@ class SettingsPage extends StatelessWidget{
           title: const Text('Settings'),
           actions: [IconButton(
             icon: const Icon(Icons.home),
-            onPressed: () => Navigator.pop(context, false),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp())),
           ),]
         ),
         body: Column(

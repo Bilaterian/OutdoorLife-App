@@ -226,7 +226,9 @@ class _EditActivityPageState extends State<EditActivityPage> {
         Padding(
           padding: const EdgeInsets.only(top: 10),
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
+            },
             child: const Text('Save'),
           ),
         ),

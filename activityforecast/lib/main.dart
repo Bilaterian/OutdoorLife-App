@@ -91,6 +91,7 @@ class _MyAppState extends State<MyApp> {
         //"/": (BuildContext context) => MaterialApp(home: MyApp()),
         "/ManageActivities": (BuildContext context) => MaterialApp(home: MainActivitiesPage(title: "Manage Activities")),
         "/EditActivityPage": (BuildContext context) => MaterialApp(home: EditActivityPage()),
+        "/SettingsPage": (BuildContext context) => MaterialApp(home: SettingsPage()),
       },
       home: Builder(
       builder: (context) =>
@@ -103,7 +104,7 @@ class _MyAppState extends State<MyApp> {
           IconButton(
               onPressed: () {
                 //Navigator.of(context).popUntil((route) => route.isFirst);
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage()));
+                Navigator.of(context).pushNamed("/SettingsPage");
               },
               icon: Icon(Icons.settings, color: Colors.black))
         ],

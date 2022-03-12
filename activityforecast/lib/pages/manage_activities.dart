@@ -52,7 +52,6 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
                 actions: [
                   IconButton(
                       onPressed: () {
-                        //Navigator.of(context).popUntil((route) => route.isFirst);
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
                       },
                       icon: Icon(Icons.home, color: widget.appBarIconColor))

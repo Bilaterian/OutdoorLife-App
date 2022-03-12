@@ -1,10 +1,18 @@
 import 'dart:ui';
-
+import 'package:project/ui/CelsiusButton.dart';
+import 'package:project/ui/FarenheitButton.dart';
+import 'package:project/ui/ResetButton.dart';
 import 'package:flutter/material.dart';
 
-class SettingsPage extends StatelessWidget{
-  const SettingsPage({Key? key}) : super(key: key);
+import '../ui/CelsiusCheck.dart';
+import '../ui/FarenheitCheck.dart';
 
+class SettingsPage extends StatefulWidget{
+
+  SettingsPageState createState() => SettingsPageState();
+}
+
+class SettingsPageState extends State<SettingsPage>{
   @override
   Widget build(BuildContext context){
     return MaterialApp(
@@ -23,7 +31,7 @@ class SettingsPage extends StatelessWidget{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-                "Temperature",
+              "Temperature",
               style: TextStyle(
                 fontSize: 15,
               ),
@@ -31,45 +39,21 @@ class SettingsPage extends StatelessWidget{
             Row(
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text(
-                          'Celsius(°C)',
-                          style: TextStyle(
-                            color: Color(0xff262626),
-                          ),
-                          textAlign: TextAlign.left,
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          primary: Color(0xffffffff)
-                      )
-                  ),
+                  child: CelsiusButton(),
                 ),
-                Icon(Icons.check),
+                CelsiusCheck(),
               ],
             ),
             Row(
               children: [
                 Expanded(
-                  child: ElevatedButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Farenheit(°F)',
-                        style: TextStyle(
-                          color: Color(0xff262626),
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
-                      style: ElevatedButton.styleFrom(
-                          primary: Color(0xffffffff)
-                      )
-                  ),
+                  child: FarenheitButton(),
                 ),
-                Icon(Icons.check),
+                FarenheitCheck(),
               ],
             ),
             Text(
-                "Restore to Default Settings",
+              "Restore to Default Settings",
               style: TextStyle(
                 fontSize: 15,
               ),
@@ -79,18 +63,7 @@ class SettingsPage extends StatelessWidget{
                 color: const Color(0xff262626),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text(
-                      'Reset',
-                      style: TextStyle(
-                        color: Color(0xffffffff),
-                      )
-                  ),
-                  style: ElevatedButton.styleFrom(
-                      primary: Color(0xff262626)
-                  )
-              ),
+              child: ResetButton(),
             ),
           ],
         ),

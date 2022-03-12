@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
               const SizedBox(//replace this at some point with the weather
                 height: 300,
               ),
-              MapDisplay(),
+              //MapDisplay(),
             ],
           ),
         ),

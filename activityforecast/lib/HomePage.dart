@@ -171,6 +171,10 @@ class _HomePageState extends State<HomePage> {
                 valid: Icons.check,
                 weather: Icons.wb_sunny,
                 temperature: "16°,13° low")),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(0, 19, 0, 0),
+          child: Image.asset('assets/images/GoogleMapExample.jpg'),
+        )
       ])),
     )
     );

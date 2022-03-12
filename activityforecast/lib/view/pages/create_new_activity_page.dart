@@ -98,6 +98,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
               border: UnderlineInputBorder(
                   borderSide: BorderSide(color: Colors.white)),
               labelText: 'Enter the activity name',
+              labelStyle: TextStyle(color: Colors.white),
             ),
           ),
         ),

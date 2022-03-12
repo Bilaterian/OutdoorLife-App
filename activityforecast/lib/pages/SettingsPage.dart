@@ -12,11 +12,11 @@ class SettingsPage extends StatelessWidget{
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         appBar: AppBar(
-          leading: IconButton(
+          title: const Text('Settings'),
+          actions: [IconButton(
             icon: const Icon(Icons.home),
             onPressed: () => Navigator.pop(context, false),
-          ),
-          title: const Text('Settings'),
+          ),]
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,

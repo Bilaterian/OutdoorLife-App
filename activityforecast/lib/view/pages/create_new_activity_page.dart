@@ -37,13 +37,13 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
+          title: const Text('Create New Activity'),
+          actions: [ IconButton(
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
           },
           icon: Icon(Icons.home, color: Colors.white),
-        ),
-        title: const Text("Create New Activity"),
+        ),]
       ),
       body: buildNewActivityDetails(context),
     );

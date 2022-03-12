@@ -1,5 +1,6 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:activityforecast/pages/SettingsPage.dart';
 import 'package:activityforecast/pages/manage_activities.dart';
 import 'package:activityforecast/view/pages/edit_activity_page.dart';
 
@@ -98,6 +99,12 @@ class _MyAppState extends State<MyApp> {
         title: const Text('OutdoorLife'),
       ),
       body: Column(children: <Widget>[
+        IconButton(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage()));
+          },
+          icon: Icon(Icons.settings, color: Colors.white),
+        ),
           // Activity Rows
           Row(
               children: <Widget>[

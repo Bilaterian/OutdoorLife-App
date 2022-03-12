@@ -41,7 +41,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
           onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
           },
-          icon: Icon(Icons.home, color: Colors.white),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
         title: const Text("Edit Activity"),
       ),

@@ -54,18 +54,7 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< Updated upstream
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: const Text('Create New Activity'), actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => HomePage()));
-          },
-          icon: Icon(Icons.home, color: Colors.white),
-        ),
-      ]),
-=======
       backgroundColor: Color(0xff031342),
       appBar: AppBar(
           title: const Text('Create New Activity',
@@ -80,7 +69,6 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
               icon: Icon(Icons.home, color: Color(0xff031342)),
             ),
           ]),
->>>>>>> Stashed changes
       body: buildNewActivityDetails(context),
     );
   }

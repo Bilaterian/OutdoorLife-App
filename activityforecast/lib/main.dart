@@ -5,12 +5,6 @@ import 'package:activityforecast/pages/manage_activities.dart';
 import 'package:activityforecast/view/pages/edit_activity_page.dart';
 
 class MyApp extends StatefulWidget {
-  //static String selectedActivity = "Bike";
-
-  //_MyAppState createState() => _MyAppState();
-
-  //@override
-  //State<MyApp> createState() => _MyAppState();
 
   @override
   State<StatefulWidget> createState() {
@@ -19,7 +13,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  //const MyApp({Key? key}) : super(key: key);
 
   String selectedActivity = "Bike";
   changeActivity(String activity) {
@@ -28,64 +21,11 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Widget activityBox({size1: 82.0, size2: 82.0, colour: Colors.deepPurple, icon: Icons.directions_walk, text: "Walk", valid: Icons.check}) {
-    return SizedBox.fromSize(
-      size: Size(size1, size2), // button width and height
-      child: Material(
-      color: colour, // button color
-      child: InkWell(
-        onTap: () => changeActivity(text),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(icon), // icon
-            Text(text), // text
-            Icon(valid)
-          ],
-        ),
-      ),
-      ),
-    );
-  }
-
-  List<Widget> forecastRow({day: "Today", valid: Icons.check, weather: Icons.wb_sunny, temperature = "900°,900° low"}) {
-    return <Widget>[
-      Expanded(
-        flex: 1,
-        child: Container(
-          width: 1440 * 0.25,
-          child: Text(day, textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
-        )
-      ),
-      Expanded(
-        flex: 1,
-        child: Container(
-          width: 1440 * 0.25,
-          child: Icon(valid),
-        )
-      ),
-      Expanded(
-        flex: 1,
-        child: Container(
-          width: 1440 * 0.25,
-          child: Icon(weather),
-        )
-      ),
-      Expanded(
-        flex: 1,
-        child: Container(
-          width: 1440 * 0.25,
-          child: Text(temperature, textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
-        )
-      ),
-    ];
-  }
-
   @override
   Widget build(BuildContext context) {
 
     return MaterialApp(
-      theme: new ThemeData(scaffoldBackgroundColor: Colors.deepPurpleAccent),
+      theme: ThemeData(scaffoldBackgroundColor: Colors.deepPurpleAccent),
       debugShowCheckedModeBanner: false,
       routes: <String, WidgetBuilder>{
         //"/": (BuildContext context) => MaterialApp(home: MyApp()),
@@ -99,7 +39,7 @@ class _MyAppState extends State<MyApp> {
       Scaffold(
         resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('OutdoorLife'),
+        title: const Text('OutdoorLife', style: TextStyle(color: Colors.black)),
         actions: [
           IconButton(
               onPressed: () {
@@ -185,6 +125,59 @@ class _MyAppState extends State<MyApp> {
       ),
     )
     );
+  }
+
+  Widget activityBox({size1: 82.0, size2: 82.0, colour: Colors.deepPurple, icon: Icons.directions_walk, text: "Walk", valid: Icons.check}) {
+    return SizedBox.fromSize(
+      size: Size(size1, size2), // button width and height
+      child: Material(
+        color: colour, // button color
+        child: InkWell(
+          onTap: () => changeActivity(text),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(icon), // icon
+              Text(text), // text
+              Icon(valid)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<Widget> forecastRow({day: "Today", valid: Icons.check, weather: Icons.wb_sunny, temperature = "900°,900° low"}) {
+    return <Widget>[
+      Expanded(
+          flex: 1,
+          child: Container(
+              width: 1440 * 0.25,
+              child: Text(day, textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
+          )
+      ),
+      Expanded(
+          flex: 1,
+          child: Container(
+            width: 1440 * 0.25,
+            child: Icon(valid),
+          )
+      ),
+      Expanded(
+          flex: 1,
+          child: Container(
+            width: 1440 * 0.25,
+            child: Icon(weather),
+          )
+      ),
+      Expanded(
+          flex: 1,
+          child: Container(
+              width: 1440 * 0.25,
+              child: Text(temperature, textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
+          )
+      ),
+    ];
   }
 }
 

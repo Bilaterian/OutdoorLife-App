@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:activityforecast/main.dart';
+import 'package:activityforecast/HomePage.dart';
 import 'package:activityforecast/components/activities.dart';
 import 'package:activityforecast/components/current_activity_card.dart';
 import 'package:activityforecast/components/more_activity_card.dart';
@@ -50,7 +50,7 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
                 actions: [
                   IconButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
+                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
                       },
                       icon: Icon(Icons.home, color: widget.appBarIconColor))
                 ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:activityforecast/main.dart';
+import 'package:activityforecast/HomePage.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 class EditActivityPage extends StatefulWidget {
@@ -39,7 +39,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
           },
           icon: Icon(Icons.arrow_back, color: Colors.white),
         ),
@@ -224,7 +224,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
           padding: const EdgeInsets.only(top: 10),
           child: ElevatedButton(
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyApp()));
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
             },
             child: const Text('Save'),
           ),

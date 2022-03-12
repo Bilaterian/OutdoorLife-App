@@ -50,7 +50,13 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
                 actions: [
                   IconButton(
                       onPressed: () {
+<<<<<<< Updated upstream
                         Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomePage()));
+=======
+                        //Navigator.of(context).popUntil((route) => route.isFirst);
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => MyApp()));
+>>>>>>> Stashed changes
                       },
                       icon: Icon(Icons.home, color: widget.appBarIconColor))
                 ],
@@ -83,7 +89,8 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
           // Navigator.of(context).push(MaterialPageRoute(
           //     builder: (context) => Page()));
           //Navigator.of(context).pushNamed("/CreateNewActivity");
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateNewActivityPage()));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => CreateNewActivityPage()));
         },
         backgroundColor: widget.floatingButtonColor,
         child: const Icon(Icons.add_outlined, color: Colors.black),

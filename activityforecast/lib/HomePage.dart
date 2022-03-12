@@ -55,9 +55,11 @@ class _HomePageState extends State<HomePage> {
       body: Column(children: <Widget>[
           // Location Text Field
           const TextField(
+            style: TextStyle(color: Colors.white),
             decoration: InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'Search Map',
+              hintStyle: TextStyle(color: Colors.white),
             ),
           ),
 

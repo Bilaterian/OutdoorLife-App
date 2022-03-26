@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'location_management.dart';
 
 class MapDisplay extends StatefulWidget{
+  const MapDisplay({Key? key}) : super(key: key);
+
 
   @override
   MapDisplayState createState() => MapDisplayState();
@@ -16,18 +18,14 @@ class MapDisplayState extends State<MapDisplay> {
   @override
   Widget build(BuildContext context) {
     final locationManagement = Provider.of<LocationManagement>(context);
-    return Expanded(
-      child: Container(
-        child: GoogleMap(
-          mapType: MapType.normal,
-          initialCameraPosition: CameraPosition(
-            target: (locationManagement.currentLocation == null)? LatLng(0, 0)
-                : LatLng(locationManagement.currentLocation.latitude, locationManagement.currentLocation.longitude),
-            zoom: 14,
-          ),
-          myLocationEnabled: true,
-        ),
+    locationManagement.setCurrentLocation();
+    return GoogleMap(
+      mapType: MapType.normal,
+      initialCameraPosition: CameraPosition(
+        target: LatLng(locationManagement.currentLocation.latitude, locationManagement.currentLocation.longitude),
+        zoom: 14,
       ),
+      myLocationEnabled: true,
     );
   }
 }

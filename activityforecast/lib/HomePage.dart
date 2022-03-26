@@ -180,7 +180,7 @@ class _HomePageState extends State<HomePage> {
                           temperature: "16°,13° low")),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(0, 19, 0, 0),
-                    child: MapDisplay(),///THE MAP
+                    child: MapDisplay(),
                   )
                 ]
                 )

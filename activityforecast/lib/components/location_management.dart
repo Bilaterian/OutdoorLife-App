@@ -8,9 +8,6 @@ class LocationManagement with ChangeNotifier{
 
   late Position currentLocation;
 
-  LocationManagement(){
-    setCurrentLocation();
-  }
 
   setCurrentLocation() async {
     currentLocation = await geoLocatorService.getCurrentLocation();

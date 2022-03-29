@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                   ),
 
                   // Activities Validity
-                  Row(
+                  /*Row(
                       children: <Widget>[
                         activityBox(icon: Icons.directions_bike, text: "Bike", valid: Icons.check),
                         activityBox(icon: Icons.directions_boat, text: "Boat", valid: Icons.check),
@@ -178,7 +178,7 @@ class _HomePageState extends State<HomePage> {
                           valid: Icons.check,
                           weather: Icons.wb_sunny,
                           temperature: "16°,13° low")),
-                  Padding(
+                  */Padding(
                     padding: const EdgeInsets.fromLTRB(0, 19, 0, 0),
                     child: MapDisplay(),
                   )

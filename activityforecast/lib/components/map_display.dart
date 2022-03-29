@@ -19,13 +19,16 @@ class MapDisplayState extends State<MapDisplay> {
   Widget build(BuildContext context) {
     final locationManagement = Provider.of<LocationManagement>(context);
     locationManagement.setCurrentLocation();
-    return GoogleMap(
-      mapType: MapType.normal,
-      initialCameraPosition: CameraPosition(
-        target: LatLng(locationManagement.currentLocation.latitude, locationManagement.currentLocation.longitude),
-        zoom: 14,
+    return SizedBox(
+      height: 300,
+      child: GoogleMap(
+        mapType: MapType.normal,
+        initialCameraPosition: CameraPosition(
+          target: LatLng(locationManagement.currentLocation.latitude, locationManagement.currentLocation.longitude),
+          zoom: 14,
+        ),
+        myLocationEnabled: true,
       ),
-      myLocationEnabled: true,
     );
   }
 }

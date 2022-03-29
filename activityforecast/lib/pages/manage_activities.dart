@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:activityforecast/models/activity.dart';
+import 'package:activityforecast/models/activity_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:activityforecast/HomePage.dart';
 import 'package:activityforecast/components/activities.dart';
@@ -7,19 +9,13 @@ import 'package:activityforecast/components/current_activity_card.dart';
 import 'package:activityforecast/components/more_activity_card.dart';
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
 import 'package:activityforecast/view/pages/create_new_activity_page.dart';
+import 'package:provider/provider.dart';
 
 class MainActivitiesPage extends StatefulWidget {
   MainActivitiesPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
-  // final Color backgroundColor = const Color(0xff041b5c);
 
-  // final Color backgroundColor = const Color(0xff031342);
-  // // final Color backgroundColor = const Color(0xff4a47a1);
-  // final Color textColor = Colors.white;
-
-  // // final Color appBarColor = const Color(0xff02424d);
-  // final Color appBarColor = const Color(0xfff5ae16);
   final Color? backgroundColor = manageActivityColors['bgColor'];
   final Color? textColor = manageActivityColors['headerColor'];
   final Color? appBarColor = manageActivityColors['appBarColor'];
@@ -33,12 +29,26 @@ class MainActivitiesPage extends StatefulWidget {
 }
 
 class _MainActivitiesPageState extends State<MainActivitiesPage> {
+  // to allow dynamic styling (for multiiple devices)
+  late MediaQueryData _mediaQueryData;
+  late double screenWidth;
+  late double screenHeight;
+  late List<Activity> currentActivities;
+  late List<Activity> moreActivities;
+
   refresh() {
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    currentActivities =
+        Provider.of<ActivityProvider>(context).currentActivities;
+    moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
+
+    _mediaQueryData = MediaQuery.of(context);
+    screenWidth = _mediaQueryData.size.width;
+    screenHeight = _mediaQueryData.size.height;
     return StreamBuilder<Object>(
         stream: null,
         builder: (context, snapshot) {
@@ -69,7 +79,6 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
                   Theme(
                       data: ThemeData(canvasColor: Colors.transparent),
                       child: _reorderableMoreActivitiesView()),
-                  // ..._moreActivities()
                 ],
               ));
         });
@@ -81,9 +90,6 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
     return Builder(builder: (context) {
       return FloatingActionButton(
         onPressed: () {
-          // Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (context) => Page()));
-          //Navigator.of(context).pushNamed("/CreateNewActivity");
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => CreateNewActivityPage()));
         },
@@ -104,8 +110,10 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
             if (oldIndex < newIndex) {
               newIndex -= 1;
             }
-            var item = currentActivities.removeAt(oldIndex);
-            currentActivities.insert(newIndex, item);
+            Provider.of<ActivityProvider>(context, listen: false)
+                .reorderMyActivity(oldIndex, newIndex);
+            // var item = moreActivities.removeAt(oldIndex);
+            // moreActivities.insert(newIndex, item);
           });
         });
   }
@@ -122,8 +130,10 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
             if (oldIndex < newIndex) {
               newIndex -= 1;
             }
-            var item = moreActivities.removeAt(oldIndex);
-            moreActivities.insert(newIndex, item);
+            Provider.of<ActivityProvider>(context, listen: false)
+                .reorderMoreActivity(oldIndex, newIndex);
+            // var item = moreActivities.removeAt(oldIndex);
+            // moreActivities.insert(newIndex, item);
           });
         });
   }
@@ -131,13 +141,13 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
 // return a List of "More Activity" Cards
   List<Widget> _moreActivities() {
     List<Widget> activities = [];
-    // activities.add(_header("MORE ACTIVITIES"));
+
     for (int index = 0; index < moreActivities.length; index++) {
       var newActivity = moreActivities[index];
       activities.add(MoreActivityCard(
         setStateOfAcitivity: refresh,
-        activityIcon: newActivity["icon"],
-        activity: newActivity["activity"],
+        activityIcon: newActivity.activityIcon,
+        activity: newActivity.activity,
         index: index,
         key: ValueKey(index),
       ));
@@ -153,8 +163,8 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
       var activity = currentActivities[index];
       activities.add(CurrentActivityCard(
         setStateOfAcitivity: refresh,
-        activityIcon: activity["icon"],
-        activity: activity["activity"],
+        activityIcon: activity.activityIcon,
+        activity: activity.activity,
         index: index,
         key: ValueKey(index),
       ));

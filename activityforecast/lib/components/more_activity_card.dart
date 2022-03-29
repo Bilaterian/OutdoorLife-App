@@ -1,8 +1,10 @@
+import 'package:activityforecast/models/activity_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:activityforecast/components/activities.dart';
 import 'package:activityforecast/components/add_activity.dart';
 import 'package:activityforecast/components/remove_activity.dart';
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
+import 'package:provider/provider.dart';
 
 class MoreActivityCard extends StatefulWidget {
   MoreActivityCard(
@@ -15,12 +17,7 @@ class MoreActivityCard extends StatefulWidget {
 
   final String activity;
   final int index;
-  // final Color cardColor = manageActivityColors.;
-  // final Color iconColor = const Color(0xff10acc7);
-  // final Color iconColor = const Color(0xff4ad7d9);
-  // // final Color iconColor = const Color(0xfff09b13);
-  // // final Color iconColor = const Color(0xfff5ae16);
-  // final Color activityTextColor = Colors.white;
+
   final IconData activityIcon;
   final Function setStateOfAcitivity;
 
@@ -40,11 +37,7 @@ class _MoreActivityCardState extends State<MoreActivityCard> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Card(
-        /*087082*/
-        // color: Color(0xff18337a),
-        // color: Color(0xff54519e),
         color: widget.cardColor,
-        // color: Color(0xff633587),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15.0),
         ),
@@ -53,7 +46,9 @@ class _MoreActivityCardState extends State<MoreActivityCard> {
           direction: DismissDirection.endToStart,
           onDismissed: (direction) {
             setState(() {
-              moreActivities.removeAt(widget.index);
+              // moreActivities.removeAt(widget.index);
+              Provider.of<ActivityProvider>(context, listen: false)
+                  .removeMoreActivity(widget.index);
               widget.setStateOfAcitivity();
             });
           },

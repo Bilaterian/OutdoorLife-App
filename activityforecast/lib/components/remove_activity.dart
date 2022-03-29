@@ -1,5 +1,9 @@
+import 'package:activityforecast/models/activity.dart';
+import 'package:activityforecast/models/activity_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:activityforecast/components/activities.dart';
+
+import 'package:provider/provider.dart';
 
 class RemoveActivity extends StatefulWidget {
   const RemoveActivity(
@@ -11,8 +15,6 @@ class RemoveActivity extends StatefulWidget {
 
   final int activityToRemove;
   final IconData removeIcon = Icons.remove_circle_rounded;
-  // final IconData removeIcon = Icons.remove_outlined;
-  // final Color iconColor = const Color(0xfff5052d);
   final Color? iconColor;
   final Function setStateOfAcitivity;
 
@@ -25,12 +27,16 @@ class _RemoveActivityState extends State<RemoveActivity> {
   Widget build(BuildContext context) {
     return IconButton(
         onPressed: () {
-          moreActivities.add(currentActivities[widget.activityToRemove]);
-          currentActivities.remove(currentActivities[widget.activityToRemove]);
+          //  add(currentActivities[widget.activityToRemove]);
+          Activity activity =
+              Provider.of<ActivityProvider>(context, listen: false)
+                  .currentActivities[widget.activityToRemove];
+          Provider.of<ActivityProvider>(context, listen: false)
+              .removeMyActivity(activity, widget.activityToRemove);
+
+          // currentActivities.remove(currentActivities[widget.activityToRemove]);
           widget.setStateOfAcitivity();
         },
-        icon: Icon(widget.removeIcon,
-            // color: Colors.white.withOpacity(.7),
-            color: widget.iconColor));
+        icon: Icon(widget.removeIcon, color: widget.iconColor));
   }
 }

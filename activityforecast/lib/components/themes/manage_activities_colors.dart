@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 
 //Manage Activities Page
 var manageActivityColors = {
-  "bgColor": Color(0xff031342),
+  "bgColor": Color(0xff010e33),
   "headerColor": Colors.white,
   "appBarColor": Color(0xfff5ae16),
   "appBarTextColor": Color(0xff031342),
   "appBarIconColor": Color(0xff031342),
   "floatingButtonColor": Color(0xfff5ae16),
 };
-
-// const Color backgroundColor = Color(0xff031342);
-// const Color headerColor = Colors.white;
-// const Color appBarColor = Color(0xfff5ae16);
 
 // "New Activities Card" Color
 var moreActivityColors = {

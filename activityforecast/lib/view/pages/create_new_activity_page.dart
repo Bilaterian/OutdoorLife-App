@@ -1,9 +1,15 @@
+import 'package:activityforecast/components/icons.dart';
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
+import 'package:activityforecast/components/themes/themes.dart';
+import 'package:activityforecast/components/weather_icons.dart';
 import 'package:activityforecast/models/Condition.dart';
 import 'package:activityforecast/models/activity.dart';
 import 'package:activityforecast/models/activity_provider.dart';
+import 'package:activityforecast/models/theme.dart';
+import 'package:activityforecast/models/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:activityforecast/HomePage.dart';
+import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_icons/weather_icons.dart';
 
@@ -36,48 +42,59 @@ class CreateNewActivityPage extends StatefulWidget {
 
   @override
   _CreateNewActivityPageState createState() => _CreateNewActivityPageState();
+  // final Color? backgroundColor = firstTheme["quaternary"];
+  // final Color? textColor = firstTheme["primary"];
+  // final Color? appBarColor = firstTheme["primary"];
+  // final Color? appBarTextColor = firstTheme["quaternary"];
+  // final Color? tabBarColor = (firstTheme["secondary"] as Color).withOpacity(.5);
+  // final Color? unselectedactivityIconColor = firstTheme["quaternary"];
+  // final Color? selectedactivityIconColor = firstTheme["primary"];
+  // final Color? weatherColor = firstTheme["primary"];
+
+  late Color? backgroundColor;
+  late Color? textColor;
+  late Color? appBarColor;
+  late Color? appBarTextColor;
+  late Color? tabBarColor;
+  late Color? unselectedactivityIconColor;
+  late Color? selectedactivityIconColor;
+  late Color? weatherColor;
 }
 
 class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
-  // Widget activityIcon(IconData icon) {
-  //   return IconButton(
-  //     icon: Icon(Icons.check_circle_outline,
-  //         size: 30,
-  //         color: widget.check_circle_selected[i] == false
-  //             ? Colors.black
-  //             : Colors.green),
-  //     onPressed: () {
-  //       setState(() {
-  //         widget.check_circle_selected[i] = !widget.check_circle_selected[i];
-  //         widget.close_selected[i] = false;
-  //       });
-  //     },
-  //   );
-  // }
-
+  late ColourScheme theme;
   int selectedActivity = -1;
   List<bool> icon1_selected = [false, false, false, false, false];
   List<bool> icon2_selected = [false, false, false, false, false];
   var selectedIcon;
   @override
   Widget build(BuildContext context) {
+    theme = Provider.of<ThemeProvider>(context).currentTheme;
+    widget.backgroundColor = theme.secondary;
+    widget.textColor = theme.quaternary;
+    widget.appBarColor = theme.primary;
+    widget.appBarTextColor = theme.secondary;
+    widget.tabBarColor = theme.quinary.withOpacity(.5);
+    widget.unselectedactivityIconColor = theme.secondary;
+    widget.selectedactivityIconColor = theme.quaternary;
+    widget.weatherColor = theme.primary;
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;
     screenHeight = _mediaQueryData.size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color(0xff010e33),
+      backgroundColor: widget.backgroundColor,
       appBar: AppBar(
-          title: const Text('Create New Activity',
-              style: TextStyle(color: Color(0xff031342))),
-          backgroundColor: manageActivityColors['appBarColor'],
+          title: Text('Create New Activity',
+              style: TextStyle(color: widget.appBarTextColor)),
+          backgroundColor: widget.appBarColor,
           actions: [
             IconButton(
               onPressed: () {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) => HomePage()));
               },
-              icon: Icon(Icons.home, color: Color(0xff031342)),
+              icon: Icon(Icons.home, color: widget.appBarTextColor),
             ),
           ]),
       body: buildNewActivityDetails(context),
@@ -91,21 +108,20 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
         Padding(
           padding: EdgeInsets.only(
             top: 10,
-            // left: 20,
           ),
           child: Container(
               decoration: BoxDecoration(
                   border: Border(
                 bottom: BorderSide(
                   width: 1.0,
-                  color: Colors.white.withOpacity(0.5),
+                  color: widget.textColor as Color,
                 ),
               )),
               child: Align(
                 alignment: Alignment.topLeft,
                 child: Text(
                   'Name',
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+                  style: TextStyle(fontSize: 20, color: widget.textColor),
                 ),
               )),
         ),
@@ -119,32 +135,32 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
               return null;
             },
             controller: activityNameController,
-            style: TextStyle(color: Colors.white),
-            decoration: const InputDecoration(
-              fillColor: Colors.white,
+            style: TextStyle(color: widget.textColor),
+            decoration: InputDecoration(
+              fillColor: widget.textColor,
               border: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white)),
+                  borderSide: BorderSide(color: widget.textColor as Color)),
               labelText: 'Enter the activity name',
-              labelStyle: TextStyle(color: Colors.white),
+              labelStyle: TextStyle(color: widget.textColor),
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(top: 20),
           child: Container(
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(
                   width: 1.0,
-                  color: Colors.white.withOpacity(0.5),
+                  color: widget.textColor as Color,
                 ),
               ),
             ),
-            child: const Align(
+            child: Align(
               alignment: Alignment.topLeft,
               child: Text(
-                'Icon',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                'Icons',
+                style: TextStyle(fontSize: 20, color: widget.textColor),
               ),
             ),
           ),
@@ -152,41 +168,56 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
         Padding(
           padding: const EdgeInsets.only(top: 20),
           child: Container(
-            color: Colors.white,
-            child: Column(
-              children: [
-                Padding(
-                    padding: EdgeInsets.symmetric(vertical: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [..._activityRow1(_activityIcon1)],
-                    )),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [..._activityRow2(_activityIcon2)],
-                  ),
-                ),
-              ],
+            color: widget.tabBarColor,
+            child: DefaultTabController(
+              length: activityTabIcons.length,
+              child: Column(
+                children: [
+                  TabBar(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      indicatorWeight: 5,
+                      labelColor: widget.appBarTextColor,
+                      indicatorColor: widget.appBarColor,
+                      tabs: [
+                        for (var icon in activityTabIcons.values)
+                          Tab(
+                              icon: Icon(
+                            icon,
+                            color: widget.appBarColor,
+                          )),
+                      ]),
+                  SizedBox(
+                    height: screenHeight / 3,
+                    child: Material(
+                      color: widget.tabBarColor,
+                      child: TabBarView(
+                        children: [
+                          for (int i = 0; i < activityIcons.length; i++)
+                            gridViewIcon(activityIcons.values.elementAt(i), i),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(top: 20),
           child: Container(
             decoration: BoxDecoration(
-              // color: Colors.white,
               border: Border(
-                bottom: BorderSide(
-                    width: 1.0, color: Colors.white.withOpacity(0.5)),
+                bottom:
+                    BorderSide(width: 1.0, color: widget.textColor as Color),
               ),
             ),
-            child: const Align(
+            child: Align(
               alignment: Alignment.topLeft,
               child: Text(
                 'Weather',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style:
+                    TextStyle(fontSize: 20, color: widget.textColor as Color),
               ),
             ),
           ),
@@ -195,57 +226,12 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           padding: const EdgeInsets.only(top: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: const [
-              Icon(
-                WeatherIcons.day_sunny,
-                color: Colors.white,
-              ),
-              Icon(
-                WeatherIcons.moon_alt_waning_crescent_4,
-                color: Colors.white,
-              ),
-              Icon(
-                WeatherIcons.cloudy,
-                color: Colors.white,
-              ),
-              Icon(
-                WeatherIcons.strong_wind,
-                color: Colors.white,
-              ),
-              Icon(
-                WeatherIcons.showers,
-                color: Colors.white,
-              ),
-              Icon(
-                WeatherIcons.thunderstorm,
-                color: Colors.white,
-              ),
-              Icon(WeatherIcons.snow, color: Colors.white),
-              // Icon(
-              //   WeatherIcons.day_sunny,
-              //   color: Colors.white,
-              // ),
-              // Icon(
-              //   WeatherIcons.day_cloudy,
-              //   color: Colors.white,
-              // ),
-              // Icon(
-              //   WeatherIcons.day_cloudy_windy,
-              //   color: Colors.white,
-              // ),
-              // Icon(
-              //   WeatherIcons.day_sunny,
-              //   color: Colors.white,
-              // ),
-              // Icon(
-              //   WeatherIcons.day_hail,
-              //   color: Colors.white,
-              // ),
-              // Icon(
-              //   WeatherIcons.day_rain,
-              //   color: Colors.white,
-              // ),
-              // Icon(WeatherIcons.day_sunny, color: Colors.white),
+            children: [
+              for (var weatherIcon in weatherIcons.values)
+                Icon(
+                  weatherIcon,
+                  color: widget.weatherColor,
+                )
             ],
           ),
         ),
@@ -254,14 +240,13 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              for (var i = 0; i < 7; i++)
-                // _buildIconButton(widget.check_circle_selected[i], Colors.green),
+              for (var i = 0; i < widget.check_circle_selected.length; i++)
                 Flexible(
                   child: IconButton(
                     icon: Icon(Icons.check_circle_outline,
                         // size: 30,
                         color: widget.check_circle_selected[i] == false
-                            ? Colors.white.withOpacity(0.5)
+                            ? (widget.appBarColor as Color).withOpacity(.5)
                             : Colors.green),
                     onPressed: () {
                       setState(() {
@@ -279,13 +264,12 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              for (int i = 0; i < 7; i++)
+              for (int i = 0; i < widget.close_selected.length; i++)
                 Flexible(
                   child: IconButton(
                     icon: Icon(Icons.close,
-                        // size: 30,
                         color: widget.close_selected[i] == false
-                            ? Colors.white.withOpacity(0.5)
+                            ? (widget.appBarColor as Color).withOpacity(.5)
                             : Colors.red),
                     onPressed: () {
                       setState(() {
@@ -295,24 +279,23 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
                     },
                   ),
                 ),
-              // Icon(Icons.close, size: 30),
             ],
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(top: 20),
           child: Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                    width: 1.0, color: Colors.white.withOpacity(0.5)),
+                bottom:
+                    BorderSide(width: 1.0, color: widget.textColor as Color),
               ),
             ),
-            child: const Align(
+            child: Align(
               alignment: Alignment.topLeft,
               child: Text(
                 'Temperature',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: TextStyle(fontSize: 20, color: widget.textColor),
               ),
             ),
           ),
@@ -328,9 +311,11 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Min",
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                        style:
+                            TextStyle(fontSize: 20, color: widget.textColor)),
                     Text("Max",
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                        style:
+                            TextStyle(fontSize: 20, color: widget.textColor)),
                   ],
                 ),
               ),
@@ -346,8 +331,8 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           child: Container(
             decoration: BoxDecoration(
               border: Border(
-                bottom: BorderSide(
-                    width: 1.0, color: Colors.white.withOpacity(0.5)),
+                bottom:
+                    BorderSide(width: 1.0, color: widget.textColor as Color),
               ),
             ),
             child: Align(
@@ -358,9 +343,11 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text((widget._currentRangeValues.start - 40).toString(),
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                        style:
+                            TextStyle(fontSize: 20, color: widget.textColor)),
                     Text((widget._currentRangeValues.end - 40).toString(),
-                        style: TextStyle(fontSize: 20, color: Colors.white)),
+                        style:
+                            TextStyle(fontSize: 20, color: widget.textColor)),
                   ],
                 ),
               ),
@@ -371,14 +358,12 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           padding: const EdgeInsets.only(top: 20, bottom: 50),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-                primary: Color(0xff4ad7d9),
-                onSurface: Colors.white.withOpacity(.5)),
-            onPressed:
+                primary: widget.appBarColor,
+                onSurface: (widget.appBarColor as Color).withOpacity(.5)),
+            onPressed: // if an activity icon has not been selected the did not enter an activity name, the save button must be disabled
                 (selectedIcon == null || (activityNameController.text.isEmpty))
                     ? null
                     : () {
-                        // Navigator.of(context)
-                        //     .push(MaterialPageRoute(builder: (context) => HomePage()));
                         Provider.of<ActivityProvider>(context, listen: false)
                             .addCreatedActivity(Activity(
                                 activity: activityNameController.text,
@@ -388,12 +373,12 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
                         Navigator.of(context).pop();
 
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
+                          SnackBar(
                             content: Text(
                               "Activity Added",
-                              style: TextStyle(color: Colors.black),
+                              style: TextStyle(color: widget.appBarColor),
                             ),
-                            backgroundColor: Colors.white,
+                            backgroundColor: widget.appBarTextColor,
                           ),
                         );
                       },
@@ -401,6 +386,24 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           ),
         ),
       ],
+    );
+  }
+
+  // final ScrollController _controllerOne = ScrollController();
+  List<ScrollController> controllers =
+      List.generate(6, (i) => ScrollController());
+
+  Scrollbar gridViewIcon(List<IconData> icons, int tabIndex) {
+    return Scrollbar(
+      controller: controllers[tabIndex],
+      isAlwaysShown: true,
+      child: GridView(
+          controller: controllers[tabIndex],
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 150,
+            mainAxisExtent: 50,
+          ),
+          children: [..._activityTab(icons, tabIndex)]),
     );
   }
 
@@ -424,101 +427,56 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
   @override
   void dispose() {
     super.dispose();
+    for (var controller in controllers) {
+      controller.dispose();
+    }
     activityNameController.dispose();
   }
 
-  final List _activityIcon1 = const [
-    Icons.directions_run,
-    Icons.sports_football,
-    Icons.sports_basketball,
-    Icons.sports_cricket,
-    Icons.sports_golf,
-  ];
-  final List _activityIcon2 = const [
-    Icons.sports_hockey,
-    Icons.sports_handball,
-    Icons.sports_kabaddi,
-    Icons.sports_mma,
-    Icons.sports_soccer,
-  ];
-
-  List<Widget> _activityRow1(List activityIcons) {
+  List<Widget> _activityTab(List icons, int tabIndex) {
     List<Widget> widgets = [];
-    for (int i = 0; i < activityIcons.length; i++) {
-      widgets.add(_activityCard1(activityIcons[i], i));
-    }
 
+    for (int i = 0; i < icons.length; i++) {
+      widgets.add(_activityTabSelection(icons[i], i, tabIndex));
+    }
     return widgets;
   }
 
-  List<Widget> _activityRow2(List activityIcons) {
-    List<Widget> widgets = [];
-    for (int i = 0; i < activityIcons.length; i++) {
-      widgets.add(_activityCard2(activityIcons[i], i));
-    }
+  Map<int, int> selectedIconIndex = {};
 
-    return widgets;
+  Widget _activityTabSelection(var icon, int index, int tabIndex) {
+    return IconButton(
+      onPressed: () {
+        setState(() {
+          if (selectedIconIndex.isEmpty) {
+            selectedIconIndex.putIfAbsent(tabIndex, () => index);
+            selectedIcon = icon;
+          } else {
+            if (!(selectedIconIndex.containsKey(tabIndex) &&
+                selectedIconIndex.containsValue(index))) {
+              selectedIconIndex.clear();
+              selectedIconIndex.putIfAbsent(tabIndex, () => index);
+              selectedIcon = icon;
+            }
+          }
+        });
+      },
+      icon: Icon(icon,
+          color: ((selectedIconIndex.containsKey(tabIndex) &&
+                  selectedIconIndex.containsValue(index)))
+              // ? Color(0xff031342)
+              ? widget.selectedactivityIconColor
+              : widget.unselectedactivityIconColor),
+    );
   }
 
   late MediaQueryData _mediaQueryData;
   late double screenWidth;
   late double screenHeight;
 
-  Widget _activityCard1(var icon, int index) {
-    return IconButton(
-      onPressed: () {
-        setState(() {
-          icon1_selected[index] = !icon1_selected[index];
-          if (icon1_selected[index]) {
-            selectedIcon = _activityIcon1[index];
-          } else {
-            selectedIcon = null;
-          }
-
-          for (int i = 0; i < icon1_selected.length; i++) {
-            icon2_selected[i] = false;
-            if (i != index) {
-              icon1_selected[i] = false;
-            }
-          }
-        });
-      },
-      icon: Icon(icon,
-          color: (icon1_selected[index])
-              ? Color(0xff010e33)
-              : Colors.black.withOpacity(.5)),
-    );
-  }
-
-  Widget _activityCard2(var icon, int index) {
-    return IconButton(
-      onPressed: () {
-        setState(() {
-          icon2_selected[index] = !icon2_selected[index];
-          if (icon2_selected[index]) {
-            selectedIcon = _activityIcon2[index];
-          } else {
-            selectedIcon = null;
-          }
-
-          for (int i = 0; i < icon2_selected.length; i++) {
-            icon1_selected[i] = false;
-            if (i != index) {
-              icon2_selected[i] = false;
-            }
-          }
-        });
-      },
-      icon: Icon(icon,
-          color: (icon2_selected[index])
-              ? Color(0xff010e33)
-              : Colors.black.withOpacity(.5)),
-    );
-  }
-
   RangeSlider _buildTemperatureSlider() {
     return RangeSlider(
-      activeColor: Colors.white,
+      activeColor: widget.appBarColor,
       values: widget._currentRangeValues,
       min: 0,
       max: 80,
@@ -534,19 +492,4 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
       },
     );
   }
-
-  // IconButton _buildIconButton(bool isSelected, Color selectedColor) {
-  //   return IconButton(
-  //     icon: Icon(
-  //       Icons.check_circle_outline,
-  //       size: 30,
-  //       color: isSelected == false ? Colors.black : Colors.green,
-  //     ),
-  //     onPressed: () {
-  //       setState(() {
-  //         isSelected = !isSelected;
-  //       });
-  //     },
-  //   );
-  // }
 }

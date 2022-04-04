@@ -1,4 +1,7 @@
+import 'package:activityforecast/components/themes/themes.dart';
 import 'package:activityforecast/models/activity_provider.dart';
+import 'package:activityforecast/models/theme.dart';
+import 'package:activityforecast/models/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:activityforecast/components/activities.dart';
 import 'package:activityforecast/components/add_activity.dart';
@@ -21,19 +24,45 @@ class MoreActivityCard extends StatefulWidget {
   final IconData activityIcon;
   final Function setStateOfAcitivity;
 
-  final Color? iconColor = moreActivityColors['iconColor'];
-  final Color? cardColor = moreActivityColors['cardColor'];
-  final Color? activityTextColor = moreActivityColors['textColor'];
-  final Color? dragIconColor = moreActivityColors['dragIconColor'];
-  final Color? addIconColor = moreActivityColors['addIconColor'];
+  // final Color? iconColor = moreActivityColors['iconColor'];
+  // final Color? cardColor = moreActivityColors['cardColor'];
+  // final Color? activityTextColor = moreActivityColors['textColor'];
+  // final Color? dragIconColor = moreActivityColors['dragIconColor'];
+  // final Color? addIconColor = moreActivityColors['addIconColor'];
+  // final Color? iconColor = firstTheme["primary"];
+  // final Color? cardColor = firstTheme["tertiary"];
+  // final Color? activityTextColor = firstTheme["primary"];
+  // final Color? dragIconColor = firstTheme['primary'];
+  // final Color? addIconColor = firstTheme['primary'];
+
+  // final Color? iconColor = firstTheme["primary"];
+  // final Color? cardColor = firstTheme["quaternary"];
+  // final Color? activityTextColor = firstTheme["primary"];
+  // final Color? dragIconColor = firstTheme["primary"];
+  // final Color? addIconColor = firstTheme["primary"];
+
+  late Color? iconColor;
+  late Color? cardColor;
+  late Color? activityTextColor;
+  late Color? dragIconColor;
+  late Color? addIconColor;
 
   @override
   State<MoreActivityCard> createState() => _MoreActivityCardState();
 }
 
 class _MoreActivityCardState extends State<MoreActivityCard> {
+  late ColourScheme theme;
+
   @override
   Widget build(BuildContext context) {
+    theme = Provider.of<ThemeProvider>(context).currentTheme;
+    widget.iconColor = theme.quaternary;
+    widget.cardColor = theme.secondary;
+    widget.activityTextColor = theme.quaternary;
+    widget.dragIconColor = theme.quaternary;
+    widget.addIconColor = theme.quaternary;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Card(
@@ -57,7 +86,8 @@ class _MoreActivityCardState extends State<MoreActivityCard> {
             key: widget.key,
             title: Text(
               widget.activity,
-              style: TextStyle(color: widget.activityTextColor),
+              style: TextStyle(
+                  color: widget.activityTextColor, fontWeight: FontWeight.bold),
             ),
             leading: _leadingIcons(),
             trailing: ReorderableDragStartListener(

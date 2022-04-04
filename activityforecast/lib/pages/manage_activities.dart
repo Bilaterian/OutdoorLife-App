@@ -2,12 +2,15 @@ import 'dart:ui';
 
 import 'package:activityforecast/models/activity.dart';
 import 'package:activityforecast/models/activity_provider.dart';
+import 'package:activityforecast/models/theme.dart';
+import 'package:activityforecast/models/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:activityforecast/HomePage.dart';
 import 'package:activityforecast/components/activities.dart';
 import 'package:activityforecast/components/current_activity_card.dart';
 import 'package:activityforecast/components/more_activity_card.dart';
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
+import 'package:activityforecast/components/themes/themes.dart';
 import 'package:activityforecast/view/pages/create_new_activity_page.dart';
 import 'package:provider/provider.dart';
 
@@ -16,13 +19,33 @@ class MainActivitiesPage extends StatefulWidget {
 
   final String title;
 
-  final Color? backgroundColor = manageActivityColors['bgColor'];
-  final Color? textColor = manageActivityColors['headerColor'];
-  final Color? appBarColor = manageActivityColors['appBarColor'];
-  final Color? appBarTextColor = manageActivityColors['appBarTextColor'];
-  final Color? appBarIconColor = manageActivityColors['appBarIconColor'];
-  final Color? floatingButtonColor =
-      manageActivityColors['floatingButtonColor'];
+  // final Color? backgroundColor = manageActivityColors['bgColor'];
+  // final Color? textColor = manageActivityColors['headerColor'];
+  // final Color? appBarColor = manageActivityColors['appBarColor'];
+  // final Color? appBarTextColor = manageActivityColors['appBarTextColor'];
+  // final Color? appBarIconColor = manageActivityColors['appBarIconColor'];
+  // final Color? floatingButtonColor =
+  //     manageActivityColors['floatingButtonColor'];
+  // final Color? backgroundColor = firstTheme["quaternary"];
+  // final Color? textColor = firstTheme["primary"];
+  // final Color? appBarColor = firstTheme["quinary"];
+  // final Color? appBarTextColor = firstTheme["quaternary"];
+  // final Color? appBarIconColor = firstTheme["quaternary"];
+  // final Color? floatingButtonColor = firstTheme["quinary"];\
+
+  // final Color? backgroundColor = firstTheme["quaternary"];
+  // final Color? textColor = firstTheme["primary"];
+  // final Color? appBarColor = firstTheme["primary"];
+  // final Color? appBarTextColor = firstTheme["quaternary"];
+  // final Color? appBarIconColor = firstTheme["quaternary"];
+  // final Color? floatingButtonColor = firstTheme["primary"];
+
+  late Color? backgroundColor;
+  late Color? textColor;
+  late Color? appBarColor;
+  late Color? appBarTextColor;
+  late Color? appBarIconColor;
+  late Color? floatingButtonColor;
 
   @override
   State<MainActivitiesPage> createState() => _MainActivitiesPageState();
@@ -35,13 +58,31 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
   late double screenHeight;
   late List<Activity> currentActivities;
   late List<Activity> moreActivities;
+  late ColourScheme theme;
 
   refresh() {
     setState(() {});
   }
 
+// Primary (orange banner), secondary (dark blue), tertiary (purple), quaternary (white), and quinary (button colour/) colours from a provider
   @override
   Widget build(BuildContext context) {
+    theme = Provider.of<ThemeProvider>(context).currentTheme;
+    // widget.backgroundColor = theme.secondary;
+    // widget.textColor = theme.primary;
+    // widget.appBarTextColor = theme.secondary;
+    // widget.appBarColor = theme.primary;
+    // widget.appBarTextColor = theme.secondary;
+    // widget.appBarIconColor = theme.secondary;
+    // widget.floatingButtonColor = theme.primary;
+
+    widget.backgroundColor = theme.secondary;
+    widget.textColor = theme.quaternary;
+    widget.appBarTextColor = theme.secondary;
+    widget.appBarColor = theme.primary;
+    widget.appBarTextColor = theme.secondary;
+    widget.appBarIconColor = theme.secondary;
+    widget.floatingButtonColor = theme.primary;
     currentActivities =
         Provider.of<ActivityProvider>(context).currentActivities;
     moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
@@ -53,6 +94,8 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
         stream: null,
         builder: (context, snapshot) {
           return Scaffold(
+              bottomNavigationBar:
+                  _bottomNavbar(), // delete later.... for testing purpose for colour schemes
               appBar: AppBar(
                 title: Text(widget.title,
                     style: TextStyle(color: widget.appBarTextColor)),
@@ -87,6 +130,7 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
 // Floating Action Button
 // When pushed, it should navigate to the create activity page
   Builder _createNewActivity() {
+    Color? iconColor = widget.appBarTextColor;
     return Builder(builder: (context) {
       return FloatingActionButton(
         onPressed: () {
@@ -94,7 +138,7 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
               MaterialPageRoute(builder: (context) => CreateNewActivityPage()));
         },
         backgroundColor: widget.floatingButtonColor,
-        child: const Icon(Icons.add_outlined, color: Colors.black),
+        child: Icon(Icons.add_outlined, color: iconColor),
       );
     });
   }
@@ -184,7 +228,52 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
         padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         child: Text(
           title,
-          style: TextStyle(color: widget.textColor),
+          style:
+              TextStyle(color: widget.textColor, fontWeight: FontWeight.bold),
         ));
+  }
+
+// for testing purposes
+  int _selectedIndex = 0;
+  SizedBox _bottomNavbar() {
+    return SizedBox(
+      height: 80,
+      child: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        backgroundColor: widget.backgroundColor,
+        selectedItemColor: widget.textColor,
+        unselectedItemColor: widget.textColor,
+        items: const [
+          BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_outlined), label: "1"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_outlined), label: "2"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_outlined), label: "3"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_outlined), label: "4"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_outlined), label: "5"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_outlined), label: "6"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_outlined), label: "7"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_outlined), label: "8"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_outlined), label: "9"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.format_list_bulleted_outlined), label: "10")
+        ],
+      ),
+    );
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+      Provider.of<ThemeProvider>(context, listen: false).changeTheme(index);
+    });
   }
 }

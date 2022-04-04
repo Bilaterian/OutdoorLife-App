@@ -1,6 +1,7 @@
 // main.dart hi
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
 import 'package:activityforecast/models/activity_provider.dart';
+import 'package:activityforecast/models/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:activityforecast/HomePage.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +20,8 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
             create: (BuildContext context) => ActivityProvider()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => ThemeProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

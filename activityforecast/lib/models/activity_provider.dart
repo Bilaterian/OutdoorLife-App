@@ -59,32 +59,32 @@ class ActivityProvider extends ChangeNotifier {
   List<Activity> moreActivities = [
     Activity(
         activity: "Run",
-        activityIcon: Icons.directions_run_rounded,
+        activityIcon: Icons.directions_run,
         condition: condition,
         status: true),
     Activity(
         activity: "Ski",
-        activityIcon: Icons.downhill_skiing_rounded,
+        activityIcon: Icons.downhill_skiing,
         condition: condition,
         status: true),
-    Activity(
-        activity: "Picnic",
-        activityIcon: Icons.surfing_rounded,
-        condition: condition,
-        status: true),
+    // Activity(
+    //     activity: "Picnic",
+    //     activityIcon: Icons.,
+    //     condition: condition,
+    //     status: true),
     Activity(
         activity: "Surfing",
-        activityIcon: Icons.surfing_rounded,
+        activityIcon: Icons.surfing,
         condition: condition,
         status: true),
     Activity(
         activity: "Swim",
-        activityIcon: Icons.pool_rounded,
+        activityIcon: Icons.pool,
         condition: condition,
         status: true),
     Activity(
         activity: "Hike",
-        activityIcon: Icons.hiking_rounded,
+        activityIcon: Icons.hiking,
         condition: condition,
         status: true),
     Activity(

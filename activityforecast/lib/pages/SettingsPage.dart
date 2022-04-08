@@ -145,9 +145,9 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               child: ElevatedButton(
                   onPressed: () {},
-                  child: const Text('Reset',
+                  child: Text('Reset',
                       style: TextStyle(
-                        color: Color(0xffffffff),
+                        color: widget.activityContentsColor,
                       )),
                   style: ElevatedButton.styleFrom(primary: widget.floatingButtonColor)),
             ),

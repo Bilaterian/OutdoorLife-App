@@ -1,5 +1,7 @@
 import 'dart:ui';
-import 'package:activityforecast/HomePage.dart';
+import 'package:activityforecast/models/theme.dart';
+import 'package:activityforecast/models/theme_provider.dart';
+import 'package:activityforecast/view/pages/home_page.dart';
 
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
 import 'package:activityforecast/models/temperature_provider.dart';
@@ -7,30 +9,44 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class SettingsPage extends StatefulWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+  late Color? activityContentsColor;
+  late Color? backgroundColor;
+  late Color? boxColor;
+  late Color? textColor;
+  late Color? appBarColor;
+  late Color? appBarContentsColor;
+  late Color? floatingButtonColor;
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  int selectedIndex = 0;
-  List selected = [false, false];
+  late ColourScheme theme;
 
   @override
   Widget build(BuildContext context) {
+    theme = Provider.of<ThemeProvider>(context).currentTheme;
+
+    widget.activityContentsColor = theme.secondary;
+
+    widget.backgroundColor = theme.secondary;
+    widget.textColor = theme.quaternary;
+    widget.boxColor = theme.quinary;
+    widget.appBarColor = theme.primary;
+    widget.appBarContentsColor = theme.secondary;
+    widget.floatingButtonColor = theme.primary;
     return MaterialApp(
       title: 'Settings',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Color(0xff031342),
+        backgroundColor: widget.backgroundColor,
         appBar: AppBar(
-          backgroundColor: manageActivityColors['appBarColor'],
+          backgroundColor: widget.appBarColor,
           actions: [
             IconButton(
-              icon: const Icon(Icons.home, color: Color(0xff031342)),
-              onPressed: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => HomePage())),
+              icon: Icon(Icons.home, color: widget.appBarContentsColor),
+              onPressed: () => Navigator.pop(context, false),
             )
           ],
           // leading: IconButton(
@@ -49,7 +65,7 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Text(
                 "Temperature",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: widget.textColor,
                   fontSize: 15,
                 ),
               ),
@@ -60,7 +76,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Text(
                     "Celsius/Fahrenheit",
-                    style: TextStyle(fontSize: 15, color: Colors.white),
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: widget.textColor
+                    ),
                   )
                 ),
                 Expanded(
@@ -73,21 +92,21 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: Card(
                         color: Provider.of<TemperatureProvider>(context, listen: false).getTemperatureSelect() ?
                         Color(0xff4ad7d9) :
-                        Colors.white,
+                        widget.boxColor,
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Provider.of<TemperatureProvider>(context, listen: false).getTemperatureSelect() ?
-                          const Text(
+                          Text(
                             'Celsius(°C)',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: widget.activityContentsColor,
                             ),
                             textAlign: TextAlign.left,
                           ) :
-                          const Text(
+                          Text(
                             'Fahrenheit(°F)',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: widget.activityContentsColor,
                             ),
                             textAlign: TextAlign.left,
                           ),
@@ -102,7 +121,7 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Text(
                 "Notification Range",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: widget.textColor,
                   fontSize: 15,
                 ),
               ),
@@ -113,7 +132,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Text(
                       "Min/Max Temperature",
-                      style: TextStyle(fontSize: 15, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: widget.textColor
+                      ),
                     )
                 ),
                 RangeSlider(
@@ -143,7 +165,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Text(
                       "Inclusive/Exclusive Temperature Range",
-                      style: TextStyle(fontSize: 15, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: widget.textColor
+                      ),
                     )
                 ),
                 Expanded(
@@ -156,21 +181,21 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: Card(
                         color: Provider.of<TemperatureProvider>(context, listen: false).getInvert() ?
                         Color(0xff4ad7d9) :
-                        Colors.white,
+                        widget.boxColor,
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Provider.of<TemperatureProvider>(context, listen: false).getInvert() ?
-                          const Text(
+                          Text(
                             'Inclusive',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: widget.activityContentsColor,
                             ),
                             textAlign: TextAlign.left,
                           ) :
-                          const Text(
+                          Text(
                             'Exclusive',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: widget.activityContentsColor,
                             ),
                             textAlign: TextAlign.left,
                           ),
@@ -185,7 +210,7 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Text(
                 "Notifications",
                 style: TextStyle(
-                  color: Colors.white,
+                  color: widget.textColor,
                   fontSize: 15,
                 ),
               ),
@@ -196,7 +221,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     padding: const EdgeInsets.symmetric(vertical: 20),
                     child: Text(
                       "On/Off",
-                      style: TextStyle(fontSize: 15, color: Colors.white),
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: widget.textColor
+                      ),
                     )
                 ),
                 Expanded(
@@ -209,21 +237,21 @@ class _SettingsPageState extends State<SettingsPage> {
                       child: Card(
                         color: Provider.of<TemperatureProvider>(context, listen: false).getNotifications() ?
                         Color(0xff4ad7d9) :
-                        Colors.white,
+                        widget.boxColor,
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Provider.of<TemperatureProvider>(context, listen: false).getNotifications() ?
-                          const Text(
+                          Text(
                             'On',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: widget.activityContentsColor,
                             ),
                             textAlign: TextAlign.left,
                           ) :
-                          const Text(
+                          Text(
                             'Off',
                             style: TextStyle(
-                              color: Colors.black,
+                              color: widget.activityContentsColor,
                             ),
                             textAlign: TextAlign.left,
                           ),

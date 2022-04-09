@@ -8,6 +8,7 @@ import 'package:activityforecast/view/pages/edit_activity_page.dart';
 
 import 'package:provider/provider.dart';
 
+import '../../components/weather_icons.dart';
 import '../../models/theme.dart';
 import '../../models/theme_provider.dart';
 import 'package:geolocator/geolocator.dart';
@@ -47,15 +48,21 @@ class _HomePageState extends State<HomePage> {
 
 
   // weather info
+  final int daysDisplaying = 7;
   //late Location location;
   WeatherModel weather = WeatherModel();
-  DateTime date = DateTime.now();
+  List<DateTime> dates = [
+                          DateTime.now(), DateTime.now().add(Duration(days: 1)), DateTime.now().add(Duration(days: 2)), DateTime.now().add(Duration(days: 3)),
+                          DateTime.now().add(Duration(days: 4)), DateTime.now().add(Duration(days: 5)), DateTime.now().add(Duration(days: 6))
+                         ];
+  List<String> dayNames = ['Today', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'];
 
-  late int temperature;
-  late int temperatureMin;
-  late int temperatureMax;
-  late String weatherIcon;
-  late String cityName;
+  List<int> temperatures = [0, 0, 0, 0, 0, 0, 0];
+  List<int> temperaturesMin = [0, 0, 0, 0, 0, 0, 0];
+  List<int> temperaturesMax = [0, 0, 0, 0, 0, 0, 0];
+
+  List<String> weatherIconsName = ['sunny', 'sunny', 'sunny', 'sunny', 'sunny', 'sunny', 'sunny'];
+  //late String cityName;
   late String dayName = '';
   late String weatherCondition;
 
@@ -75,42 +82,58 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
-    updateUI(widget.locationWeather);
+    getUserLocation();
+
+    //updateUI(widget.locationWeather);
   }
 
   void updateUI(dynamic weatherData) {
     setState(() {
       if (weatherData == null) {
-        temperature = 0;
-        temperatureMin = 0;
-        temperatureMax = 0;
-        weatherIcon = 'Error';
-        cityName = '';
+        for (int i = 0; i < daysDisplaying; i++) {
+          temperatures[i] = 0;
+          temperaturesMin[i] = 0;
+          temperaturesMax[i] = 0;
+          weatherIconsName[i] = 'sunny';
+        }
+
+        //cityName = '';
         weatherCondition = '';
         return;
       }
 
-      /*
-      var temp = weatherData['current']['temp'];
-      temperature = temp.toInt();
+      // one call API
+      for (int i = 0; i < daysDisplaying; i++) {
+        var temp = weatherData['daily'][i]['temp']['day'];
+        temperatures[i] = temp.toInt();
 
-      var tempMin = weatherData['current']['humidity'];
-      temperatureMin = tempMin.toInt();
+        var tempMin = weatherData['daily'][i]['temp']['min'];
+        temperaturesMin[i] = tempMin.toInt();
 
-      var tempMax = weatherData['current']['temp'];
-      temperatureMax = tempMax.toInt();
+        var tempMax = weatherData['daily'][i]['temp']['max'];
+        temperaturesMax[i] = tempMax.toInt();
+
+        if (i != 0) {
+          // edit everything other than "Today" (since it's just "Today")
+          dayNames[i] = DateFormat('EEEE').format(dates[i]);
+        }
+
+        var condition = weatherData['daily'][i]['weather'][0]['id'];
+        weatherIconsName[i] = weather.getWeatherIcon(condition);
+      }
 
       //var condition = weatherData['weather'][0]['id'];
       //weatherIcon = weather.getWeatherIcon(condition);
 
-      cityName = weatherData['timezone'];
+      //cityName = weatherData['timezone'];
 
-      dayName = DateFormat('EEEE').format(date);
+      //dayName = DateFormat('EEEE').format(dates[0]);
 
       //weatherCondition = weatherData['weather'][0]['main'];
-       */
+
 
       // current weather API (not one call)
+      /*
       var temp = weatherData['main']['temp'];
       temperature = temp.toInt();
 
@@ -123,11 +146,12 @@ class _HomePageState extends State<HomePage> {
       var condition = weatherData['weather'][0]['id'];
       weatherIcon = weather.getWeatherIcon(condition);
 
-      cityName = weatherData['name'];
+      //cityName = weatherData['name'];
 
       dayName = DateFormat('EEEE').format(date);
 
       weatherCondition = weatherData['weather'][0]['main'];
+       */
     });
   }
 
@@ -164,6 +188,7 @@ class _HomePageState extends State<HomePage> {
     //Position pos = _determinePosition();
     //getInitialLocation();
 
+    /*
     var kCityNameTextStyle = TextStyle(
       fontFamily: 'OpenSans',
       fontWeight: FontWeight.bold,
@@ -195,6 +220,8 @@ class _HomePageState extends State<HomePage> {
       fontSize: 32.0,
       color: widget.textColor,
     );
+
+     */
 
 
     return MaterialApp(
@@ -239,6 +266,23 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    InkWell(
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: widget.textColor,
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Icon(Icons.location_on, color: widget.backgroundColor),
+                        ),
+                      ),
+                      onTap: () async {
+                          getUserLocation();
+                          _searchController.text = "";
+                      },
+                    ),
                     Expanded(
                       child: SizedBox(
                         height: 50,
@@ -255,12 +299,14 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           onSubmitted: (value) async {
+                            /*
                             print(value);
                             cityInput = value;
                             if (cityInput != null) {
-                              // !<!<!< var weatherData = await weather.getCityWeather(cityInput);
-                              // !<!<!< updateUI(weatherData);
+                              var weatherData = await weather.getCityWeather(cityInput);
+                              updateUI(weatherData);
                             }
+                             */
                           },
                         ),
                       ),
@@ -283,8 +329,8 @@ class _HomePageState extends State<HomePage> {
                         print(_searchController.text);
                         cityInput = _searchController.text;
                         if (cityInput != null) {
-                          // !<!<!< var weatherData = await weather.getCityWeather(cityInput);
-                          // !<!<!< updateUI(weatherData);
+                          var weatherData = await weather.getCityWeather(cityInput);
+                          updateUI(weatherData);
                         }
                       },
                     )
@@ -357,116 +403,7 @@ class _HomePageState extends State<HomePage> {
                             })
                       ]),
                 ),
-                Row(
-                    children: forecastRow(
-                        day: '$dayName',
-                        valid: Icons.check,
-                        weather: Icons.wb_sunny, // $weatherIcon or $weatherCondition?
-                        temperature: '$temperature°, $temperatureMin° low')),
-                Row(
-                    children: forecastRow(
-                        day: "Fri",
-                        valid: Icons.clear_rounded,
-                        weather: Icons.wb_cloudy,
-                        temperature: "16°,13° low")),
-                Row(
-                    children: forecastRow(
-                        day: "Sat",
-                        valid: Icons.check,
-                        weather: Icons.wb_sunny,
-                        temperature: "16°,13° low")),
-                Row(
-                    children: forecastRow(
-                        day: "Sun",
-                        valid: Icons.clear_rounded,
-                        weather: Icons.wb_twilight,
-                        temperature: "16°,13° low")),
-                Row(
-                    children: forecastRow(
-                        day: "Mon",
-                        valid: Icons.check,
-                        weather: Icons.wb_sunny,
-                        temperature: "16°,13° low")),
-                Row(
-                    children: forecastRow(
-                        day: "Tue",
-                        valid: Icons.clear_rounded,
-                        weather: Icons.wb_sunny,
-                        temperature: "16°,13° low")),
-                Row(
-                    children: forecastRow(
-                        day: "Wed",
-                        valid: Icons.check,
-                        weather: Icons.wb_sunny,
-                        temperature: "16°,13° low")),
-
-                /*
-                Container(
-                  alignment: Alignment.center,
-                  // constraints: BoxConstraints.expand(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Container(
-                            child: Text(
-                              '$cityName',
-                              style: kCityNameTextStyle,
-                            ),
-                          ),
-                          Text(
-                            '$dayName',
-                            style: kTimeTextStyle,
-                          ),
-                        ],
-                      ),
-                      //Image.asset(
-                      //  'images/$weatherIcon.png',
-                      //  height: 160,
-                      //),
-                      Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(left: 25.0),
-                            child: Text(
-                              '$temperature°',
-                              style: kTemperatureTextStyle,
-                            ),
-                          ),
-                          Text(
-                            '$weatherCondition'.toUpperCase(),
-                            style: kConditionTextStyle,
-                          )
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          //Image.asset(
-                          //  'images/thermometer_low.png',
-                          //  height: 50,
-                          //),
-                          Text(
-                            '$temperatureMin°',
-                            style: kSmallTemperatureTextStyle,
-                          ),
-                          //Image.asset(
-                          //  'images/thermometer_high.png',
-                          //  height: 50,
-                          //),
-                          Text(
-                            '$temperatureMax°',
-                            style: kSmallTemperatureTextStyle,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-
-                 */
-
+                forecasts(),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 19, 0, 0),
                   child: Image.asset('assets/images/GoogleMapExample.jpg'),
@@ -501,19 +438,19 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<Widget> forecastRow({day: "Today", valid: Icons.check, weather: Icons.wb_sunny, temperature = "900°,900° low"}) {
+  List<Widget> forecastRow({day: "Today", valid: Icons.check, weather: Icons.wb_sunny, temperature = "900°,900° low", screenWidth = 1440.0}) {
     return <Widget>[
       Expanded(
           flex: 1,
           child: Container(
-              width: 1440 * 0.25,
+              width: screenWidth * 0.25,
               child: Text(day,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, color: widget.textColor)))),
       Expanded(
           flex: 1,
           child: Container(
-            width: 1440 * 0.25,
+            width: screenWidth * 0.25,
             child: Icon(
               valid,
               color: widget.textColor,
@@ -522,7 +459,7 @@ class _HomePageState extends State<HomePage> {
       Expanded(
           flex: 1,
           child: Container(
-            width: 1440 * 0.25,
+            width: screenWidth * 0.25,
             child: Icon(
               weather,
               color: widget.textColor,
@@ -531,11 +468,46 @@ class _HomePageState extends State<HomePage> {
       Expanded(
           flex: 1,
           child: Container(
-              width: 1440 * 0.25,
+              width: screenWidth * 0.25,
               child: Text(temperature,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 16, color: widget.textColor)))),
     ];
+  }
+
+  Padding forecastPadding() {
+    return Padding(padding: const EdgeInsets.symmetric(vertical: 2.5));
+  }
+
+  Row completeForecastRow({day: 0, screenWidth: 1440.0}) {
+    return Row(
+        children: forecastRow(
+          day: '${dayNames[day]}',
+          valid: Icons.check,
+          weather: weatherIcons[weatherIconsName[day]],
+          temperature: '${temperatures[day]}°, ${temperaturesMin[day]}° low',
+          screenWidth: screenWidth,
+        ));
+  }
+
+  Column forecasts({screenWidth: 1440.0}) {
+    return Column(children: <Widget>[
+          completeForecastRow(day: 0, screenWidth: screenWidth),
+          forecastPadding(),
+          completeForecastRow(day: 1, screenWidth: screenWidth),
+          forecastPadding(),
+          completeForecastRow(day: 2, screenWidth: screenWidth),
+          forecastPadding(),
+          completeForecastRow(day: 3, screenWidth: screenWidth),
+          forecastPadding(),
+          completeForecastRow(day: 4, screenWidth: screenWidth),
+          forecastPadding(),
+          completeForecastRow(day: 5, screenWidth: screenWidth),
+          forecastPadding(),
+          completeForecastRow(day: 6, screenWidth: screenWidth),
+          forecastPadding(),
+      ]
+    );
   }
 
   Future<Position> _determinePosition() async {
@@ -587,13 +559,13 @@ class _HomePageState extends State<HomePage> {
      */
   }
 
-  void getInitialLocation() async {
+  void getUserLocation() async {
     //_determinePosition().then((value) => location1 = value as Location);
     _determinePosition();
 
     //var weatherData = await weather.getWeather(location1);
     var weatherData = await weather.getLocationWeather();
-    // !<!<!< updateUI(weatherData);
+    updateUI(weatherData);
   }
 
 /*

@@ -91,8 +91,11 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => HomePage()));
+                //Navigator.of(context)
+                //    .push(MaterialPageRoute(builder: (context) => HomePage()));
+
+                //Navigator.pop(context, false);
+                Navigator.of(context).popUntil((route) => route.isFirst);
               },
               icon: Icon(Icons.home, color: widget.appBarTextColor),
             ),

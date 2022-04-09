@@ -52,14 +52,9 @@ class _SettingsPageState extends State<SettingsPage> {
           actions: [
             IconButton(
               icon: Icon(Icons.home, color: widget.appBarContentsColor),
-              onPressed: () => Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => HomePage())),
+              onPressed: () => Navigator.pop(context, false),
             )
           ],
-          // leading: IconButton(
-          //   icon: const Icon(Icons.home, color: Color(0xff031342)),
-          //   onPressed: () => Navigator.pop(context, false),
-          // ),
           title: Text('Settings', style: TextStyle(color: widget.appBarContentsColor)),
         ),
         body: Column(

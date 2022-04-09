@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage> {
   late String dayName = '';
   late String weatherCondition;
 
-  List<String> alert = ['', '', ''];
+  List<String> alert = ['', '', 'No weather alerts in this location! Take care :)'];
 
   // selected activity
   String selectedActivity = "Bike";
@@ -135,6 +135,9 @@ class _HomePageState extends State<HomePage> {
           alert[2] = weatherData['alerts'][0]['description'];
       } catch(e) {
           log("no alerts");
+          alert[0] = '';
+          alert[1] = '';
+          alert[2] = 'No weather alerts in this location! Take care :)';
       }
     });
   }

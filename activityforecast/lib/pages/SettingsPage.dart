@@ -1,57 +1,34 @@
 import 'dart:ui';
-import 'package:activityforecast/view/pages/home_page.dart';
+import 'package:activityforecast/HomePage.dart';
 
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
+import 'package:activityforecast/models/temperature_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/theme.dart';
-import '../models/theme_provider.dart';
-
 class SettingsPage extends StatefulWidget {
-  //SettingsPage({Key? key}) : super(key: key);
-
-  late Color? activityContentsColor;
-  late Color? backgroundColor;
-  late Color? boxColor;
-  late Color? textColor;
-  late Color? appBarColor;
-  late Color? appBarContentsColor;
-  late Color? floatingButtonColor;
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
   State<SettingsPage> createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  late ColourScheme theme;
-
   int selectedIndex = 0;
   List selected = [false, false];
 
   @override
   Widget build(BuildContext context) {
-    theme = Provider.of<ThemeProvider>(context).currentTheme;
-
-    widget.activityContentsColor = theme.secondary;
-
-    widget.backgroundColor = theme.secondary;
-    widget.textColor = theme.quaternary;
-    widget.boxColor = theme.quinary;
-    widget.appBarColor = theme.primary;
-    widget.appBarContentsColor = theme.secondary;
-    widget.floatingButtonColor = theme.primary;
-
     return MaterialApp(
       title: 'Settings',
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: widget.backgroundColor,
+        backgroundColor: Color(0xff031342),
         appBar: AppBar(
-          backgroundColor: widget.appBarColor,
+          backgroundColor: manageActivityColors['appBarColor'],
           actions: [
             IconButton(
-              icon: Icon(Icons.home, color: widget.appBarContentsColor),
+              icon: const Icon(Icons.home, color: Color(0xff031342)),
               onPressed: () => Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => HomePage())),
             )
@@ -60,7 +37,8 @@ class _SettingsPageState extends State<SettingsPage> {
           //   icon: const Icon(Icons.home, color: Color(0xff031342)),
           //   onPressed: () => Navigator.pop(context, false),
           // ),
-          title: Text('Settings', style: TextStyle(color: widget.appBarContentsColor)),
+          title: const Text('Settings',
+              style: TextStyle(color: Color(0xff031342))),
         ),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -69,87 +47,191 @@ class _SettingsPageState extends State<SettingsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Text(
-                " Temperature",
+                "Temperature",
                 style: TextStyle(
-                  color: widget.textColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 15,
                 ),
-              ),
-            ),
-            Center(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          selected[0] = !selected[0];
-                          selected[1] = false;
-                        });
-                      },
-                      child: Card(
-                        color: (selected[0]) ? Color(0xff4ad7d9) : widget.boxColor,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(
-                            'Celsius(°C)',
-                            style: TextStyle(color: widget.activityContentsColor),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
             Row(
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Text(
+                    "Celsius/Fahrenheit",
+                    style: TextStyle(fontSize: 15, color: Colors.white),
+                  )
+                ),
                 Expanded(
                     child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      selected[1] = !selected[1];
-                      selected[0] = false;
-                    });
-                  },
-                  child: Card(
-                    color: (selected[1]) ? Color(0xff4ad7d9) : widget.boxColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        'Farenheit(°F)',
-                        style: TextStyle(
-                          color: widget.activityContentsColor,
+                      onTap: () {
+                        setState(() {
+                          Provider.of<TemperatureProvider>(context, listen: false).changeTempSelect();
+                        });
+                      },
+                      child: Card(
+                        color: Provider.of<TemperatureProvider>(context, listen: false).getTemperatureSelect() ?
+                        Color(0xff4ad7d9) :
+                        Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Provider.of<TemperatureProvider>(context, listen: false).getTemperatureSelect() ?
+                          const Text(
+                            'Celsius(°C)',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.left,
+                          ) :
+                          const Text(
+                            'Fahrenheit(°F)',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
                         ),
-                        textAlign: TextAlign.left,
                       ),
-                    ),
-                  ),
-                )),
+                    )
+                )
               ],
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20),
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Text(
-                " Restore to Default Settings",
-                style: TextStyle(fontSize: 16, color: widget.textColor, fontWeight: FontWeight.bold),
+                "Notification Range",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
               ),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-              decoration: BoxDecoration(
-                color: widget.floatingButtonColor,
-                borderRadius: BorderRadius.circular(8),
+            Row(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Text(
+                      "Min/Max Temperature",
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    )
+                ),
+                RangeSlider(
+                  values: RangeValues(
+                      Provider.of<TemperatureProvider>(context, listen: false).getCurrMin(),
+                      Provider.of<TemperatureProvider>(context, listen: false).getCurrMax()
+                  ),
+                  min: Provider.of<TemperatureProvider>(context, listen: false).getMin(),
+                  max: Provider.of<TemperatureProvider>(context, listen: false).getMax(),
+                  divisions: 80,
+                  labels: RangeLabels(
+                    Provider.of<TemperatureProvider>(context, listen: false).getCurrMin().toString(),
+                    Provider.of<TemperatureProvider>(context, listen: false).getCurrMax().toString(),
+                  ),
+                  onChanged: (RangeValues values) {
+                    setState(() {
+                      Provider.of<TemperatureProvider>(context, listen: false).setCurrMin((values.start.round()).toDouble());
+                      Provider.of<TemperatureProvider>(context, listen: false).setCurrMax((values.end.round()).toDouble());
+                    });
+                  },
+                )
+              ],
+            ),
+            Row(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Text(
+                      "Inclusive/Exclusive Temperature Range",
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    )
+                ),
+                Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          Provider.of<TemperatureProvider>(context, listen: false).invertTempRange();
+                        });
+                      },
+                      child: Card(
+                        color: Provider.of<TemperatureProvider>(context, listen: false).getInvert() ?
+                        Color(0xff4ad7d9) :
+                        Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Provider.of<TemperatureProvider>(context, listen: false).getInvert() ?
+                          const Text(
+                            'Inclusive',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.left,
+                          ) :
+                          const Text(
+                            'Exclusive',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                    )
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Text(
+                "Notifications",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
               ),
-              child: ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Reset',
-                      style: TextStyle(
-                        color: widget.activityContentsColor,
-                      )),
-                  style: ElevatedButton.styleFrom(primary: widget.floatingButtonColor)),
+            ),
+            Row(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Text(
+                      "On/Off",
+                      style: TextStyle(fontSize: 15, color: Colors.white),
+                    )
+                ),
+                Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          Provider.of<TemperatureProvider>(context, listen: false).switchNotifications();
+                        });
+                      },
+                      child: Card(
+                        color: Provider.of<TemperatureProvider>(context, listen: false).getNotifications() ?
+                        Color(0xff4ad7d9) :
+                        Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Provider.of<TemperatureProvider>(context, listen: false).getNotifications() ?
+                          const Text(
+                            'On',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.left,
+                          ) :
+                          const Text(
+                            'Off',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                    )
+                )
+              ],
             ),
           ],
         ),

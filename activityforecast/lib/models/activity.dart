@@ -7,6 +7,7 @@ class Activity {
   // RangeValues idealweather;
   bool status;
   Condition condition;
+  bool notification = true;
 
   Activity({
     required this.activity,
@@ -14,5 +15,6 @@ class Activity {
     // required this.idealweather,
     required this.status,
     required this.condition,
+    notification = true,
   });
 }

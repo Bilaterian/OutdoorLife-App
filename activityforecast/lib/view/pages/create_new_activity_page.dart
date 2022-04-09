@@ -369,7 +369,8 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
                                 activity: activityNameController.text,
                                 activityIcon: selectedIcon,
                                 condition: setActivityConditions(),
-                                status: false));
+                                status: false,
+                                notification: true));
                         Navigator.of(context).pop();
 
                         ScaffoldMessenger.of(context).showSnackBar(

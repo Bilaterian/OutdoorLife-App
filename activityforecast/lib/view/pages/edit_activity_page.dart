@@ -95,8 +95,9 @@ class _EditActivityPageState extends State<EditActivityPage> {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => HomePage()));
+                //Navigator.of(context)
+                //    .push(MaterialPageRoute(builder: (context) => HomePage()));
+                Navigator.pop(context, false);
               },
               icon: Icon(Icons.home, color: widget.appBarTextColor),
             ),

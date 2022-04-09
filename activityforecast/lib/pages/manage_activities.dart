@@ -104,8 +104,9 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
                 actions: [
                   IconButton(
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => HomePage()));
+                        //Navigator.of(context).push(MaterialPageRoute(
+                        //    builder: (context) => HomePage()));
+                        Navigator.pop(context, false);
                       },
                       icon: Icon(Icons.home, color: widget.appBarIconColor))
                 ],

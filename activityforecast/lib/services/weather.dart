@@ -1,7 +1,7 @@
 import 'package:activityforecast/services/location.dart';
 import 'package:activityforecast/services/network.dart';
 
-const apiKey = '82e8ee4abaa379a0287b7798ae32c0ed'; //'fc6a05cad5b2a95ef99622d54d0f2828';
+const apiKey = 'fc6a05cad5b2a95ef99622d54d0f2828'; //'82e8ee4abaa379a0287b7798ae32c0ed'; //'fc6a05cad5b2a95ef99622d54d0f2828';
 const openWeatherMapLocURL = 'https://api.openweathermap.org/data/2.5/weather';
 const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/onecall';
 

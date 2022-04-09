@@ -1,6 +1,8 @@
 // main.dart
 //import 'dart:html';
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:activityforecast/pages/SettingsPage.dart';
 import 'package:activityforecast/pages/manage_activities.dart';
@@ -66,6 +68,7 @@ class _HomePageState extends State<HomePage> {
   late String dayName = '';
   late String weatherCondition;
 
+  List<String> alert = ['', '', ''];
 
   // selected activity
   String selectedActivity = "Bike";
@@ -95,6 +98,10 @@ class _HomePageState extends State<HomePage> {
           temperaturesMin[i] = 0;
           temperaturesMax[i] = 0;
           weatherIconsName[i] = 'sunny';
+
+          if (i < 3) {
+              alert[i] = '';
+          }
         }
 
         //cityName = '';
@@ -122,36 +129,13 @@ class _HomePageState extends State<HomePage> {
         weatherIconsName[i] = weather.getWeatherIcon(condition);
       }
 
-      //var condition = weatherData['weather'][0]['id'];
-      //weatherIcon = weather.getWeatherIcon(condition);
-
-      //cityName = weatherData['timezone'];
-
-      //dayName = DateFormat('EEEE').format(dates[0]);
-
-      //weatherCondition = weatherData['weather'][0]['main'];
-
-
-      // current weather API (not one call)
-      /*
-      var temp = weatherData['main']['temp'];
-      temperature = temp.toInt();
-
-      var tempMin = weatherData['main']['temp_min'];
-      temperatureMin = tempMin.toInt();
-
-      var tempMax = weatherData['main']['temp_max'];
-      temperatureMax = tempMax.toInt();
-
-      var condition = weatherData['weather'][0]['id'];
-      weatherIcon = weather.getWeatherIcon(condition);
-
-      //cityName = weatherData['name'];
-
-      dayName = DateFormat('EEEE').format(date);
-
-      weatherCondition = weatherData['weather'][0]['main'];
-       */
+      try {
+          alert[0] = weatherData['alerts'][0]['sender_name'];
+          alert[1] = weatherData['alerts'][0]['event'];
+          alert[2] = weatherData['alerts'][0]['description'];
+      } catch(e) {
+          log("no alerts");
+      }
     });
   }
 
@@ -180,48 +164,6 @@ class _HomePageState extends State<HomePage> {
       //boxWidthIfExtraPixel = boxWidthRounded + (boxWidth - boxWidthRounded);
       //boxWidthIfExtraPixel = boxWidth + 1.0;
     //}
-
-    // !<!<!< store position later for weather API
-    //Future<Position> location = _determinePosition();
-    //_determinePosition().then((value) => location1 = value as Location);
-
-    //Position pos = _determinePosition();
-    //getInitialLocation();
-
-    /*
-    var kCityNameTextStyle = TextStyle(
-      fontFamily: 'OpenSans',
-      fontWeight: FontWeight.bold,
-      fontSize: 48.0,
-      color: widget.textColor,
-    );
-
-    var kTimeTextStyle = TextStyle(
-      fontFamily: 'OpenSans',
-      fontSize: 32.0,
-      color: widget.textColor,
-    );
-
-    var kTemperatureTextStyle = TextStyle(
-      fontFamily: 'OpenSans',
-      fontWeight: FontWeight.bold,
-      fontSize: 80.0,
-      color: widget.textColor,
-    );
-
-    var kConditionTextStyle = TextStyle(
-      fontFamily: 'OpenSans',
-      fontSize: 24.0,
-      color: widget.textColor,
-    );
-
-    var kSmallTemperatureTextStyle = TextStyle(
-      fontFamily: 'OpenSans',
-      fontSize: 32.0,
-      color: widget.textColor,
-    );
-
-     */
 
 
     return MaterialApp(
@@ -404,10 +346,38 @@ class _HomePageState extends State<HomePage> {
                       ]),
                 ),
                 forecasts(),
+
+                // alerts
+                Center(
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: Text(
+                      'ALERTS',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                        color: widget.textColor,
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                    child: Text(
+                      '${alert[0]}, ${alert[1]}, ${alert[2]}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                        color: widget.textColor,
+                      ),
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 19, 0, 0),
                   child: Image.asset('assets/images/GoogleMapExample.jpg'),
-                )
+                ),
               ]))),
         )
     );

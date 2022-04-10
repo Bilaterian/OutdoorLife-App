@@ -14,4 +14,12 @@ class ColourScheme {
     required this.quaternary,
     required this.quinary,
   });
+
+  Map<String, dynamic> toJson() => {
+        "primary": primary,
+        "secondary": secondary,
+        "tertiary": tertiary,
+        "quaternary": quaternary,
+        "quinary": quinary
+      };
 }

@@ -3,12 +3,37 @@ import 'package:activityforecast/components/more_activity_card.dart';
 import 'package:activityforecast/models/activity.dart';
 import 'package:flutter/material.dart';
 
+enum ActivityList {
+  current,
+  more,
+}
+
 class ActivityProvider extends ChangeNotifier {
   // When adding an archived (MORE ACTIVITY) to the My Acitivies (current activies)
   void addMyActivity(Activity activity, int moreActivityIndex) {
     currentActivities.add(activity); // add to My ACTIVITIES
     moreActivities.remove(
         moreActivities[moreActivityIndex]); // remove from theM MORE ACTIVITIES
+
+    notifyListeners();
+  }
+
+  // When editing a (CURRENT ACTIVITY),
+  // @activity is the activity you edited
+  // @myactivityIndex, the index from the CURRENT ACTIVITY LIST that you want to replace (that you edited)
+  void editMyActivity(Activity activity, int myactivityIndex) {
+    currentActivities.removeAt(myactivityIndex);
+    currentActivities.insert(myactivityIndex, activity);
+
+    notifyListeners();
+  }
+
+  // When editing a (MORE ACTIVITY),
+  // @activity is the activity you edited
+  // @moreactivityIndex, the index from the MORE ACTIVITY LIST that you want to replace (that you edited)
+  void editMoreActivity(Activity activity, int moreActivityIndex) {
+    moreActivities.removeAt(moreActivityIndex);
+    moreActivities.insert(moreActivityIndex, activity);
 
     notifyListeners();
   }

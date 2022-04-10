@@ -1,3 +1,4 @@
+import 'package:activityforecast/components/edit_activity.dart';
 import 'package:activityforecast/components/themes/themes.dart';
 import 'package:activityforecast/models/activity_provider.dart';
 import 'package:activityforecast/models/theme.dart';
@@ -90,13 +91,36 @@ class _MoreActivityCardState extends State<MoreActivityCard> {
                   color: widget.activityTextColor, fontWeight: FontWeight.bold),
             ),
             leading: _leadingIcons(),
-            trailing: ReorderableDragStartListener(
+            trailing:
+                _tralingIcon(), /* ReorderableDragStartListener(
               index: widget.index,
               child: Icon(Icons.drag_handle, color: widget.dragIconColor),
-            ),
+            ),*/
           ),
         ),
       ),
+    );
+  }
+
+  Widget _tralingIcon() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        EditActivity(
+            activityToEdit: widget.index,
+            textColor: widget.activityTextColor,
+            whichActivityList: ActivityList.more),
+        // TextButton(
+        //     child: Text(
+        //       "Edit",
+        //       style: TextStyle(color: widget.activityTextColor),
+        //     ),
+        //     onPressed: () {}),
+        ReorderableDragStartListener(
+          index: widget.index,
+          child: Icon(Icons.drag_handle, color: widget.dragIconColor),
+        ),
+      ],
     );
   }
 
@@ -105,7 +129,7 @@ class _MoreActivityCardState extends State<MoreActivityCard> {
       padding: EdgeInsets.only(right: 20.0),
       alignment: Alignment.centerRight,
       color: Colors.red,
-      child: Text(
+      child: const Text(
         'Delete',
         textAlign: TextAlign.right,
         style: TextStyle(color: Colors.white),

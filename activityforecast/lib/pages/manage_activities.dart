@@ -95,8 +95,6 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
         stream: null,
         builder: (context, snapshot) {
           return Scaffold(
-              bottomNavigationBar:
-                  _bottomNavbar(), // delete later.... for testing purpose for colour schemes
               appBar: AppBar(
                 title: Text(widget.title,
                     style: TextStyle(color: widget.appBarTextColor)),
@@ -233,49 +231,5 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
           style:
               TextStyle(color: widget.textColor, fontWeight: FontWeight.bold),
         ));
-  }
-
-// for testing purposes
-  int _selectedIndex = 0;
-  SizedBox _bottomNavbar() {
-    return SizedBox(
-      height: 80,
-      child: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: widget.backgroundColor,
-        selectedItemColor: widget.textColor,
-        unselectedItemColor: widget.textColor,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_outlined), label: "1"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_outlined), label: "2"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_outlined), label: "3"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_outlined), label: "4"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_outlined), label: "5"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_outlined), label: "6"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_outlined), label: "7"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_outlined), label: "8"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_outlined), label: "9"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.format_list_bulleted_outlined), label: "10")
-        ],
-      ),
-    );
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      Provider.of<ThemeProvider>(context, listen: false).changeTheme(index);
-    });
   }
 }

@@ -7,6 +7,8 @@ import 'package:activityforecast/components/themes/manage_activities_colors.dart
 import 'package:activityforecast/models/temperature_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class SettingsPage extends StatefulWidget {
   late Color? activityContentsColor;
@@ -23,19 +25,40 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   late ColourScheme theme;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  void initState() {
+    setInit();
+  }
+
+  Future<void> setInit() async{
+    final SharedPreferences prefs = await _prefs;
+    Provider.of<TemperatureProvider>(context, listen: false).setUnit(prefs.getBool('unit') ?? false);
+    Provider.of<TemperatureProvider>(context, listen: false).setNotif(prefs.getBool('notification') ?? false);
+  }
+
+  Future<void> setUnit() async{
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setBool('unit', Provider.of<TemperatureProvider>(context, listen: false).getTemperatureSelect());
+  }
+
+  Future<void> setNotif() async{
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setBool('notification', Provider.of<TemperatureProvider>(context, listen: false).getNotifications());
+  }
 
   @override
-  Widget build(BuildContext context) {
+  build(BuildContext context) {
     theme = Provider.of<ThemeProvider>(context).currentTheme;
 
     widget.activityContentsColor = theme.secondary;
-
     widget.backgroundColor = theme.secondary;
     widget.textColor = theme.quaternary;
     widget.boxColor = theme.quinary;
     widget.appBarColor = theme.primary;
     widget.appBarContentsColor = theme.secondary;
     widget.floatingButtonColor = theme.primary;
+
     return MaterialApp(
       title: 'Settings',
       debugShowCheckedModeBanner: false,
@@ -49,10 +72,6 @@ class _SettingsPageState extends State<SettingsPage> {
               onPressed: () => Navigator.pop(context, false),
             )
           ],
-          // leading: IconButton(
-          //   icon: const Icon(Icons.home, color: Color(0xff031342)),
-          //   onPressed: () => Navigator.pop(context, false),
-          // ),
           title: const Text('Settings',
               style: TextStyle(color: Color(0xff031342))),
         ),
@@ -87,6 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onTap: () {
                         setState(() {
                           Provider.of<TemperatureProvider>(context, listen: false).changeTempSelect();
+                          setUnit();
                         });
                       },
                       child: Card(
@@ -105,95 +125,6 @@ class _SettingsPageState extends State<SettingsPage> {
                           ) :
                           Text(
                             'Fahrenheit(°F)',
-                            style: TextStyle(
-                              color: widget.activityContentsColor,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                    )
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10.0),
-              child: Text(
-                "Notification Range",
-                style: TextStyle(
-                  color: widget.textColor,
-                  fontSize: 15,
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Text(
-                      "Min/Max Temperature",
-                      style: TextStyle(
-                          fontSize: 15,
-                          color: widget.textColor
-                      ),
-                    )
-                ),
-                RangeSlider(
-                  values: RangeValues(
-                      Provider.of<TemperatureProvider>(context, listen: false).getCurrMin(),
-                      Provider.of<TemperatureProvider>(context, listen: false).getCurrMax()
-                  ),
-                  min: Provider.of<TemperatureProvider>(context, listen: false).getMin(),
-                  max: Provider.of<TemperatureProvider>(context, listen: false).getMax(),
-                  divisions: 80,
-                  labels: RangeLabels(
-                    Provider.of<TemperatureProvider>(context, listen: false).getCurrMin().toString(),
-                    Provider.of<TemperatureProvider>(context, listen: false).getCurrMax().toString(),
-                  ),
-                  onChanged: (RangeValues values) {
-                    setState(() {
-                      Provider.of<TemperatureProvider>(context, listen: false).setCurrMin((values.start.round()).toDouble());
-                      Provider.of<TemperatureProvider>(context, listen: false).setCurrMax((values.end.round()).toDouble());
-                    });
-                  },
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: Text(
-                      "Inclusive/Exclusive Temperature Range",
-                      style: TextStyle(
-                          fontSize: 15,
-                          color: widget.textColor
-                      ),
-                    )
-                ),
-                Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          Provider.of<TemperatureProvider>(context, listen: false).invertTempRange();
-                        });
-                      },
-                      child: Card(
-                        color: Provider.of<TemperatureProvider>(context, listen: false).getInvert() ?
-                        Color(0xff4ad7d9) :
-                        widget.boxColor,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Provider.of<TemperatureProvider>(context, listen: false).getInvert() ?
-                          Text(
-                            'Inclusive',
-                            style: TextStyle(
-                              color: widget.activityContentsColor,
-                            ),
-                            textAlign: TextAlign.left,
-                          ) :
-                          Text(
-                            'Exclusive',
                             style: TextStyle(
                               color: widget.activityContentsColor,
                             ),
@@ -230,8 +161,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 Expanded(
                     child: InkWell(
                       onTap: () {
-                        setState(() {
+                        setState(() async {
                           Provider.of<TemperatureProvider>(context, listen: false).switchNotifications();
+                          setNotif();
                         });
                       },
                       child: Card(

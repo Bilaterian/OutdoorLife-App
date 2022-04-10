@@ -366,6 +366,7 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Center(
                   child: Container(
+                    color: widget.boxColor,
                     padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
                     child: Column(
                       children: [
@@ -374,7 +375,7 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 24,
-                            color: widget.textColor,
+                            color: widget.backgroundColor,
                           ),
                         ),
                         Text(
@@ -382,14 +383,14 @@ class _HomePageState extends State<HomePage> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
-                            color: widget.textColor,
+                            color: widget.backgroundColor,
                           ),
                         ),
                         Text(
                           '\n${alert[2]}',
                           style: TextStyle(
                             fontSize: 18,
-                            color: widget.textColor,
+                            color: widget.backgroundColor,
                           ),
                         )
                       ],

@@ -1,11 +1,12 @@
 import 'package:activityforecast/models/temperature.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TemperatureProvider extends ChangeNotifier{
   final List temp = [
     Temperature(
         temperatureSelect: false,
-        max: 40.0,
+        max:  40.0,
         min: -40.0,
         invert: false,
         currMax: 27,
@@ -89,5 +90,17 @@ class TemperatureProvider extends ChangeNotifier{
 
   bool getNotifications(){
     return temp[0].notifications;
+  }
+
+  void setUnit(bool unit){
+    temp[0].temperatureSelect = unit;
+
+    notifyListeners();
+  }
+
+  void setNotif(bool notif){
+    temp[0].notifications = notif;
+
+    notifyListeners();
   }
 }

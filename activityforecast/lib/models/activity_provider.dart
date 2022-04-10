@@ -125,9 +125,10 @@ class ActivityProvider extends ChangeNotifier {
 Condition condition = Condition(
     temperatures: RangeValues(0, 0),
     isSunnyIdeal: true,
-    isNightIdeal: true,
+    isFogIdeal: true,
     isCloudyIdeal: true,
-    isWindyIdeal: true,
+    isDrizzleIdeal: true,
     isRainyIdeal: true,
     isThunderstormIdeal: true,
-    isSnowIdeal: true);
+    isSnowIdeal: true
+);

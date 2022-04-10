@@ -417,9 +417,9 @@ class _EditActivityPageState extends State<EditActivityPage> {
     Condition condition = Condition(
         temperatures: widget._currentRangeValues,
         isSunnyIdeal: status[0],
-        isNightIdeal: status[1],
+        isFogIdeal: status[1],
         isCloudyIdeal: status[2],
-        isWindyIdeal: status[3],
+        isDrizzleIdeal: status[3],
         isRainyIdeal: status[4],
         isThunderstormIdeal: status[5],
         isSnowIdeal: status[6]);

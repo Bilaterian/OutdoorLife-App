@@ -11,6 +11,8 @@ import 'package:activityforecast/view/pages/edit_activity_page.dart';
 import 'package:provider/provider.dart';
 
 import '../../components/weather_icons.dart';
+import '../../models/activity.dart';
+import '../../models/activity_provider.dart';
 import '../../models/theme.dart';
 import '../../models/theme_provider.dart';
 import 'package:geolocator/geolocator.dart';
@@ -64,14 +66,34 @@ class _HomePageState extends State<HomePage> {
   List<int> temperaturesMax = [0, 0, 0, 0, 0, 0, 0];
 
   List<String> weatherIconsName = ['sunny', 'sunny', 'sunny', 'sunny', 'sunny', 'sunny', 'sunny'];
-  //late String cityName;
   late String dayName = '';
   late String weatherCondition;
 
   List<String> alert = ['', '', 'No weather alerts in this location! Take care :)'];
 
+  late List<Activity> currentActivities;
+  late List<String> activityNames = ['','','','','','','','','']; //activity.activity;
+  late List<IconData> activityIcons = [
+                                        Icons.directions_walk, Icons.directions_walk, Icons.directions_walk,
+                                        Icons.directions_walk, Icons.directions_walk, Icons.directions_walk,
+                                        Icons.directions_walk, Icons.directions_walk, Icons.directions_walk,
+                                      ]; //activity.activityIcon;
+  late List<IconData> activityValids = [
+      Icons.check_circle_outline, Icons.check_circle_outline, Icons.check_circle_outline,
+      Icons.check_circle_outline, Icons.check_circle_outline, Icons.check_circle_outline,
+      Icons.check_circle_outline, Icons.check_circle_outline, Icons.check_circle_outline,
+  ]; //activity.condition;
+
+  late List<IconData> forecastActivityValids = [
+    Icons.check_circle_outline, Icons.check_circle_outline, Icons.check_circle_outline,
+    Icons.check_circle_outline, Icons.check_circle_outline, Icons.check_circle_outline,
+    Icons.check_circle_outline,
+  ]; //activity.condition;
+
+  //Icons.close, Icons.check_circle_outline
+
   // selected activity
-  String selectedActivity = "Bike";
+  late String selectedActivity;
   changeActivity(String activity) {
     setState(() {
       selectedActivity = activity;
@@ -157,6 +179,9 @@ class _HomePageState extends State<HomePage> {
     widget.appBarIconColor = theme.secondary;
     widget.floatingButtonColor = theme.primary;
 
+    // current activities
+    currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
+
     // dynamic sizing
     double screenWidth = MediaQuery.of(context).size.width;
     double boxWidth = screenWidth/numActivitiesPerRow;
@@ -164,10 +189,146 @@ class _HomePageState extends State<HomePage> {
     double boxWidthIfExtraPixel = boxWidth;
 
     //if (boxWidthRounded != boxWidth) {
-      //boxWidthIfExtraPixel = boxWidthRounded + (boxWidth - boxWidthRounded);
-      //boxWidthIfExtraPixel = boxWidth + 1.0;
+    //boxWidthIfExtraPixel = boxWidthRounded + (boxWidth - boxWidthRounded);
+    //boxWidthIfExtraPixel = boxWidth + 1.0;
     //}
 
+    // selected activity
+    if (currentActivities.length > 0) {
+      // a activity is forecasted
+
+      bool currentActivity = false;
+      for (int i = 0; i < currentActivities.length; i++) {
+        if (i < (numActivitiesPerRow * numRows) - 1) {
+          var activity = currentActivities[i];
+          if (selectedActivity == activity.activity) {
+            currentActivity = true;
+          }
+        }
+      }
+
+      if (!currentActivity) {
+        selectedActivity = currentActivities[0].activity;
+      }
+    } else {
+      // no activity to forecast
+      selectedActivity = "";
+
+      for (int i = 0; i < daysDisplaying; i++) {
+        forecastActivityValids[i] = Icons.question_mark;
+      }
+    }
+
+
+    // update activity info
+    for (int i = 0; i < currentActivities.length; i++) {
+      if (i < (numActivitiesPerRow * numRows) - 1) {
+
+        var activity = currentActivities[i];
+        activityNames[i] = activity.activity;
+        activityIcons[i] = activity.activityIcon;
+
+        // check if activity is ideal
+        var condition = activity.condition;
+        bool valid = true;
+        if (temperatures[0] < condition.temperatures.end && temperatures[0] > condition.temperatures.start) {
+          // within temperature range
+          String weather = weatherIconsName[0];
+          switch(weather) {
+            case 'sunny':
+              if (!condition.isSunnyIdeal) { valid = false; } break;
+            case 'fog':
+              if (!condition.isFogIdeal) { valid = false; } break;
+            case 'cloudy':
+              if (!condition.isCloudyIdeal) { valid = false; } break;
+            case 'drizzle':
+              if (!condition.isDrizzleIdeal) { valid = false; } break;
+            case 'rainy':
+              if (!condition.isRainyIdeal) { valid = false; } break;
+            case 'thunderstorm':
+              if (!condition.isThunderstormIdeal) { valid = false; } break;
+            case 'snowy':
+              if (!condition.isSnowIdeal) { valid = false; } break;
+            default:
+              break;
+          }
+        }
+
+        if (valid) {
+          activityValids[i] = Icons.check_circle_outline;
+        } else {
+          activityValids[i] = Icons.close;
+        }
+      }
+    }
+
+    // update forecast activity info
+    for (int i = 0; i < currentActivities.length; i++) {
+      if (i < (numActivitiesPerRow * numRows) - 1) {
+        var activity = currentActivities[i];
+
+        if (selectedActivity == activity.activity) {
+          // get validity for all days for the selected activity
+          var condition = activity.condition;
+
+          for (int j = 0; j < daysDisplaying; j++) {
+            bool valid = true;
+
+            if (temperatures[j] < condition.temperatures.end && temperatures[j] > condition.temperatures.start) {
+              // within temperature range
+              String weather = weatherIconsName[j];
+              switch (weather) {
+                case 'sunny':
+                  if (!condition.isSunnyIdeal) {
+                    valid = false;
+                  }
+                  break;
+                case 'fog':
+                  if (!condition.isFogIdeal) {
+                    valid = false;
+                  }
+                  break;
+                case 'cloudy':
+                  if (!condition.isCloudyIdeal) {
+                    valid = false;
+                  }
+                  break;
+                case 'drizzle':
+                  if (!condition.isDrizzleIdeal) {
+                    valid = false;
+                  }
+                  break;
+                case 'rainy':
+                  if (!condition.isRainyIdeal) {
+                    valid = false;
+                  }
+                  break;
+                case 'thunderstorm':
+                  if (!condition.isThunderstormIdeal) {
+                    valid = false;
+                  }
+                  break;
+                case 'snowy':
+                  if (!condition.isSnowIdeal) {
+                    valid = false;
+                  }
+                  break;
+                default:
+                  break;
+              } // condition switch
+            } // temperature check
+
+            if (valid) {
+              forecastActivityValids[j] = Icons.check_circle_outline;
+            } else {
+              forecastActivityValids[j] = Icons.close;
+            }
+          }
+
+          break;
+        }
+      }
+    }
 
     return MaterialApp(
         theme: ThemeData(scaffoldBackgroundColor: widget.backgroundColor),
@@ -281,22 +442,23 @@ class _HomePageState extends State<HomePage> {
                     )
                   ],
                 ),
+
                 // Activities Validity
                 Row(
                     children: <Widget>[
-                      activityBox(size1: boxWidth, size2: boxWidth, icon: Icons.directions_bike, text: "Bike", valid: Icons.check),
-                      activityBox(size1: boxWidth, size2: boxWidth, icon: Icons.directions_boat, text: "Boat", valid: Icons.check),
-                      activityBox(size1: boxWidth, size2: boxWidth, icon: Icons.snowboarding, text: "Snowboard", valid: Icons.check),
-                      activityBox(size1: boxWidth, size2: boxWidth, icon: Icons.add_photo_alternate, text: "Photos", valid: Icons.clear_rounded),
-                      activityBox(size1: boxWidthIfExtraPixel, size2: boxWidth, icon: Icons.wash, text: "Clean", valid: Icons.check),
+                      activityBox(size1: boxWidth, size2: boxWidth, index: 0),
+                      activityBox(size1: boxWidth, size2: boxWidth, index: 1),
+                      activityBox(size1: boxWidth, size2: boxWidth, index: 2),
+                      activityBox(size1: boxWidth, size2: boxWidth, index: 3),
+                      activityBox(size1: boxWidthIfExtraPixel, size2: boxWidth, index: 4),
                     ]
                 ),
                 Row(
                     children: <Widget>[
-                      activityBox(size1: boxWidth, size2: boxWidth, icon: Icons.car_rental, text: "Drive", valid: Icons.check),
-                      activityBox(size1: boxWidth, size2: boxWidth, icon: Icons.self_improvement, text: "Meditate", valid: Icons.check),
-                      activityBox(size1: boxWidth, size2: boxWidth, icon: Icons.campaign, text: "Protest", valid: Icons.check),
-                      activityBox(size1: boxWidth, size2: boxWidth, icon: Icons.airplanemode_active, text: "Travel", valid: Icons.clear_rounded),
+                      activityBox(size1: boxWidth, size2: boxWidth, index: 5),
+                      activityBox(size1: boxWidth, size2: boxWidth, index: 6),
+                      activityBox(size1: boxWidth, size2: boxWidth, index: 7),
+                      activityBox(size1: boxWidth, size2: boxWidth, index: 8),
                       SizedBox.fromSize(
                         size: Size(boxWidthIfExtraPixel, boxWidth), // button width and height
                         child: Material(
@@ -386,28 +548,33 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget activityBox({size1: 82.0, size2: 82.0, icon: Icons.directions_walk, text: "Walk", valid: Icons.check}) {
+  Widget activityBox({size1: 82.0, size2: 82.0, index: 0}) {
+
+    bool show = index > currentActivities.length-1 ? false : true;
+
     return SizedBox.fromSize(
       size: Size(size1, size2), // button width and height
       child: Material(
         color: widget.boxColor, // button color
-        child: InkWell(
-          onTap: () => changeActivity(text),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: InkWell(
+          onTap: () => show ? changeActivity(activityNames[index]) : log('clicked empty activity'),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Icon(icon, color: widget.activityContentsColor), // icon
+              Icon(activityIcons[index], color: show ? widget.activityContentsColor : widget.boxColor), // icon
               Text(
-                text, style: TextStyle(color: widget.activityContentsColor)
+                  activityNames[index], style: TextStyle(fontSize: 13, color: show ? widget.activityContentsColor : widget.boxColor)
               ), // text
               Icon(
-                valid,
-                color: widget.activityContentsColor?.withOpacity(.7),
+                activityValids[index],
+                color: show ? widget.activityContentsColor?.withOpacity(.7) : widget.boxColor,
               )
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 
@@ -456,7 +623,7 @@ class _HomePageState extends State<HomePage> {
     return Row(
         children: forecastRow(
           day: '${dayNames[day]}',
-          valid: Icons.check,
+          valid: forecastActivityValids[day],
           weather: weatherIcons[weatherIconsName[day]],
           temperature: '${temperatures[day]}°, ${temperaturesMin[day]}° low',
           screenWidth: screenWidth,
@@ -540,22 +707,4 @@ class _HomePageState extends State<HomePage> {
     var weatherData = await weather.getLocationWeather();
     updateUI(weatherData);
   }
-
-/*
-    getCurrentLocationAddress() async {
-      try {
-        List<Placemark> listPlaceMarks = await placemarkFromCoordinates(
-            _currentPosition.latitude, currentPosition.longitude);
-        Placemark place = listPlaceMarks[0];
-
-        setState(() {
-          currentLocationAddress = “${place.locality}, ${place.postalCode}, ${place.country}”;
-        }
-        );
-      } catch (e) {
-        print(e);
-      }
-    }
-     */
-
 }

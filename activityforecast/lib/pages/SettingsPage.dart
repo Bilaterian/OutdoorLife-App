@@ -161,7 +161,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 Expanded(
                     child: InkWell(
                       onTap: () {
-                        setState(() async {
+                        setState(() {
                           Provider.of<TemperatureProvider>(context, listen: false).switchNotifications();
                           setNotif();
                         });

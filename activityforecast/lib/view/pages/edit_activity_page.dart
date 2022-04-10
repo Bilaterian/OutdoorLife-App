@@ -6,7 +6,6 @@ import 'package:activityforecast/components/icons.dart';
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
 import 'package:activityforecast/components/themes/themes.dart';
 import 'package:activityforecast/components/weather_icons.dart';
-import 'package:activityforecast/models/Condition.dart';
 import 'package:activityforecast/models/activity.dart';
 import 'package:activityforecast/models/activity_provider.dart';
 import 'package:activityforecast/models/theme.dart';
@@ -373,7 +372,14 @@ class _EditActivityPageState extends State<EditActivityPage> {
                             .addCreatedActivity(Activity(
                                 activity: activityNameController.text,
                                 activityIcon: selectedIcon,
-                                condition: setActivityConditions(),
+                                temperatures: widget._currentRangeValues,
+                                isSunnyIdeal: widget.check_circle_selected[0],
+                                isFogIdeal: widget.check_circle_selected[1],
+                                isCloudyIdeal: widget.check_circle_selected[2],
+                                isDrizzleIdeal: widget.check_circle_selected[3],
+                                isRainyIdeal: widget.check_circle_selected[4],
+                                isThunderstormIdeal: widget.check_circle_selected[5],
+                                isSnowIdeal: widget.check_circle_selected[6],
                                 status: false));
                         Navigator.of(context).pop();
 
@@ -410,21 +416,6 @@ class _EditActivityPageState extends State<EditActivityPage> {
           ),
           children: [..._activityTab(icons, tabIndex)]),
     );
-  }
-
-  Condition setActivityConditions() {
-    var status = widget.check_circle_selected;
-    Condition condition = Condition(
-        temperatures: widget._currentRangeValues,
-        isSunnyIdeal: status[0],
-        isFogIdeal: status[1],
-        isCloudyIdeal: status[2],
-        isDrizzleIdeal: status[3],
-        isRainyIdeal: status[4],
-        isThunderstormIdeal: status[5],
-        isSnowIdeal: status[6]);
-
-    return condition;
   }
 
   TextEditingController activityNameController = TextEditingController();

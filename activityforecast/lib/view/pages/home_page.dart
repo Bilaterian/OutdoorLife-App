@@ -229,26 +229,25 @@ class _HomePageState extends State<HomePage> {
         activityIcons[i] = activity.activityIcon;
 
         // check if activity is ideal
-        var condition = activity.condition;
         bool valid = true;
-        if (temperatures[0] < condition.temperatures.end && temperatures[0] > condition.temperatures.start) {
+        if (temperatures[0] < activity.temperatures.end && temperatures[0] > activity.temperatures.start) {
           // within temperature range
           String weather = weatherIconsName[0];
           switch(weather) {
             case 'sunny':
-              if (!condition.isSunnyIdeal) { valid = false; } break;
+              if (!activity.isSunnyIdeal) { valid = false; } break;
             case 'fog':
-              if (!condition.isFogIdeal) { valid = false; } break;
+              if (!activity.isFogIdeal) { valid = false; } break;
             case 'cloudy':
-              if (!condition.isCloudyIdeal) { valid = false; } break;
+              if (!activity.isCloudyIdeal) { valid = false; } break;
             case 'drizzle':
-              if (!condition.isDrizzleIdeal) { valid = false; } break;
+              if (!activity.isDrizzleIdeal) { valid = false; } break;
             case 'rainy':
-              if (!condition.isRainyIdeal) { valid = false; } break;
+              if (!activity.isRainyIdeal) { valid = false; } break;
             case 'thunderstorm':
-              if (!condition.isThunderstormIdeal) { valid = false; } break;
+              if (!activity.isThunderstormIdeal) { valid = false; } break;
             case 'snowy':
-              if (!condition.isSnowIdeal) { valid = false; } break;
+              if (!activity.isSnowIdeal) { valid = false; } break;
             default:
               break;
           }
@@ -269,47 +268,46 @@ class _HomePageState extends State<HomePage> {
 
         if (selectedActivity == activity.activity) {
           // get validity for all days for the selected activity
-          var condition = activity.condition;
 
           for (int j = 0; j < daysDisplaying; j++) {
             bool valid = true;
 
-            if (temperatures[j] < condition.temperatures.end && temperatures[j] > condition.temperatures.start) {
+            if (temperatures[j] < activity.temperatures.end && temperatures[j] > activity.temperatures.start) {
               // within temperature range
               String weather = weatherIconsName[j];
               switch (weather) {
                 case 'sunny':
-                  if (!condition.isSunnyIdeal) {
+                  if (!activity.isSunnyIdeal) {
                     valid = false;
                   }
                   break;
                 case 'fog':
-                  if (!condition.isFogIdeal) {
+                  if (!activity.isFogIdeal) {
                     valid = false;
                   }
                   break;
                 case 'cloudy':
-                  if (!condition.isCloudyIdeal) {
+                  if (!activity.isCloudyIdeal) {
                     valid = false;
                   }
                   break;
                 case 'drizzle':
-                  if (!condition.isDrizzleIdeal) {
+                  if (!activity.isDrizzleIdeal) {
                     valid = false;
                   }
                   break;
                 case 'rainy':
-                  if (!condition.isRainyIdeal) {
+                  if (!activity.isRainyIdeal) {
                     valid = false;
                   }
                   break;
                 case 'thunderstorm':
-                  if (!condition.isThunderstormIdeal) {
+                  if (!activity.isThunderstormIdeal) {
                     valid = false;
                   }
                   break;
                 case 'snowy':
-                  if (!condition.isSnowIdeal) {
+                  if (!activity.isSnowIdeal) {
                     valid = false;
                   }
                   break;

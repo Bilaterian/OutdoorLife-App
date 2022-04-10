@@ -1,6 +1,6 @@
 # activityforecast
 
-CIS4030Lab2b
+activityforecast
 
 ## Getting Started
 

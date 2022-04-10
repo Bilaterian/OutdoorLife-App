@@ -180,18 +180,15 @@ class DBProvider {
   Database? _database;
 
   Future<Database?> getDatabase() async {
-    log("hi getDatabase!");
     if (_database != null) {
-      log("grabbing existing database??");
+      //log("grabbing existing database??");
 
-      log("bye getDatabase!");
       return _database;
     } else {
       // if _database is null we instantiate it
-      log("initializing database??");
+      //log("initializing database??");
       _database = await initDB();
 
-      log("bye getDatabase!");
       return _database;
     }
   }

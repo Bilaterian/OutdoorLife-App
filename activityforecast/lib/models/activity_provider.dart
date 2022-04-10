@@ -139,6 +139,7 @@ moreActivities[moreActivityIndex]); // remove from theM MORE ACTIVITIES
 
     //readFromDB();
 
+    log('oldIndex: ' + oldIndex.toString() + ', newIndex: ' + newIndex.toString());
     var item = moreActivities.removeAt(oldIndex);
     moreActivities.insert(newIndex, item);
 

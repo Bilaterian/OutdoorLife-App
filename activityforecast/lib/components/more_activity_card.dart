@@ -91,11 +91,7 @@ class _MoreActivityCardState extends State<MoreActivityCard> {
                   color: widget.activityTextColor, fontWeight: FontWeight.bold),
             ),
             leading: _leadingIcons(),
-            trailing:
-                _tralingIcon(), /* ReorderableDragStartListener(
-              index: widget.index,
-              child: Icon(Icons.drag_handle, color: widget.dragIconColor),
-            ),*/
+            trailing: _tralingIcon(),
           ),
         ),
       ),
@@ -110,12 +106,6 @@ class _MoreActivityCardState extends State<MoreActivityCard> {
             activityToEdit: widget.index,
             textColor: widget.activityTextColor,
             whichActivityList: ActivityList.more),
-        // TextButton(
-        //     child: Text(
-        //       "Edit",
-        //       style: TextStyle(color: widget.activityTextColor),
-        //     ),
-        //     onPressed: () {}),
         ReorderableDragStartListener(
           index: widget.index,
           child: Icon(Icons.drag_handle, color: widget.dragIconColor),

@@ -1,6 +1,7 @@
 import 'package:activityforecast/components/activities.dart';
 import 'package:activityforecast/components/more_activity_card.dart';
 import 'package:activityforecast/models/activity.dart';
+import 'package:activityforecast/services/activities_database.dart';
 import 'package:flutter/material.dart';
 
 class ActivityProvider extends ChangeNotifier {
@@ -10,6 +11,11 @@ class ActivityProvider extends ChangeNotifier {
     moreActivities.remove(
         moreActivities[moreActivityIndex]); // remove from theM MORE ACTIVITIES
 
+    notifyListeners();
+  }
+
+  void refreshMyActivityFromDatabase(List<Activity> activity) {
+    currentActivities = List.from(activity);
     notifyListeners();
   }
 
@@ -60,7 +66,8 @@ class ActivityProvider extends ChangeNotifier {
         activity: "Run",
         activityIcon: Icons.directions_run,
         status: true,
-        temperatures: RangeValues(0, 0),
+        minTemp: 1,
+        maxTemp: 80,
         isSunnyIdeal: true,
         isFogIdeal: true,
         isCloudyIdeal: true,
@@ -72,7 +79,8 @@ class ActivityProvider extends ChangeNotifier {
         activity: "Ski",
         activityIcon: Icons.downhill_skiing,
         status: true,
-        temperatures: RangeValues(0, 0),
+        minTemp: 1,
+        maxTemp: 80,
         isSunnyIdeal: true,
         isFogIdeal: true,
         isCloudyIdeal: true,
@@ -84,12 +92,13 @@ class ActivityProvider extends ChangeNotifier {
     //     activity: "Picnic",
     //     activityIcon: Icons.,
     //     condition: condition,
-    //     status: true),
+    // //     status: true),
     Activity(
         activity: "Surfing",
         activityIcon: Icons.surfing,
         status: true,
-        temperatures: RangeValues(0, 0),
+        minTemp: 1,
+        maxTemp: 80,
         isSunnyIdeal: true,
         isFogIdeal: true,
         isCloudyIdeal: true,
@@ -101,7 +110,8 @@ class ActivityProvider extends ChangeNotifier {
         activity: "Swim",
         activityIcon: Icons.pool,
         status: true,
-        temperatures: RangeValues(0, 0),
+        minTemp: 1,
+        maxTemp: 80,
         isSunnyIdeal: true,
         isFogIdeal: true,
         isCloudyIdeal: true,
@@ -113,7 +123,8 @@ class ActivityProvider extends ChangeNotifier {
         activity: "Hike",
         activityIcon: Icons.hiking,
         status: true,
-        temperatures: RangeValues(0, 0),
+        minTemp: 1,
+        maxTemp: 80,
         isSunnyIdeal: true,
         isFogIdeal: true,
         isCloudyIdeal: true,
@@ -125,7 +136,8 @@ class ActivityProvider extends ChangeNotifier {
         activity: "FootBall",
         activityIcon: Icons.sports_football,
         status: true,
-        temperatures: RangeValues(0, 0),
+        minTemp: 1,
+        maxTemp: 80,
         isSunnyIdeal: true,
         isFogIdeal: true,
         isCloudyIdeal: true,
@@ -137,7 +149,8 @@ class ActivityProvider extends ChangeNotifier {
         activity: "BasketBall",
         activityIcon: Icons.sports_baseball,
         status: true,
-        temperatures: RangeValues(0, 0),
+        minTemp: 1,
+        maxTemp: 80,
         isSunnyIdeal: true,
         isFogIdeal: true,
         isCloudyIdeal: true,
@@ -149,7 +162,8 @@ class ActivityProvider extends ChangeNotifier {
         activity: "Soccer",
         activityIcon: Icons.sports_soccer,
         status: true,
-        temperatures: RangeValues(0, 0),
+        minTemp: 1,
+        maxTemp: 80,
         isSunnyIdeal: true,
         isFogIdeal: true,
         isCloudyIdeal: true,
@@ -161,7 +175,8 @@ class ActivityProvider extends ChangeNotifier {
         activity: "Cricket",
         activityIcon: Icons.sports_cricket,
         status: true,
-        temperatures: RangeValues(0, 0),
+        minTemp: 1,
+        maxTemp: 80,
         isSunnyIdeal: true,
         isFogIdeal: true,
         isCloudyIdeal: true,
@@ -173,7 +188,8 @@ class ActivityProvider extends ChangeNotifier {
         activity: "Golf",
         activityIcon: Icons.sports_golf,
         status: true,
-        temperatures: RangeValues(0, 0),
+        minTemp: 1,
+        maxTemp: 80,
         isSunnyIdeal: true,
         isFogIdeal: true,
         isCloudyIdeal: true,
@@ -185,7 +201,8 @@ class ActivityProvider extends ChangeNotifier {
         activity: "Mix Martial Arts",
         activityIcon: Icons.sports_handball,
         status: true,
-        temperatures: RangeValues(0, 0),
+        minTemp: 1,
+        maxTemp: 80,
         isSunnyIdeal: true,
         isFogIdeal: true,
         isCloudyIdeal: true,

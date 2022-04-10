@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:activityforecast/pages/SettingsPage.dart';
 import 'package:activityforecast/pages/manage_activities.dart';
 import 'package:activityforecast/view/pages/edit_activity_page.dart';
+import 'package:activityforecast/services/activities_database.dart';
 
 import 'package:provider/provider.dart';
 
@@ -41,7 +42,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   // colours
   late ColourScheme theme;
   //late Position _currentPosition;
@@ -50,43 +50,93 @@ class _HomePageState extends State<HomePage> {
   late final _searchController = TextEditingController();
   String cityInput = "London";
 
-
   // weather info
   final int daysDisplaying = 7;
   //late Location location;
   WeatherModel weather = WeatherModel();
   List<DateTime> dates = [
-                          DateTime.now(), DateTime.now().add(Duration(days: 1)), DateTime.now().add(Duration(days: 2)), DateTime.now().add(Duration(days: 3)),
-                          DateTime.now().add(Duration(days: 4)), DateTime.now().add(Duration(days: 5)), DateTime.now().add(Duration(days: 6))
-                         ];
-  List<String> dayNames = ['Today', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'];
+    DateTime.now(),
+    DateTime.now().add(Duration(days: 1)),
+    DateTime.now().add(Duration(days: 2)),
+    DateTime.now().add(Duration(days: 3)),
+    DateTime.now().add(Duration(days: 4)),
+    DateTime.now().add(Duration(days: 5)),
+    DateTime.now().add(Duration(days: 6))
+  ];
+  List<String> dayNames = [
+    'Today',
+    'Day 2',
+    'Day 3',
+    'Day 4',
+    'Day 5',
+    'Day 6',
+    'Day 7'
+  ];
 
   List<int> temperatures = [0, 0, 0, 0, 0, 0, 0];
   List<int> temperaturesMin = [0, 0, 0, 0, 0, 0, 0];
   List<int> temperaturesMax = [0, 0, 0, 0, 0, 0, 0];
 
-  List<String> weatherIconsName = ['sunny', 'sunny', 'sunny', 'sunny', 'sunny', 'sunny', 'sunny'];
+  List<String> weatherIconsName = [
+    'sunny',
+    'sunny',
+    'sunny',
+    'sunny',
+    'sunny',
+    'sunny',
+    'sunny'
+  ];
   late String dayName = '';
   late String weatherCondition;
 
-  List<String> alert = ['', '', 'No weather alerts in this location! Take care :)'];
+  List<String> alert = [
+    '',
+    '',
+    'No weather alerts in this location! Take care :)'
+  ];
 
   late List<Activity> currentActivities;
-  late List<String> activityNames = ['','','','','','','','','']; //activity.activity;
+  late List<String> activityNames = [
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    '',
+    ''
+  ]; //activity.activity;
   late List<IconData> activityIcons = [
-                                        Icons.directions_walk, Icons.directions_walk, Icons.directions_walk,
-                                        Icons.directions_walk, Icons.directions_walk, Icons.directions_walk,
-                                        Icons.directions_walk, Icons.directions_walk, Icons.directions_walk,
-                                      ]; //activity.activityIcon;
+    Icons.directions_walk,
+    Icons.directions_walk,
+    Icons.directions_walk,
+    Icons.directions_walk,
+    Icons.directions_walk,
+    Icons.directions_walk,
+    Icons.directions_walk,
+    Icons.directions_walk,
+    Icons.directions_walk,
+  ]; //activity.activityIcon;
   late List<IconData> activityValids = [
-      Icons.check_circle_outline, Icons.check_circle_outline, Icons.check_circle_outline,
-      Icons.check_circle_outline, Icons.check_circle_outline, Icons.check_circle_outline,
-      Icons.check_circle_outline, Icons.check_circle_outline, Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
   ]; //activity.condition;
 
   late List<IconData> forecastActivityValids = [
-    Icons.check_circle_outline, Icons.check_circle_outline, Icons.check_circle_outline,
-    Icons.check_circle_outline, Icons.check_circle_outline, Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
+    Icons.check_circle_outline,
     Icons.check_circle_outline,
   ]; //activity.condition;
 
@@ -107,9 +157,24 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+    refreshMyActivities();
     getUserLocation();
 
     //updateUI(widget.locationWeather);
+  }
+
+  @override
+  void dispose() {
+    ActivitiesDatabase.instance.close();
+    super.dispose();
+  }
+
+  Future refreshMyActivities() async {
+    print("***Refreshing***");
+    List<Activity> tempList =
+        await ActivitiesDatabase.instance.readAllActivities();
+    Provider.of<ActivityProvider>(context, listen: false)
+        .refreshMyActivityFromDatabase(tempList);
   }
 
   void updateUI(dynamic weatherData) {
@@ -122,7 +187,7 @@ class _HomePageState extends State<HomePage> {
           weatherIconsName[i] = 'sunny';
 
           if (i < 3) {
-              alert[i] = '';
+            alert[i] = '';
           }
         }
 
@@ -152,21 +217,20 @@ class _HomePageState extends State<HomePage> {
       }
 
       try {
-          alert[0] = weatherData['alerts'][0]['sender_name'];
-          alert[1] = weatherData['alerts'][0]['event'];
-          alert[2] = weatherData['alerts'][0]['description'];
-      } catch(e) {
-          log("no alerts");
-          alert[0] = '';
-          alert[1] = '';
-          alert[2] = 'No weather alerts in this location! Take care :)';
+        alert[0] = weatherData['alerts'][0]['sender_name'];
+        alert[1] = weatherData['alerts'][0]['event'];
+        alert[2] = weatherData['alerts'][0]['description'];
+      } catch (e) {
+        log("no alerts");
+        alert[0] = '';
+        alert[1] = '';
+        alert[2] = 'No weather alerts in this location! Take care :)';
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-
     // colours
     theme = Provider.of<ThemeProvider>(context).currentTheme;
 
@@ -180,11 +244,12 @@ class _HomePageState extends State<HomePage> {
     widget.floatingButtonColor = theme.primary;
 
     // current activities
-    currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
+    currentActivities =
+        Provider.of<ActivityProvider>(context).currentActivities;
 
     // dynamic sizing
     double screenWidth = MediaQuery.of(context).size.width;
-    double boxWidth = screenWidth/numActivitiesPerRow;
+    double boxWidth = screenWidth / numActivitiesPerRow;
     //double boxWidthRounded = (screenWidth/numActivitiesPerRow).floorToDouble();
     double boxWidthIfExtraPixel = boxWidth;
 
@@ -219,35 +284,55 @@ class _HomePageState extends State<HomePage> {
       }
     }
 
-
     // update activity info
     for (int i = 0; i < currentActivities.length; i++) {
       if (i < (numActivitiesPerRow * numRows) - 1) {
-
         var activity = currentActivities[i];
         activityNames[i] = activity.activity;
         activityIcons[i] = activity.activityIcon;
 
         // check if activity is ideal
         bool valid = true;
-        if (temperatures[0] < activity.temperatures.end && temperatures[0] > activity.temperatures.start) {
+        if (temperatures[0] < activity.maxTemp &&
+            temperatures[0] > activity.minTemp) {
           // within temperature range
           String weather = weatherIconsName[0];
-          switch(weather) {
+          switch (weather) {
             case 'sunny':
-              if (!activity.isSunnyIdeal) { valid = false; } break;
+              if (!activity.isSunnyIdeal) {
+                valid = false;
+              }
+              break;
             case 'fog':
-              if (!activity.isFogIdeal) { valid = false; } break;
+              if (!activity.isFogIdeal) {
+                valid = false;
+              }
+              break;
             case 'cloudy':
-              if (!activity.isCloudyIdeal) { valid = false; } break;
+              if (!activity.isCloudyIdeal) {
+                valid = false;
+              }
+              break;
             case 'drizzle':
-              if (!activity.isDrizzleIdeal) { valid = false; } break;
+              if (!activity.isDrizzleIdeal) {
+                valid = false;
+              }
+              break;
             case 'rainy':
-              if (!activity.isRainyIdeal) { valid = false; } break;
+              if (!activity.isRainyIdeal) {
+                valid = false;
+              }
+              break;
             case 'thunderstorm':
-              if (!activity.isThunderstormIdeal) { valid = false; } break;
+              if (!activity.isThunderstormIdeal) {
+                valid = false;
+              }
+              break;
             case 'snowy':
-              if (!activity.isSnowIdeal) { valid = false; } break;
+              if (!activity.isSnowIdeal) {
+                valid = false;
+              }
+              break;
             default:
               break;
           }
@@ -272,7 +357,8 @@ class _HomePageState extends State<HomePage> {
           for (int j = 0; j < daysDisplaying; j++) {
             bool valid = true;
 
-            if (temperatures[j] < activity.temperatures.end && temperatures[j] > activity.temperatures.start) {
+            if (temperatures[j] < activity.maxTemp &&
+                temperatures[j] > activity.minTemp) {
               // within temperature range
               String weather = weatherIconsName[j];
               switch (weather) {
@@ -333,30 +419,33 @@ class _HomePageState extends State<HomePage> {
         debugShowCheckedModeBanner: false,
         routes: <String, WidgetBuilder>{
           //"/": (BuildContext context) => MaterialApp(home: MyApp()),
-          "/ManageActivities": (BuildContext context) =>MainActivitiesPage(title: "Manage Activities"),
+          "/ManageActivities": (BuildContext context) =>
+              MainActivitiesPage(title: "Manage Activities"),
           "/EditActivityPage": (BuildContext context) => EditActivityPage(),
           "/SettingsPage": (BuildContext context) => SettingsPage(),
         },
         home: Builder(
           builder: (context) =>
-          //home: Scaffold(
-          Scaffold(
-              backgroundColor: widget.backgroundColor,
-              resizeToAvoidBottomInset: false,
-              appBar: AppBar(
-                backgroundColor: widget.appBarColor,
-                title: Text('OutdoorLife', style: TextStyle(color: widget.appBarTextColor)),
-                actions: [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pushNamed("/SettingsPage");
-                      },
-                      icon: Icon(Icons.settings, color: widget.appBarIconColor))
-                ],
-              ),
-              body: SingleChildScrollView(
-              child: Column(children: <Widget>[
-                /*
+              //home: Scaffold(
+              Scaffold(
+                  backgroundColor: widget.backgroundColor,
+                  resizeToAvoidBottomInset: false,
+                  appBar: AppBar(
+                    backgroundColor: widget.appBarColor,
+                    title: Text('OutdoorLife',
+                        style: TextStyle(color: widget.appBarTextColor)),
+                    actions: [
+                      IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed("/SettingsPage");
+                          },
+                          icon: Icon(Icons.settings,
+                              color: widget.appBarIconColor))
+                    ],
+                  ),
+                  body: SingleChildScrollView(
+                      child: Column(children: <Widget>[
+                    /*
                 // Location Text Field
                 TextField(
                   style: TextStyle(color: widget.textColor),
@@ -367,43 +456,46 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                  */
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    InkWell(
-                      child: Container(
-                        height: 50,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: widget.textColor,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Icon(Icons.location_on, color: widget.backgroundColor),
-                        ),
-                      ),
-                      onTap: () async {
-                          getUserLocation();
-                          _searchController.text = "";
-                      },
-                    ),
-                    Expanded(
-                      child: SizedBox(
-                        height: 50,
-                        child: TextField(
-                          controller: _searchController,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: widget.textColor, fontSize: 18),
-                          decoration: InputDecoration(
-                            fillColor: widget.backgroundColor,
-                            hintText: 'Enter City Name',
-                            hintStyle: TextStyle(color: widget.textColor, fontSize: 18),
-                            filled: true,
-                            border: OutlineInputBorder(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          child: Container(
+                            height: 50,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: widget.textColor,
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Icon(Icons.location_on,
+                                  color: widget.backgroundColor),
                             ),
                           ),
-                          onSubmitted: (value) async {
-                            /*
+                          onTap: () async {
+                            getUserLocation();
+                            _searchController.text = "";
+                          },
+                        ),
+                        Expanded(
+                          child: SizedBox(
+                            height: 50,
+                            child: TextField(
+                              controller: _searchController,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: widget.textColor, fontSize: 18),
+                              decoration: InputDecoration(
+                                fillColor: widget.backgroundColor,
+                                hintText: 'Enter City Name',
+                                hintStyle: TextStyle(
+                                    color: widget.textColor, fontSize: 18),
+                                filled: true,
+                                border: OutlineInputBorder(),
+                              ),
+                              onSubmitted: (value) async {
+                                /*
                             print(value);
                             cityInput = value;
                             if (cityInput != null) {
@@ -411,172 +503,196 @@ class _HomePageState extends State<HomePage> {
                               updateUI(weatherData);
                             }
                              */
+                              },
+                            ),
+                          ),
+                        ),
+                        InkWell(
+                          child: Container(
+                            height: 50,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: widget.textColor,
+                            ),
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                              child: Text('Search',
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      color: widget.backgroundColor)),
+                            ),
+                          ),
+                          onTap: () async {
+                            FocusScope.of(context).unfocus();
+                            print(_searchController.text);
+                            cityInput = _searchController.text;
+                            if (cityInput != null) {
+                              var weatherData =
+                                  await weather.getCityWeather(cityInput);
+                              updateUI(weatherData);
+                            }
                           },
-                        ),
-                      ),
+                        )
+                      ],
                     ),
-                    InkWell(
-                      child: Container(
-                        height: 50,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: widget.textColor,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: Text('Search',
-                              style: TextStyle(fontSize: 18, color: widget.backgroundColor)),
-                        ),
-                      ),
-                      onTap: () async {
-                        FocusScope.of(context).unfocus();
-                        print(_searchController.text);
-                        cityInput = _searchController.text;
-                        if (cityInput != null) {
-                          var weatherData = await weather.getCityWeather(cityInput);
-                          updateUI(weatherData);
-                        }
-                      },
-                    )
-                  ],
-                ),
 
-                // Activities Validity
-                Row(
-                    children: <Widget>[
+                    // Activities Validity
+                    Row(children: <Widget>[
                       activityBox(size1: boxWidth, size2: boxWidth, index: 0),
                       activityBox(size1: boxWidth, size2: boxWidth, index: 1),
                       activityBox(size1: boxWidth, size2: boxWidth, index: 2),
                       activityBox(size1: boxWidth, size2: boxWidth, index: 3),
-                      activityBox(size1: boxWidthIfExtraPixel, size2: boxWidth, index: 4),
-                    ]
-                ),
-                Row(
-                    children: <Widget>[
+                      activityBox(
+                          size1: boxWidthIfExtraPixel,
+                          size2: boxWidth,
+                          index: 4),
+                    ]),
+                    Row(children: <Widget>[
                       activityBox(size1: boxWidth, size2: boxWidth, index: 5),
                       activityBox(size1: boxWidth, size2: boxWidth, index: 6),
                       activityBox(size1: boxWidth, size2: boxWidth, index: 7),
                       activityBox(size1: boxWidth, size2: boxWidth, index: 8),
                       SizedBox.fromSize(
-                        size: Size(boxWidthIfExtraPixel, boxWidth), // button width and height
+                        size: Size(boxWidthIfExtraPixel,
+                            boxWidth), // button width and height
                         child: Material(
                           color: widget.boxColor, // button color
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context).pushNamed("/ManageActivities");
+                              Navigator.of(context)
+                                  .pushNamed("/ManageActivities");
                             }, // button pressed
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                Text("+", style: TextStyle(fontSize: 50, color: widget.activityContentsColor)), // text
+                                Text("+",
+                                    style: TextStyle(
+                                        fontSize: 50,
+                                        color: widget
+                                            .activityContentsColor)), // text
                               ],
                             ),
                           ),
                         ),
                       )
-                    ]
-                ),
+                    ]),
 
-                // Activity Forecast
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Center(
-                          child: Container(
-                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            child: Text(
-                              '$selectedActivity' + " Forecast",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25,
-                                color: widget.textColor,
+                    // Activity Forecast
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Center(
+                              child: Container(
+                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                child: Text(
+                                  '$selectedActivity' + " Forecast",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                    color: widget.textColor,
+                                  ),
+                                ),
                               ),
                             ),
+                            TextButton(
+                                style: TextButton.styleFrom(
+                                    backgroundColor: widget.textColor),
+                                child: Text("Edit",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        color: widget.backgroundColor)),
+                                onPressed: () {
+                                  //print("Edit Button Pressed");
+                                  Navigator.of(context)
+                                      .pushNamed("/EditActivityPage");
+                                })
+                          ]),
+                    ),
+                    forecasts(),
+
+                    // alerts
+                    Center(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Text(
+                          'ALERTS',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            color: widget.textColor,
                           ),
                         ),
-                        TextButton(
-                            style: TextButton.styleFrom(backgroundColor: widget.textColor),
-                            child: Text("Edit",
-                                style: TextStyle(
-                                    fontSize: 18, color:  widget.backgroundColor)),
-                            onPressed: () {
-                              //print("Edit Button Pressed");
-                              Navigator.of(context)
-                                  .pushNamed("/EditActivityPage");
-                            })
-                      ]),
-                ),
-                forecasts(),
-
-                // alerts
-                Center(
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Text(
-                      'ALERTS',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: widget.textColor,
                       ),
                     ),
-                  ),
-                ),
-                Center(
-                  child: Container(
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    child: Text(
-                      '${alert[0]}, ${alert[1]}, ${alert[2]}',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 25,
-                        color: widget.textColor,
+                    Center(
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Text(
+                          '${alert[0]}, ${alert[1]}, ${alert[2]}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 25,
+                            color: widget.textColor,
+                          ),
+                        ),
                       ),
                     ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 19, 0, 0),
-                  child: Image.asset('assets/images/GoogleMapExample.jpg'),
-                ),
-              ]))),
-        )
-    );
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 19, 0, 0),
+                      child: Image.asset('assets/images/GoogleMapExample.jpg'),
+                    ),
+                  ]))),
+        ));
   }
 
   Widget activityBox({size1: 82.0, size2: 82.0, index: 0}) {
-
-    bool show = index > currentActivities.length-1 ? false : true;
+    bool show = index > currentActivities.length - 1 ? false : true;
 
     return SizedBox.fromSize(
       size: Size(size1, size2), // button width and height
       child: Material(
-        color: widget.boxColor, // button color
-        child: FittedBox(
-          fit: BoxFit.scaleDown,
-          child: InkWell(
-          onTap: () => show ? changeActivity(activityNames[index]) : log('clicked empty activity'),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Icon(activityIcons[index], color: show ? widget.activityContentsColor : widget.boxColor), // icon
-              Text(
-                  activityNames[index], style: TextStyle(fontSize: 13, color: show ? widget.activityContentsColor : widget.boxColor)
-              ), // text
-              Icon(
-                activityValids[index],
-                color: show ? widget.activityContentsColor?.withOpacity(.7) : widget.boxColor,
-              )
-            ],
-          ),
-        ),
-      )),
+          color: widget.boxColor, // button color
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            child: InkWell(
+              onTap: () => show
+                  ? changeActivity(activityNames[index])
+                  : log('clicked empty activity'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(activityIcons[index],
+                      color: show
+                          ? widget.activityContentsColor
+                          : widget.boxColor), // icon
+                  Text(activityNames[index],
+                      style: TextStyle(
+                          fontSize: 13,
+                          color: show
+                              ? widget.activityContentsColor
+                              : widget.boxColor)), // text
+                  Icon(
+                    activityValids[index],
+                    color: show
+                        ? widget.activityContentsColor?.withOpacity(.7)
+                        : widget.boxColor,
+                  )
+                ],
+              ),
+            ),
+          )),
     );
   }
 
-  List<Widget> forecastRow({day: "Today", valid: Icons.check, weather: Icons.wb_sunny, temperature = "900°,900° low", screenWidth = 1440.0}) {
+  List<Widget> forecastRow(
+      {day: "Today",
+      valid: Icons.check,
+      weather: Icons.wb_sunny,
+      temperature = "900°,900° low",
+      screenWidth = 1440.0}) {
     return <Widget>[
       Expanded(
           flex: 1,
@@ -620,32 +736,31 @@ class _HomePageState extends State<HomePage> {
   Row completeForecastRow({day: 0, screenWidth: 1440.0}) {
     return Row(
         children: forecastRow(
-          day: '${dayNames[day]}',
-          valid: forecastActivityValids[day],
-          weather: weatherIcons[weatherIconsName[day]],
-          temperature: '${temperatures[day]}°, ${temperaturesMin[day]}° low',
-          screenWidth: screenWidth,
-        ));
+      day: '${dayNames[day]}',
+      valid: forecastActivityValids[day],
+      weather: weatherIcons[weatherIconsName[day]],
+      temperature: '${temperatures[day]}°, ${temperaturesMin[day]}° low',
+      screenWidth: screenWidth,
+    ));
   }
 
   Column forecasts({screenWidth: 1440.0}) {
     return Column(children: <Widget>[
-          completeForecastRow(day: 0, screenWidth: screenWidth),
-          forecastPadding(),
-          completeForecastRow(day: 1, screenWidth: screenWidth),
-          forecastPadding(),
-          completeForecastRow(day: 2, screenWidth: screenWidth),
-          forecastPadding(),
-          completeForecastRow(day: 3, screenWidth: screenWidth),
-          forecastPadding(),
-          completeForecastRow(day: 4, screenWidth: screenWidth),
-          forecastPadding(),
-          completeForecastRow(day: 5, screenWidth: screenWidth),
-          forecastPadding(),
-          completeForecastRow(day: 6, screenWidth: screenWidth),
-          forecastPadding(),
-      ]
-    );
+      completeForecastRow(day: 0, screenWidth: screenWidth),
+      forecastPadding(),
+      completeForecastRow(day: 1, screenWidth: screenWidth),
+      forecastPadding(),
+      completeForecastRow(day: 2, screenWidth: screenWidth),
+      forecastPadding(),
+      completeForecastRow(day: 3, screenWidth: screenWidth),
+      forecastPadding(),
+      completeForecastRow(day: 4, screenWidth: screenWidth),
+      forecastPadding(),
+      completeForecastRow(day: 5, screenWidth: screenWidth),
+      forecastPadding(),
+      completeForecastRow(day: 6, screenWidth: screenWidth),
+      forecastPadding(),
+    ]);
   }
 
   Future<Position> _determinePosition() async {
@@ -682,7 +797,8 @@ class _HomePageState extends State<HomePage> {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low);
 
     /*
     return Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low).then((location) {

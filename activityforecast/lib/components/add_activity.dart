@@ -3,6 +3,7 @@ import 'package:activityforecast/models/activity_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:activityforecast/components/activities.dart';
 import 'package:activityforecast/pages/manage_activities.dart';
+import 'package:activityforecast/services/activities_database.dart';
 import 'package:provider/provider.dart';
 
 class AddActivity extends StatefulWidget {
@@ -37,6 +38,8 @@ class _AddActivityState extends State<AddActivity> {
           Provider.of<ActivityProvider>(context, listen: false)
               .addMyActivity(activity, widget.activityToAdd);
           widget.setStateOfAcitivity();
+          ActivitiesDatabase.instance.create(activity);
+          print("INSERT ACTIVITY");
         },
         icon: Icon(
           widget.addIcon,

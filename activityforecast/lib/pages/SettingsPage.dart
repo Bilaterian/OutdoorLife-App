@@ -110,9 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         });
                       },
                       child: Card(
-                        color: Provider.of<TemperatureProvider>(context, listen: false).getTemperatureSelect() ?
-                        Color(0xff4ad7d9) :
-                        widget.boxColor,
+                        color: widget.boxColor,
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Provider.of<TemperatureProvider>(context, listen: false).getTemperatureSelect() ?
@@ -167,9 +165,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         });
                       },
                       child: Card(
-                        color: Provider.of<TemperatureProvider>(context, listen: false).getNotifications() ?
-                        Color(0xff4ad7d9) :
-                        widget.boxColor,
+                        color: widget.boxColor,
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: Provider.of<TemperatureProvider>(context, listen: false).getNotifications() ?

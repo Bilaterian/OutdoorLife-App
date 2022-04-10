@@ -1,9 +1,11 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:activityforecast/models/activity.dart';
 import 'package:activityforecast/models/activity_provider.dart';
 import 'package:activityforecast/models/theme.dart';
 import 'package:activityforecast/models/theme_provider.dart';
+import 'package:activityforecast/services/database.dart';
 import 'package:flutter/material.dart';
 import 'package:activityforecast/view/pages/home_page.dart';
 import 'package:activityforecast/components/activities.dart';
@@ -84,10 +86,13 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
     widget.appBarTextColor = theme.secondary;
     widget.appBarIconColor = theme.secondary;
     widget.floatingButtonColor = theme.primary;
-    currentActivities =
-        Provider.of<ActivityProvider>(context).currentActivities;
-    moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
 
+    //DBProvider.dbp.getDatabase();
+    //Provider.of<ActivityProvider>(context).readFromDB();
+    currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
+    log("CANum: " + currentActivities.length.toString());
+    moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
+    log("MANum: " + moreActivities.length.toString());
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;
     screenHeight = _mediaQueryData.size.height;
@@ -147,6 +152,9 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
 
 // Reorder List View to show "Current (My) Activities"
   ReorderableListView _reorderableCurrentActivitiesView() {
+    //currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
+    //moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
+
     return ReorderableListView(
         buildDefaultDragHandles: false,
         shrinkWrap: true,
@@ -158,6 +166,8 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
             }
             Provider.of<ActivityProvider>(context, listen: false)
                 .reorderMyActivity(oldIndex, newIndex);
+            //currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
+            //moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
             // var item = moreActivities.removeAt(oldIndex);
             // moreActivities.insert(newIndex, item);
           });
@@ -166,6 +176,9 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
 
 // Reorder List View for to show "More Activities"
   ReorderableListView _reorderableMoreActivitiesView() {
+    //currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
+    //moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
+
     return ReorderableListView(
         physics: const ClampingScrollPhysics(),
         buildDefaultDragHandles: false,
@@ -178,6 +191,8 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
             }
             Provider.of<ActivityProvider>(context, listen: false)
                 .reorderMoreActivity(oldIndex, newIndex);
+            //currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
+            //moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
             // var item = moreActivities.removeAt(oldIndex);
             // moreActivities.insert(newIndex, item);
           });
@@ -192,7 +207,7 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
       var newActivity = moreActivities[index];
       activities.add(MoreActivityCard(
         setStateOfAcitivity: refresh,
-        activityIcon: newActivity.activityIcon,
+        activityIcon: IconData(newActivity.activityIconCP, fontFamily: 'MaterialIcons'),
         activity: newActivity.activity,
         index: index,
         key: ValueKey(index),
@@ -209,7 +224,7 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
       var activity = currentActivities[index];
       activities.add(CurrentActivityCard(
         setStateOfAcitivity: refresh,
-        activityIcon: activity.activityIcon,
+        activityIcon: IconData(activity.activityIconCP, fontFamily: 'MaterialIcons'),
         activity: activity.activity,
         index: index,
         key: ValueKey(index),

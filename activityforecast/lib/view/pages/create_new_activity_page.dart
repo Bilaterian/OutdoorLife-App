@@ -368,17 +368,19 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
                     : () {
                         Provider.of<ActivityProvider>(context, listen: false)
                             .addCreatedActivity(Activity(
+                                order: 0,
+                                category: 1,
                                 activity: activityNameController.text,
-                                activityIcon: selectedIcon,
-                                temperatures: widget._currentRangeValues,
+                                activityIconCP: selectedIcon.codePoint,
+                                minTemp: widget._currentRangeValues.start.toInt(),
+                                maxTemp: widget._currentRangeValues.end.toInt(),
                                 isSunnyIdeal: widget.check_circle_selected[0],
                                 isFogIdeal: widget.check_circle_selected[1],
                                 isCloudyIdeal: widget.check_circle_selected[2],
                                 isDrizzleIdeal: widget.check_circle_selected[3],
                                 isRainyIdeal: widget.check_circle_selected[4],
                                 isThunderstormIdeal: widget.check_circle_selected[5],
-                                isSnowIdeal: widget.check_circle_selected[6],
-                                status: false));
+                                isSnowIdeal: widget.check_circle_selected[6]));
                         Navigator.of(context).pop();
 
                         ScaffoldMessenger.of(context).showSnackBar(

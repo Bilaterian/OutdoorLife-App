@@ -180,6 +180,8 @@ class _HomePageState extends State<HomePage> {
     widget.floatingButtonColor = theme.primary;
 
     // current activities
+
+    Provider.of<ActivityProvider>(context).readFromDB();
     currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
 
     // dynamic sizing
@@ -226,11 +228,11 @@ class _HomePageState extends State<HomePage> {
 
         var activity = currentActivities[i];
         activityNames[i] = activity.activity;
-        activityIcons[i] = activity.activityIcon;
+        activityIcons[i] = IconData(activity.activityIconCP, fontFamily: 'MaterialIcons');
 
         // check if activity is ideal
         bool valid = true;
-        if (temperatures[0] < activity.temperatures.end && temperatures[0] > activity.temperatures.start) {
+        if (temperatures[0] < activity.maxTemp && temperatures[0] > activity.minTemp) {
           // within temperature range
           String weather = weatherIconsName[0];
           switch(weather) {
@@ -272,7 +274,7 @@ class _HomePageState extends State<HomePage> {
           for (int j = 0; j < daysDisplaying; j++) {
             bool valid = true;
 
-            if (temperatures[j] < activity.temperatures.end && temperatures[j] > activity.temperatures.start) {
+            if (temperatures[j] < activity.maxTemp && temperatures[j] > activity.minTemp) {
               // within temperature range
               String weather = weatherIconsName[j];
               switch (weather) {
@@ -555,7 +557,7 @@ class _HomePageState extends State<HomePage> {
       child: Material(
         color: widget.boxColor, // button color
         child: FittedBox(
-          fit: BoxFit.scaleDown,
+          fit: BoxFit.fitHeight,
           child: InkWell(
           onTap: () => show ? changeActivity(activityNames[index]) : log('clicked empty activity'),
           child: Column(

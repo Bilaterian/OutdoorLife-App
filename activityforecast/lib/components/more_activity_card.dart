@@ -119,7 +119,6 @@ class _MoreActivityCardState extends State<MoreActivityCard> {
       children: [
         AddActivity(
           activityToAdd: widget.index,
-          setStateOfAcitivity: widget.setStateOfAcitivity,
           iconColor: widget.addIconColor,
         ),
         Icon(

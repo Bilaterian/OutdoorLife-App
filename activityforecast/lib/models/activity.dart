@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
 class Activity {
+  int order;
+  int category;
   String activity;
-  IconData activityIcon;
+  int activityIconCP;
   // RangeValues idealweather;
-  bool status;
-  RangeValues temperatures;
+  //RangeValues temperatures;
+  int minTemp;
+  int maxTemp;
   bool isSunnyIdeal;
   bool isFogIdeal;
   bool isCloudyIdeal;
@@ -15,11 +18,14 @@ class Activity {
   bool isSnowIdeal;
 
   Activity({
+    required this.order,
+    required this.category,
     required this.activity,
-    required this.activityIcon,
+    required this.activityIconCP,
     // required this.idealweather,
-    required this.status,
-    required this.temperatures,
+    //required this.temperatures,
+    required this.minTemp,
+    required this.maxTemp,
     required this.isSunnyIdeal,
     required this.isFogIdeal,
     required this.isCloudyIdeal,
@@ -28,4 +34,22 @@ class Activity {
     required this.isThunderstormIdeal,
     required this.isSnowIdeal
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'ord': this.order,
+      'category': this.category,
+      'name': this.activity,
+      'icon': this.activityIconCP,
+      'minTemp': this.minTemp,
+      'maxTemp': this.maxTemp,
+      'sunny': this.isSunnyIdeal ? 1 : 0,
+      'fog': this.isFogIdeal ? 1 : 0,
+      'cloudy': this.isCloudyIdeal ? 1 : 0,
+      'drizzle': this.isDrizzleIdeal ? 1 : 0,
+      'rainy': this.isRainyIdeal ? 1 : 0,
+      'thunderstorm': this.isThunderstormIdeal ? 1 : 0,
+      'snow': this.isSnowIdeal ? 1 : 0,
+    };
+  }
 }

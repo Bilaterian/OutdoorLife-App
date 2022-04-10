@@ -9,13 +9,10 @@ class AddActivity extends StatefulWidget {
   const AddActivity(
       {Key? key,
       required this.activityToAdd,
-      required this.setStateOfAcitivity,
       required this.iconColor})
       : super(key: key);
 
   final IconData addIcon = Icons.add_circle_rounded;
-
-  final Function setStateOfAcitivity;
 
   final int activityToAdd;
   final Color? iconColor;
@@ -36,7 +33,6 @@ class _AddActivityState extends State<AddActivity> {
                   .moreActivities[widget.activityToAdd];
           Provider.of<ActivityProvider>(context, listen: false)
               .addMyActivity(activity, widget.activityToAdd);
-          widget.setStateOfAcitivity();
         },
         icon: Icon(
           widget.addIcon,

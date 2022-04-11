@@ -195,6 +195,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 )
               ],
             ),
+            ..._themeTiles(),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 20),
               child: Text(

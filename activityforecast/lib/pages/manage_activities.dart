@@ -90,9 +90,9 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
     //DBProvider.dbp.getDatabase();
     //Provider.of<ActivityProvider>(context).readFromDB();
     currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
-    log("CANum: " + currentActivities.length.toString());
+    //log("CANum: " + currentActivities.length.toString());
     moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
-    log("MANum: " + moreActivities.length.toString());
+    //log("MANum: " + moreActivities.length.toString());
     _mediaQueryData = MediaQuery.of(context);
     screenWidth = _mediaQueryData.size.width;
     screenHeight = _mediaQueryData.size.height;
@@ -152,8 +152,8 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
 
 // Reorder List View to show "Current (My) Activities"
   ReorderableListView _reorderableCurrentActivitiesView() {
-    //currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
-    //moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
+    currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
+    moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
 
     return ReorderableListView(
         buildDefaultDragHandles: false,
@@ -176,8 +176,8 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
 
 // Reorder List View for to show "More Activities"
   ReorderableListView _reorderableMoreActivitiesView() {
-    //currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
-    //moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
+    currentActivities = Provider.of<ActivityProvider>(context).currentActivities;
+    moreActivities = Provider.of<ActivityProvider>(context).moreActivities;
 
     return ReorderableListView(
         physics: const ClampingScrollPhysics(),

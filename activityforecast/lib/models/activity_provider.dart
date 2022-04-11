@@ -39,18 +39,14 @@ class ActivityProvider extends ChangeNotifier {
     log("CACount = " + CACount.toString() + ", MACount = " + MACount.toString());
   }
 
-  void updateToDB() async {
-    log("------UPDATETODB");
+  Future<void> updateToDB() async {
+    //log("------UPDATETODB");
     // clear DB contents
 
     //await DBProvider.dbp.clearTable();
 
     recalculateOrderAndCategory();
 
-    log("-----------------Updating Database with");
-    printActivities();
-
-    log("CACount = " + currentActivities.length.toString() + ", MACount = " + moreActivities.length.toString());
     List<Activity> temp = [];
 
     Activity activity;
@@ -81,10 +77,10 @@ class ActivityProvider extends ChangeNotifier {
   }
 
   // When adding an archived (MORE ACTIVITY) to the My Acitivies (current activies)
-  void addMyActivity(Activity activity, int moreActivityIndex) {
+  Future<void> addMyActivity(Activity activity, int moreActivityIndex) async {
     log("-----------------addMyActivity");
     // !<!<!<
-    //log("-----------------before");
+    log("-----------------before");
     //printActivities();
 
     currentActivities.add(activity); // add to My ACTIVITIES
@@ -93,45 +89,45 @@ class ActivityProvider extends ChangeNotifier {
     //log("-----------------after");
     //printActivities();
 
-    updateToDB();
+    await updateToDB();
 
     notifyListeners();
   }
 
   // When removing My Acitivies (current activies)
-  void removeMyActivity(Activity activity, int myActivityIndex) {
+  Future<void> removeMyActivity(Activity activity, int myActivityIndex) async {
     log("-----------------removeMyActivity");
     moreActivities.insert(0, activity); // add to My ACTIVITIES
     currentActivities.remove(
         currentActivities[myActivityIndex]); // remove from theM MORE ACTIVITIES
 
-    updateToDB();
+    await updateToDB();
 
     notifyListeners();
   }
 
   // When removing archived Acitivies (more activies)
-  void removeMoreActivity(int moreActivityIndex) {
+  Future<void> removeMoreActivity(int moreActivityIndex) async {
     log("-----------------removeMoreActivity");
     moreActivities.remove(
 moreActivities[moreActivityIndex]); // remove from theM MORE ACTIVITIES
 
-    updateToDB();
+    await updateToDB();
 
     notifyListeners();
   }
 
   // After creating a new activity, add to MORE ACTIVITIES
-  void addCreatedActivity(Activity activity) {
+  Future<void> addCreatedActivity(Activity activity) async {
     log("-----------------addCreatedActivity");
     moreActivities.insert(0, activity);
 
-    updateToDB();
+    await updateToDB();
 
     notifyListeners();
   }
 
-  void reorderMoreActivity(int oldIndex, int newIndex) {
+  Future<void> reorderMoreActivity(int oldIndex, int newIndex) async {
     log("-----------------reorderMoreActivity");
 
     log("-----------------before");
@@ -143,12 +139,33 @@ moreActivities[moreActivityIndex]); // remove from theM MORE ACTIVITIES
     var item = moreActivities.removeAt(oldIndex);
     moreActivities.insert(newIndex, item);
 
-    recalculateOrderAndCategory();
+    int lowest = oldIndex < newIndex ? oldIndex : newIndex;
+    int oldIsLowest = oldIndex < newIndex ? 1 : 0;
 
-    //log("-----------------after");
-    //printActivities();
+    if (oldIsLowest == 1) {
+      // moving activity down the list
+      moreActivities[oldIndex].order = newIndex+1;
 
-    updateToDB();
+      for (int i = oldIndex+1; i < newIndex; i++) {
+        moreActivities[i].order = moreActivities[i].order.toInt() - 1;
+      }
+    } else { //newIsLowest
+      // moving activity up the list
+      moreActivities[oldIndex].order = newIndex+1;
+
+      for (int i = newIndex; i < oldIndex; i++) {
+        moreActivities[i].order = moreActivities[i].order.toInt() + 1;
+      }
+    }
+
+    moreActivities.sort((a, b) => a.order.compareTo(b.order));
+
+    //recalculateOrderAndCategory();
+
+    log("-----------------after");
+    printActivities();
+
+    await updateToDB();
 
     //log("-----------------end");
     //printActivities();
@@ -156,12 +173,12 @@ moreActivities[moreActivityIndex]); // remove from theM MORE ACTIVITIES
     notifyListeners();
   }
 
-  void reorderMyActivity(int oldIndex, int newIndex) {
+  Future<void> reorderMyActivity(int oldIndex, int newIndex) async {
     log("-----------------reorderMyActivity");
     var item = currentActivities.removeAt(oldIndex);
     currentActivities.insert(newIndex, item);
 
-    updateToDB();
+    await updateToDB();
 
     notifyListeners();
   }
@@ -184,7 +201,7 @@ moreActivities[moreActivityIndex]); // remove from theM MORE ACTIVITIES
 
   void printActivities() {
 
-    int order = 0;
+    //int order = 0;
     for(int i = 0; i < currentActivities.length; i++) {
       log(currentActivities[i].activity + "(" + currentActivities[i].order.toString() + ")");
     }

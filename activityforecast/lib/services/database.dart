@@ -294,13 +294,13 @@ class DBProvider {
     //_database = null;
     //log("---bye delete everything");
 
-    log("---hello getDatabase Call");
+    //log("---hello getDatabase Call");
     final db = await getDatabase();
-    log("---bye getDatabase Call");
+    //log("---bye getDatabase Call");
     if (db == null) {
-      log("getActivities: db is null");
+      //log("getActivities: db is null");
     } else {
-      log("getActivities: db is not null");
+      //log("getActivities: db is not null");
 
       bool temp = false;
 
@@ -359,7 +359,7 @@ class DBProvider {
   }
 
   Future<void> updateActivities(List<Activity> activities) async {
-    await clearTable();
+    // await clearTable();
 
     for(int i = 0; i < activities.length; i++) {
       await DBProvider.dbp.insertActivity(activities[i]);

@@ -436,126 +436,109 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   body: SingleChildScrollView(
-                      child: Column(children: <Widget>[
-                    /*
-                // Location Text Field
-                TextField(
-                  style: TextStyle(color: widget.textColor),
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Enter City Name',
-                    hintStyle: TextStyle(color: widget.textColor),
-                  ),
-                ),
-                 */
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          child: Container(
-                            height: 50,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: widget.textColor,
-                            ),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Icon(Icons.location_on,
-                                  color: widget.backgroundColor),
-                            ),
-                          ),
-                          onTap: () async {
-                            getUserLocation();
-                            _searchController.text = "";
-                          },
-                        ),
-                        Expanded(
-                          child: SizedBox(
-                            height: 50,
-                            child: TextField(
-                              controller: _searchController,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: widget.textColor, fontSize: 18),
-                              decoration: InputDecoration(
-                                fillColor: widget.backgroundColor,
-                                hintText: 'Enter City Name',
-                                hintStyle: TextStyle(
-                                    color: widget.textColor, fontSize: 18),
-                                filled: true,
-                                border: OutlineInputBorder(),
+                    child: Column(
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              child: Container(
+                                height: 50,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                color: widget.textColor,
                               ),
-                              onSubmitted: (value) async {
-                                /*
-                            print(value);
-                            cityInput = value;
-                            if (cityInput != null) {
-                              var weatherData = await weather.getCityWeather(cityInput);
-                              updateUI(weatherData);
-                            }
-                             */
+                              child: Padding(
+                                padding:
+                                  const EdgeInsets.symmetric(horizontal: 15.0),
+                                  child: Icon(Icons.location_on,
+                                    color: widget.backgroundColor),
+                                ),
+                              ),
+                              onTap: () async {
+                                getUserLocation();
+                                _searchController.text = "";
                               },
                             ),
-                          ),
-                        ),
-                        InkWell(
-                          child: Container(
-                            height: 50,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                              color: widget.textColor,
+                            Expanded(
+                              child: SizedBox(
+                                height: 50,
+                                child: TextField(
+                                  controller: _searchController,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: widget.textColor, fontSize: 18
+                                  ),
+                                  decoration: InputDecoration(
+                                    fillColor: widget.backgroundColor,
+                                    hintText: 'Enter City Name',
+                                    hintStyle: TextStyle(
+                                      color: widget.textColor, fontSize: 18),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  onSubmitted: (value) async {
+                                  },
+                                ),
+                              ),
                             ),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 15.0),
-                              child: Text('Search',
+                          InkWell(
+                            child: Container(
+                              height: 50,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: widget.textColor,
+                              ),
+                              child: Padding(
+                                padding:
+                                const EdgeInsets.symmetric(horizontal: 15.0),
+                                child: Text('Search',
                                   style: TextStyle(
                                       fontSize: 18,
                                       color: widget.backgroundColor)),
+                              ),
                             ),
-                          ),
-                          onTap: () async {
-                            FocusScope.of(context).unfocus();
-                            print(_searchController.text);
-                            cityInput = _searchController.text;
-                            if (cityInput != null) {
-                              var weatherData =
+                            onTap: () async {
+                              FocusScope.of(context).unfocus();
+                              print(_searchController.text);
+                              cityInput = _searchController.text;
+                              if (cityInput != null) {
+                                var weatherData =
                                   await weather.getCityWeather(cityInput);
                               updateUI(weatherData);
-                            }
-                          },
-                        )
-                      ],
-                    ),
+                              }
+                            },
+                          )
+                          ],
+                        ),
 
                     // Activities Validity
-                    Row(children: <Widget>[
-                      activityBox(size1: boxWidth, size2: boxWidth, index: 0),
-                      activityBox(size1: boxWidth, size2: boxWidth, index: 1),
-                      activityBox(size1: boxWidth, size2: boxWidth, index: 2),
-                      activityBox(size1: boxWidth, size2: boxWidth, index: 3),
-                      activityBox(
+                      Row(children: <Widget>[
+                        activityBox(size1: boxWidth, size2: boxWidth, index: 0),
+                        activityBox(size1: boxWidth, size2: boxWidth, index: 1),
+                        activityBox(size1: boxWidth, size2: boxWidth, index: 2),
+                        activityBox(size1: boxWidth, size2: boxWidth, index: 3),
+                        activityBox(
                           size1: boxWidthIfExtraPixel,
                           size2: boxWidth,
                           index: 4),
                     ]),
-                    Row(children: <Widget>[
-                      activityBox(size1: boxWidth, size2: boxWidth, index: 5),
-                      activityBox(size1: boxWidth, size2: boxWidth, index: 6),
-                      activityBox(size1: boxWidth, size2: boxWidth, index: 7),
-                      activityBox(size1: boxWidth, size2: boxWidth, index: 8),
-                      SizedBox.fromSize(
+                      Row(children: <Widget>[
+                        activityBox(size1: boxWidth, size2: boxWidth, index: 5),
+                        activityBox(size1: boxWidth, size2: boxWidth, index: 6),
+                        activityBox(size1: boxWidth, size2: boxWidth, index: 7),
+                        activityBox(size1: boxWidth, size2: boxWidth, index: 8),
+                        SizedBox.fromSize(
                         size: Size(boxWidthIfExtraPixel,
                             boxWidth), // button width and height
-                        child: Material(
+                          child: Material(
                           color: widget.boxColor, // button color
-                          child: InkWell(
+                            child: InkWell(
                             onTap: () {
                               Navigator.of(context)
                                   .pushNamed("/ManageActivities");
                             }, // button pressed
-                            child: Column(
+                              child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text("+",
@@ -571,17 +554,17 @@ class _HomePageState extends State<HomePage> {
                     ]),
 
                     // Activity Forecast
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Center(
-                              child: Container(
-                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                                child: Text(
-                                  '$selectedActivity' + " Forecast",
-                                  style: TextStyle(
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Center(
+                                child: Container(
+                                  padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                  child: Text(
+                                    '$selectedActivity' + " Forecast",
+                                    style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 25,
                                     color: widget.textColor,
@@ -621,13 +604,13 @@ class _HomePageState extends State<HomePage> {
                                           })
                           ]),
                     ),
-                    forecasts(),
+                        forecasts(),
 
                     // alerts
-                    Center(
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Text(
+                        Center(
+                          child: Container(
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: Text(
                           'ALERTS',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -637,24 +620,43 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    Center(
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Text(
-                          '${alert[0]}, ${alert[1]}, ${alert[2]}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25,
-                            color: widget.textColor,
-                          ),
-                        ),
-                      ),
+                        Center(
+                            child: Container(
+                                color: widget.boxColor,
+                                padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      '${alert[0]}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 24,
+                                        color: widget.backgroundColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      '\n${alert[1]}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: widget.backgroundColor,
+                                      ),
+                                    ),
+                                    Text(
+                                      '\n${alert[2]}',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: widget.backgroundColor,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                            )
+                        )
+                      ]
                     ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 19, 0, 0),
-                      child: Image.asset('assets/images/GoogleMapExample.jpg'),
-                    ),
-                  ]))),
+                ),
+              ),
         ));
   }
 

@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:activityforecast/view/pages/home_page.dart';
 import 'package:provider/provider.dart';
 
+import 'models/temperature_provider.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -22,6 +24,8 @@ class MyApp extends StatelessWidget {
             create: (BuildContext context) => ActivityProvider()),
         ChangeNotifierProvider(
             create: (BuildContext context) => ThemeProvider()),
+        ChangeNotifierProvider(
+            create: (BuildContext context) => TemperatureProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

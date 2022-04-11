@@ -1,16 +1,16 @@
 import 'dart:ui';
+import 'package:activityforecast/models/theme.dart';
+import 'package:activityforecast/models/theme_provider.dart';
 import 'package:activityforecast/view/pages/home_page.dart';
 
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
+import 'package:activityforecast/models/temperature_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/theme.dart';
-import '../models/theme_provider.dart';
 
 class SettingsPage extends StatefulWidget {
-  //SettingsPage({Key? key}) : super(key: key);
-
   late Color? activityContentsColor;
   late Color? backgroundColor;
   late Color? boxColor;
@@ -25,20 +25,38 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   late ColourScheme theme;
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  void initState() {
+    setInit();
+  }
+
+  Future<void> setInit() async{
+    final SharedPreferences prefs = await _prefs;
+    Provider.of<TemperatureProvider>(context, listen: false).setUnit(prefs.getBool('unit') ?? false);
+    Provider.of<TemperatureProvider>(context, listen: false).setNotif(prefs.getBool('notification') ?? false);
+  }
+
+  Future<void> setUnit() async{
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setBool('unit', Provider.of<TemperatureProvider>(context, listen: false).getTemperatureSelect());
+  }
+
+  Future<void> setNotif() async{
+    final SharedPreferences prefs = await _prefs;
+    await prefs.setBool('notification', Provider.of<TemperatureProvider>(context, listen: false).getNotifications());
+  }
   late List themes;
 
-  int selectedIndex = 0;
-  List selected = [false, false];
   int _selectedThemeIndex = 0;
 
   @override
-  Widget build(BuildContext context) {
+  build(BuildContext context) {
     theme = Provider.of<ThemeProvider>(context).currentTheme;
 
     themes = Provider.of<ThemeProvider>(context, listen: false).themes;
 
     widget.activityContentsColor = theme.secondary;
-
     widget.backgroundColor = theme.secondary;
     widget.textColor = theme.quaternary;
     widget.boxColor = theme.quinary;
@@ -70,75 +88,111 @@ class _SettingsPageState extends State<SettingsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
               child: Text(
-                " Temperature",
+                "Temperature",
                 style: TextStyle(
                   color: widget.textColor,
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
                 ),
-              ),
-            ),
-            Center(
-              child: Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          selected[0] = !selected[0];
-                          selected[1] = false;
-                        });
-                      },
-                      child: Card(
-                        color: (selected[0])
-                            ? widget.boxColor
-                            : widget.backgroundColor,
-                        child: Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(
-                            'Celsius(°C)',
-                            style: TextStyle(
-                                color: selected[0]
-                                    ? widget.appBarContentsColor
-                                    : widget.textColor,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
             Row(
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: Text(
+                    "Celsius/Fahrenheit",
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: widget.textColor
+                    ),
+                  )
+                ),
                 Expanded(
                     child: InkWell(
-                  onTap: () {
-                    setState(() {
-                      selected[1] = !selected[1];
-                      selected[0] = false;
-                    });
-                  },
-                  child: Card(
-                    color: (selected[1])
-                        ? widget.boxColor
-                        : widget.backgroundColor,
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        'Farenheit(°F)',
-                        style: TextStyle(
-                            color: selected[1]
-                                ? widget.appBarContentsColor
-                                : widget.textColor,
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.left,
+                      onTap: () {
+                        setState(() {
+                          Provider.of<TemperatureProvider>(context, listen: false).changeTempSelect();
+                          setUnit();
+                        });
+                      },
+                      child: Card(
+                        color: widget.boxColor,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Provider.of<TemperatureProvider>(context, listen: false).getTemperatureSelect() ?
+                          Text(
+                            'Celsius(°C)',
+                            style: TextStyle(
+                              color: widget.activityContentsColor,
+                            ),
+                            textAlign: TextAlign.left,
+                          ) :
+                          Text(
+                            'Fahrenheit(°F)',
+                            style: TextStyle(
+                              color: widget.activityContentsColor,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                )),
+                    )
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10.0),
+              child: Text(
+                "Notifications",
+                style: TextStyle(
+                  color: widget.textColor,
+                  fontSize: 15,
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 20),
+                    child: Text(
+                      "On/Off",
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: widget.textColor
+                      ),
+                    )
+                ),
+                Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        setState(() {
+                          Provider.of<TemperatureProvider>(context, listen: false).switchNotifications();
+                          setNotif();
+                        });
+                      },
+                      child: Card(
+                        color: widget.boxColor,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Provider.of<TemperatureProvider>(context, listen: false).getNotifications() ?
+                          Text(
+                            'On',
+                            style: TextStyle(
+                              color: widget.activityContentsColor,
+                            ),
+                            textAlign: TextAlign.left,
+                          ) :
+                          Text(
+                            'Off',
+                            style: TextStyle(
+                              color: widget.activityContentsColor,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
+                    )
+                )
               ],
             ),
             ..._themeTiles(),
@@ -165,6 +219,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   onPressed: () {
                     setState(() {
                       _selectedThemeIndex = 0;
+                      Provider.of<TemperatureProvider>(context, listen: false).resetTemp();
                     });
                   },
                   child: Text('Reset',

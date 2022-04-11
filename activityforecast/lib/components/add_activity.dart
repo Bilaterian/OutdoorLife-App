@@ -39,6 +39,7 @@ class _AddActivityState extends State<AddActivity> {
               .addMyActivity(activity, widget.activityToAdd);
           widget.setStateOfAcitivity();
           ActivitiesDatabase.instance.create(activity);
+          ActivitiesDatabase.instance.delete2(widget.activityToAdd);
           print("INSERT ACTIVITY");
         },
         icon: Icon(

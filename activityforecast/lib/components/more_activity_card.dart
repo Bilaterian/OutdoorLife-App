@@ -9,6 +9,8 @@ import 'package:activityforecast/components/remove_activity.dart';
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
 import 'package:provider/provider.dart';
 
+import '../services/activities_database.dart';
+
 class MoreActivityCard extends StatefulWidget {
   MoreActivityCard(
       {Key? key,
@@ -78,6 +80,7 @@ class _MoreActivityCardState extends State<MoreActivityCard> {
               // moreActivities.removeAt(widget.index);
               Provider.of<ActivityProvider>(context, listen: false)
                   .removeMoreActivity(widget.index);
+              ActivitiesDatabase.instance.delete2(widget.index);
               widget.setStateOfAcitivity();
             });
           },
@@ -90,10 +93,10 @@ class _MoreActivityCardState extends State<MoreActivityCard> {
                   color: widget.activityTextColor, fontWeight: FontWeight.bold),
             ),
             leading: _leadingIcons(),
-            trailing: ReorderableDragStartListener(
-              index: widget.index,
-              child: Icon(Icons.drag_handle, color: widget.dragIconColor),
-            ),
+            // trailing: ReorderableDragStartListener(
+            //   index: widget.index,
+            //   child: Icon(Icons.drag_handle, color: widget.dragIconColor),
+            // ),
           ),
         ),
       ),

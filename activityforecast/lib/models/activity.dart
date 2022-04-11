@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 final String tableActivities = 'activities';
 
+final String tableActivities2 = 'activities2';
+
 class ActivityFields {
   static final List<String> values = [
     id,

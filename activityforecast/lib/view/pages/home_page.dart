@@ -175,6 +175,10 @@ class _HomePageState extends State<HomePage> {
         await ActivitiesDatabase.instance.readAllActivities();
     Provider.of<ActivityProvider>(context, listen: false)
         .refreshMyActivityFromDatabase(tempList);
+    List<Activity> tempList2 =
+        await ActivitiesDatabase.instance.readAllActivities2();
+    Provider.of<ActivityProvider>(context, listen: false)
+        .refreshMyActivityFromDatabase2(tempList2);
   }
 
   void updateUI(dynamic weatherData) {

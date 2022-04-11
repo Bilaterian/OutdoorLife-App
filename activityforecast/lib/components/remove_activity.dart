@@ -5,6 +5,8 @@ import 'package:activityforecast/components/activities.dart';
 
 import 'package:provider/provider.dart';
 
+import '../services/activities_database.dart';
+
 class RemoveActivity extends StatefulWidget {
   const RemoveActivity(
       {Key? key,
@@ -35,6 +37,9 @@ class _RemoveActivityState extends State<RemoveActivity> {
               .removeMyActivity(activity, widget.activityToRemove);
 
           // currentActivities.remove(currentActivities[widget.activityToRemove]);
+          ActivitiesDatabase.instance.create2(activity);
+          ActivitiesDatabase.instance.delete(widget.activityToRemove);
+          print("INSERT ACTIVITY");
           widget.setStateOfAcitivity();
         },
         icon: Icon(widget.removeIcon, color: widget.iconColor));

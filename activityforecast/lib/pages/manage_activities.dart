@@ -80,6 +80,11 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
         await ActivitiesDatabase.instance.readAllActivities();
     Provider.of<ActivityProvider>(context, listen: false)
         .refreshMyActivityFromDatabase(tempList);
+
+    List<Activity> tempList2 =
+        await ActivitiesDatabase.instance.readAllActivities2();
+    Provider.of<ActivityProvider>(context, listen: false)
+        .refreshMyActivityFromDatabase2(tempList2);
   }
 
   refresh() {
@@ -167,42 +172,19 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
   }
 
 // Reorder List View to show "Current (My) Activities"
-  ReorderableListView _reorderableCurrentActivitiesView() {
-    return ReorderableListView(
-        buildDefaultDragHandles: false,
-        shrinkWrap: true,
-        children: [..._currentActivities()],
-        onReorder: (int oldIndex, int newIndex) {
-          setState(() {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            Provider.of<ActivityProvider>(context, listen: false)
-                .reorderMyActivity(oldIndex, newIndex);
-            // var item = moreActivities.removeAt(oldIndex);
-            // moreActivities.insert(newIndex, item);
-          });
-        });
+  ListView _reorderableCurrentActivitiesView() {
+    return ListView(
+      shrinkWrap: true,
+      children: [..._currentActivities()],
+    );
   }
 
 // Reorder List View for to show "More Activities"
-  ReorderableListView _reorderableMoreActivitiesView() {
-    return ReorderableListView(
-        physics: const ClampingScrollPhysics(),
-        buildDefaultDragHandles: false,
-        shrinkWrap: true,
-        children: [..._moreActivities()],
-        onReorder: (int oldIndex, int newIndex) {
-          setState(() {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            Provider.of<ActivityProvider>(context, listen: false)
-                .reorderMoreActivity(oldIndex, newIndex);
-            // var item = moreActivities.removeAt(oldIndex);
-            // moreActivities.insert(newIndex, item);
-          });
-        });
+  ListView _reorderableMoreActivitiesView() {
+    return ListView(
+      shrinkWrap: true,
+      children: [..._moreActivities()],
+    );
   }
 
 // return a List of "More Activity" Cards

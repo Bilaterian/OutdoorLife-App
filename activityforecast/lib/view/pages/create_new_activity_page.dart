@@ -12,6 +12,8 @@ import 'package:flutter/rendering.dart';
 import 'package:provider/provider.dart';
 import 'package:weather_icons/weather_icons.dart';
 
+import '../../services/activities_database.dart';
+
 class CreateNewActivityPage extends StatefulWidget {
   CreateNewActivityPage({Key? key}) : super(key: key);
   List<bool> check_circle_selected = [
@@ -366,22 +368,24 @@ class _CreateNewActivityPageState extends State<CreateNewActivityPage> {
                 (selectedIcon == null || (activityNameController.text.isEmpty))
                     ? null
                     : () {
+                        Activity activity = Activity(
+                            activity: activityNameController.text,
+                            activityIcon: selectedIcon,
+                            minTemp: widget._currentRangeValues.start.toInt(),
+                            maxTemp: widget._currentRangeValues.end.toInt(),
+                            isSunnyIdeal: widget.check_circle_selected[0],
+                            isFogIdeal: widget.check_circle_selected[1],
+                            isCloudyIdeal: widget.check_circle_selected[2],
+                            isDrizzleIdeal: widget.check_circle_selected[3],
+                            isRainyIdeal: widget.check_circle_selected[4],
+                            isThunderstormIdeal:
+                                widget.check_circle_selected[5],
+                            isSnowIdeal: widget.check_circle_selected[6],
+                            status: false);
+
                         Provider.of<ActivityProvider>(context, listen: false)
-                            .addCreatedActivity(Activity(
-                                activity: activityNameController.text,
-                                activityIcon: selectedIcon,
-                                minTemp:
-                                    widget._currentRangeValues.start.toInt(),
-                                maxTemp: widget._currentRangeValues.end.toInt(),
-                                isSunnyIdeal: widget.check_circle_selected[0],
-                                isFogIdeal: widget.check_circle_selected[1],
-                                isCloudyIdeal: widget.check_circle_selected[2],
-                                isDrizzleIdeal: widget.check_circle_selected[3],
-                                isRainyIdeal: widget.check_circle_selected[4],
-                                isThunderstormIdeal:
-                                    widget.check_circle_selected[5],
-                                isSnowIdeal: widget.check_circle_selected[6],
-                                status: false));
+                            .addCreatedActivity(activity);
+                        ActivitiesDatabase.instance.create2(activity);
                         Navigator.of(context).pop();
 
                         ScaffoldMessenger.of(context).showSnackBar(

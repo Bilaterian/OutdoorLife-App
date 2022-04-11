@@ -76,10 +76,10 @@ class _CurrentActivityCardState extends State<CurrentActivityCard> {
                   color: widget.activityTextColor,
                   fontWeight: FontWeight.bold)),
           leading: _leadingIcons(),
-          trailing: ReorderableDragStartListener(
-            index: widget.index,
-            child: Icon(Icons.drag_handle, color: widget.dragIconColor),
-          ),
+          // trailing: ReorderableDragStartListener(
+          //   index: widget.index,
+          //   child: Icon(Icons.drag_handle, color: widget.dragIconColor),
+          // ),
         ),
       ),
     );

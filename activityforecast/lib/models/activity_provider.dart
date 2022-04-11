@@ -1,8 +1,12 @@
 import 'package:activityforecast/components/activities.dart';
 import 'package:activityforecast/components/more_activity_card.dart';
-import 'package:activityforecast/models/Condition.dart';
 import 'package:activityforecast/models/activity.dart';
 import 'package:flutter/material.dart';
+
+enum ActivityList {
+  current,
+  more,
+}
 
 class ActivityProvider extends ChangeNotifier {
   // When adding an archived (MORE ACTIVITY) to the My Acitivies (current activies)
@@ -10,6 +14,26 @@ class ActivityProvider extends ChangeNotifier {
     currentActivities.add(activity); // add to My ACTIVITIES
     moreActivities.remove(
         moreActivities[moreActivityIndex]); // remove from theM MORE ACTIVITIES
+
+    notifyListeners();
+  }
+
+  // When editing a (CURRENT ACTIVITY),
+  // @activity is the activity you edited
+  // @myactivityIndex, the index from the CURRENT ACTIVITY LIST that you want to replace (that you edited)
+  void editMyActivity(Activity activity, int myactivityIndex) {
+    currentActivities.removeAt(myactivityIndex);
+    currentActivities.insert(myactivityIndex, activity);
+
+    notifyListeners();
+  }
+
+  // When editing a (MORE ACTIVITY),
+  // @activity is the activity you edited
+  // @moreactivityIndex, the index from the MORE ACTIVITY LIST that you want to replace (that you edited)
+  void editMoreActivity(Activity activity, int moreActivityIndex) {
+    moreActivities.removeAt(moreActivityIndex);
+    moreActivities.insert(moreActivityIndex, activity);
 
     notifyListeners();
   }
@@ -60,15 +84,27 @@ class ActivityProvider extends ChangeNotifier {
     Activity(
         activity: "Run",
         activityIcon: Icons.directions_run,
-        condition: condition,
         status: true,
-        notification: true),
+        temperatures: RangeValues(0, 0),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
     Activity(
         activity: "Ski",
         activityIcon: Icons.downhill_skiing,
-        condition: condition,
         status: true,
-        notification: true),
+        temperatures: RangeValues(0, 0),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
     // Activity(
     //     activity: "Picnic",
     //     activityIcon: Icons.,
@@ -77,68 +113,112 @@ class ActivityProvider extends ChangeNotifier {
     Activity(
         activity: "Surfing",
         activityIcon: Icons.surfing,
-        condition: condition,
         status: true,
-        notification: true),
+        temperatures: RangeValues(0, 0),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
     Activity(
         activity: "Swim",
         activityIcon: Icons.pool,
-        condition: condition,
         status: true,
-        notification: true),
+        temperatures: RangeValues(0, 0),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
     Activity(
         activity: "Hike",
         activityIcon: Icons.hiking,
-        condition: condition,
         status: true,
-        notification: true),
+        temperatures: RangeValues(0, 0),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
     Activity(
         activity: "FootBall",
         activityIcon: Icons.sports_football,
-        condition: condition,
         status: true,
-        notification: true),
+        temperatures: RangeValues(0, 0),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
     Activity(
         activity: "BasketBall",
         activityIcon: Icons.sports_baseball,
-        condition: condition,
         status: true,
-        notification: true),
+        temperatures: RangeValues(0, 0),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
     Activity(
         activity: "Soccer",
         activityIcon: Icons.sports_soccer,
-        condition: condition,
         status: true,
-        notification: true),
+        temperatures: RangeValues(0, 0),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
     Activity(
         activity: "Cricket",
         activityIcon: Icons.sports_cricket,
-        condition: condition,
         status: true,
-        notification: true),
+        temperatures: RangeValues(0, 0),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
     Activity(
         activity: "Golf",
         activityIcon: Icons.sports_golf,
-        condition: condition,
         status: true,
-        notification: true),
+        temperatures: RangeValues(0, 0),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
     Activity(
         activity: "Mix Martial Arts",
         activityIcon: Icons.sports_handball,
-        condition: condition,
         status: true,
-        notification: true),
+        temperatures: RangeValues(0, 0),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
   ];
 
   List<Activity> currentActivities = [];
 }
-
-Condition condition = Condition(
-    temperatures: RangeValues(0, 0),
-    isSunnyIdeal: true,
-    isNightIdeal: true,
-    isCloudyIdeal: true,
-    isWindyIdeal: true,
-    isRainyIdeal: true,
-    isThunderstormIdeal: true,
-    isSnowIdeal: true);

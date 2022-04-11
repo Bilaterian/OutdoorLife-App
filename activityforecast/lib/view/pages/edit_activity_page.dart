@@ -6,7 +6,6 @@ import 'package:activityforecast/components/icons.dart';
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
 import 'package:activityforecast/components/themes/themes.dart';
 import 'package:activityforecast/components/weather_icons.dart';
-import 'package:activityforecast/models/Condition.dart';
 import 'package:activityforecast/models/activity.dart';
 import 'package:activityforecast/models/activity_provider.dart';
 import 'package:activityforecast/models/theme.dart';
@@ -18,7 +17,15 @@ import 'package:provider/provider.dart';
 import 'package:weather_icons/weather_icons.dart';
 
 class EditActivityPage extends StatefulWidget {
-  EditActivityPage({Key? key}) : super(key: key);
+  EditActivityPage({
+    Key? key,
+    required this.activityToEditIndex,
+    required this.whichActivityList,
+    required this.list,
+  }) : super(key: key);
+  final int activityToEditIndex;
+  final Enum whichActivityList;
+  final List<Activity> list;
   List<bool> check_circle_selected = [
     true,
     true,
@@ -71,6 +78,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
   List<bool> icon1_selected = [false, false, false, false, false];
   List<bool> icon2_selected = [false, false, false, false, false];
   var selectedIcon;
+
   @override
   Widget build(BuildContext context) {
     theme = Provider.of<ThemeProvider>(context).currentTheme;
@@ -175,6 +183,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
           child: Container(
             color: widget.tabBarColor,
             child: DefaultTabController(
+              initialIndex: 5,
               length: activityTabIcons.length,
               child: Column(
                 children: [
@@ -369,13 +378,29 @@ class _EditActivityPageState extends State<EditActivityPage> {
                 (selectedIcon == null || (activityNameController.text.isEmpty))
                     ? null
                     : () {
-                        Provider.of<ActivityProvider>(context, listen: false)
-                            .addCreatedActivity(Activity(
-                                activity: activityNameController.text,
-                                activityIcon: selectedIcon,
-                                condition: setActivityConditions(),
-                                status: false,
-                                notification: true));
+                        Activity activity = Activity(
+                            activity: activityNameController.text,
+                            activityIcon: selectedIcon,
+                            temperatures: widget._currentRangeValues,
+                            isSunnyIdeal: widget.check_circle_selected[0],
+                            isFogIdeal: widget.check_circle_selected[1],
+                            isCloudyIdeal: widget.check_circle_selected[2],
+                            isDrizzleIdeal: widget.check_circle_selected[3],
+                            isRainyIdeal: widget.check_circle_selected[4],
+                            isThunderstormIdeal:
+                                widget.check_circle_selected[5],
+                            isSnowIdeal: widget.check_circle_selected[6],
+                            status: false);
+                        if (widget.whichActivityList == ActivityList.more) {
+                          Provider.of<ActivityProvider>(context, listen: false)
+                              .editMoreActivity(
+                                  activity, widget.activityToEditIndex);
+                        } else if (widget.whichActivityList ==
+                            ActivityList.current) {
+                          Provider.of<ActivityProvider>(context, listen: false)
+                              .editMyActivity(
+                                  activity, widget.activityToEditIndex);
+                        }
                         Navigator.of(context).pop();
 
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -398,6 +423,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
   // final ScrollController _controllerOne = ScrollController();
   List<ScrollController> controllers =
       List.generate(6, (i) => ScrollController());
+  int index = 0;
 
   Scrollbar gridViewIcon(List<IconData> icons, int tabIndex) {
     return Scrollbar(
@@ -413,22 +439,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
     );
   }
 
-  Condition setActivityConditions() {
-    var status = widget.check_circle_selected;
-    Condition condition = Condition(
-        temperatures: widget._currentRangeValues,
-        isSunnyIdeal: status[0],
-        isNightIdeal: status[1],
-        isCloudyIdeal: status[2],
-        isWindyIdeal: status[3],
-        isRainyIdeal: status[4],
-        isThunderstormIdeal: status[5],
-        isSnowIdeal: status[6]);
-
-    return condition;
-  }
-
-  TextEditingController activityNameController = TextEditingController();
+  late TextEditingController activityNameController;
 
   @override
   void dispose() {
@@ -474,6 +485,48 @@ class _EditActivityPageState extends State<EditActivityPage> {
               ? widget.selectedactivityIconColor
               : widget.unselectedactivityIconColor),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    List<Activity> activities = widget.list;
+
+    Activity activity = Activity.clone(activities[widget.activityToEditIndex]);
+
+    widget.check_circle_selected[0] = (activity.isSunnyIdeal) ? true : false;
+    widget.close_selected[0] = (activity.isSunnyIdeal) ? true : false;
+
+    widget.check_circle_selected[1] = (activity.isFogIdeal) ? true : false;
+    widget.close_selected[1] = (activity.isFogIdeal) ? true : false;
+
+    widget.check_circle_selected[2] = (activity.isCloudyIdeal) ? true : false;
+    widget.close_selected[2] = (activity.isCloudyIdeal) ? true : false;
+
+    widget.check_circle_selected[3] = (activity.isDrizzleIdeal) ? true : false;
+    widget.close_selected[3] = (activity.isDrizzleIdeal) ? true : false;
+
+    widget.check_circle_selected[4] = (activity.isRainyIdeal) ? true : false;
+    widget.close_selected[4] = (activity.isRainyIdeal) ? true : false;
+
+    widget.check_circle_selected[5] =
+        (activity.isThunderstormIdeal) ? true : false;
+    widget.close_selected[5] = (activity.isThunderstormIdeal) ? true : false;
+
+    widget.check_circle_selected[6] = (activity.isSnowIdeal) ? true : false;
+    widget.close_selected[6] = (activity.isSnowIdeal) ? true : false;
+    // temperatures: widget._currentRangeValues,
+
+    widget._currentRangeValues = activity.temperatures;
+
+    for (int i = 0; i < (activityIcons["all"] as List).length; i++) {
+      if ((activityIcons["all"] as List)[i] == activity.activityIcon) {
+        selectedIcon = activity.activityIcon;
+        index = i;
+        selectedIconIndex.putIfAbsent(5, () => i);
+      }
+    }
+    activityNameController = TextEditingController(text: activity.activity);
   }
 
   late MediaQueryData _mediaQueryData;

@@ -4,12 +4,6 @@ import 'package:flutter/material.dart';
 // Primary (orange banner), secondary (dark blue), tertiary (purple), quaternary (white), and quinary (button colour/) colours from a provider
 class ThemeProvider extends ChangeNotifier {
   final List themes = const [
-    // ColourScheme(
-    //     primary: Color(0xffCAB1BD),
-    //     secondary: Colors.white,
-    //     tertiary: Color(0xffE7CFCD),
-    //     quaternary: Color(0xff9F9AA4),
-    //     quinary: Color(0xffB5C9C3)),
     ColourScheme(
         primary: Color(0xffAC8598),
         secondary: Colors.white,
@@ -22,37 +16,6 @@ class ThemeProvider extends ChangeNotifier {
         tertiary: Color(0xffAC9375),
         quaternary: Color(0xff0A0908),
         quinary: Color(0xff5E503F)),
-    ColourScheme(
-        primary: Color(0xffE71D36),
-        secondary: Color(0xffEAE0D5),
-        tertiary: Color(0xff2EC4B6),
-        quaternary: Color(0xff011627),
-        quinary: Color(0xffFF9F1C)),
-    ColourScheme(
-        primary: Color(0xff011627),
-        secondary: Color(0xffEAE0D5),
-        tertiary: Color(0xff2EC4B6),
-        quaternary: Color(0xffE71D36),
-        quinary: Color(0xffFF9F1C)),
-    ColourScheme(
-        primary: Color(0xff82816D),
-        secondary: Color(0xffFBFFFE),
-        tertiary: Color(0xffF4F4F9),
-        quaternary: Color(0xff383335),
-        quinary: Color(0xff9A996A)),
-    // ColourScheme(
-    //     primary: Color(0xff3F612D),
-    //     secondary: Color(0xffF1DEDE),
-    //     tertiary: Color(0xffAAA95A),
-    //     quaternary: Color(0xff3A3335),
-    //     quinary: Color(0xff82816D)),
-    ColourScheme(
-        primary: Color(0xffC44900),
-        secondary: Colors.white,
-        // secondary: Color(0xffF1DEDE),
-        tertiary: Color(0xffAAA95A),
-        quaternary: Color(0xff3A3335),
-        quinary: Color(0xff82816D)),
     ColourScheme(
         primary: Color(0xff0081A7),
         secondary: Colors.white,
@@ -74,13 +37,6 @@ class ThemeProvider extends ChangeNotifier {
         tertiary: Color(0xffCCA43B),
         quaternary: Color(0xffFFFFFF),
         quinary: Color(0xff4B88A2)),
-    ColourScheme(
-        primary: Color(0xff00AFB5),
-        secondary: Color(0xff000000),
-        // secondary: Color(0xffEAF0CE),
-        tertiary: Color(0xffFB8B24),
-        quaternary: Color(0xffFBFEFD),
-        quinary: Color(0xff7F7979))
   ];
   // ColourScheme currentTheme = ColourScheme(
   //     primary: Color(0xff011627),

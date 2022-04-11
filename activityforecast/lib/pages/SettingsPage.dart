@@ -46,10 +46,15 @@ class _SettingsPageState extends State<SettingsPage> {
     final SharedPreferences prefs = await _prefs;
     await prefs.setBool('notification', Provider.of<TemperatureProvider>(context, listen: false).getNotifications());
   }
+  late List themes;
+
+  int _selectedThemeIndex = 0;
 
   @override
   build(BuildContext context) {
     theme = Provider.of<ThemeProvider>(context).currentTheme;
+
+    themes = Provider.of<ThemeProvider>(context, listen: false).themes;
 
     widget.activityContentsColor = theme.secondary;
     widget.backgroundColor = theme.secondary;
@@ -72,12 +77,13 @@ class _SettingsPageState extends State<SettingsPage> {
               onPressed: () => Navigator.pop(context, false),
             )
           ],
-          title: const Text('Settings',
-              style: TextStyle(color: Color(0xff031342))),
+          title: Text('Settings',
+              style: TextStyle(color: widget.appBarContentsColor)),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        body: ListView(
+          padding: EdgeInsets.symmetric(horizontal: 10),
+          // mainAxisAlignment: MainAxisAlignment.start,
+          // crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0),
@@ -189,9 +195,102 @@ class _SettingsPageState extends State<SettingsPage> {
                 )
               ],
             ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: Text(
+                " Restore to Default Settings",
+                style: TextStyle(
+                    fontSize: 16,
+                    color: widget.textColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(vertical: 20),
+            // child:
+            Container(
+              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+              decoration: BoxDecoration(
+                color: widget.floatingButtonColor,
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _selectedThemeIndex = 0;
+                      Provider.of<TemperatureProvider>(context, listen: false).resetTemp();
+                    });
+                  },
+                  child: Text('Reset',
+                      style: TextStyle(
+                        color: widget.activityContentsColor,
+                      )),
+                  style: ElevatedButton.styleFrom(
+                      primary: widget.floatingButtonColor)),
+            ),
+            // ),
           ],
         ),
       ),
+    );
+  }
+
+  List<Widget> _themeTiles() {
+    List<Widget> widgets = [];
+    widgets.add(Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Text("Themes",
+            style: TextStyle(
+                color: widget.textColor,
+                fontSize: 16,
+                fontWeight: FontWeight.bold))));
+
+    for (int i = 0; i < themes.length; i++) {
+      ColourScheme theme = themes[i];
+      widgets.add(Card(
+          color: (i == _selectedThemeIndex)
+              ? widget.boxColor
+              : widget.backgroundColor,
+          child: ListTile(
+            onTap: () {
+              setState(() {
+                _selectedThemeIndex = i;
+                Provider.of<ThemeProvider>(context, listen: false)
+                    .changeTheme(_selectedThemeIndex);
+              });
+            },
+            leading: Text(
+              "Themes",
+              style: TextStyle(
+                color: (i == _selectedThemeIndex)
+                    ? widget.appBarContentsColor
+                    : widget.textColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            trailing: _colors(theme),
+          )));
+    }
+    return widgets;
+  }
+
+  Widget _colors(ColourScheme colors) {
+    Map colorMap = colors.toJson();
+    List<Widget> widgets = [];
+    for (var color in colorMap.values) {
+      widgets.add(Material(
+        color: Colors.transparent,
+        shape: CircleBorder(side: BorderSide(color: Colors.black)),
+        child: Icon(
+          Icons.circle,
+          color: color,
+        ),
+      ));
+    }
+
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [...widgets],
     );
   }
 }

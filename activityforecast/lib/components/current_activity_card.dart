@@ -1,4 +1,5 @@
 import 'package:activityforecast/components/themes/themes.dart';
+import 'package:activityforecast/models/activity_provider.dart';
 import 'package:activityforecast/models/theme.dart';
 import 'package:activityforecast/models/theme_provider.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,8 @@ import 'package:activityforecast/components/activities.dart';
 import 'package:activityforecast/components/remove_activity.dart';
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
 import 'package:provider/provider.dart';
+
+import 'edit_activity.dart';
 
 class CurrentActivityCard extends StatefulWidget {
   CurrentActivityCard(
@@ -69,19 +72,31 @@ class _CurrentActivityCardState extends State<CurrentActivityCard> {
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: ListTile(
-          onTap: () {},
-          key: widget.key,
-          title: Text(widget.activity,
-              style: TextStyle(
-                  color: widget.activityTextColor,
-                  fontWeight: FontWeight.bold)),
-          leading: _leadingIcons(),
-          trailing: ReorderableDragStartListener(
-            index: widget.index,
-            child: Icon(Icons.drag_handle, color: widget.dragIconColor),
-          ),
-        ),
+            onTap: () {},
+            key: widget.key,
+            title: Text(widget.activity,
+                style: TextStyle(
+                    color: widget.activityTextColor,
+                    fontWeight: FontWeight.bold)),
+            leading: _leadingIcons(),
+            trailing: _tralingIcon()),
       ),
+    );
+  }
+
+  Widget _tralingIcon() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        EditActivity(
+            activityToEdit: widget.index,
+            textColor: widget.activityTextColor,
+            whichActivityList: ActivityList.current),
+        ReorderableDragStartListener(
+          index: widget.index,
+          child: Icon(Icons.drag_handle, color: widget.dragIconColor),
+        ),
+      ],
     );
   }
 

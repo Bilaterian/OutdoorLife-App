@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class TemperatureProvider extends ChangeNotifier{
   final List temp = [
     Temperature(
-        temperatureSelect: false,
+        temperatureSelect: true,
         max:  40.0,
         min: -40.0,
         invert: false,
@@ -106,12 +106,12 @@ class TemperatureProvider extends ChangeNotifier{
   }
 
   void resetTemp(){
-    temp[0].temperatureSelect = false;
+    temp[0].temperatureSelect = true;
     temp[0].max = 40.0;
     temp[0].min = -40.0;
     temp[0].invert = false;
-    temp[0].currMax = 27;
-    temp[0].currMin = 15;
+    temp[0].currMax = 27.0;
+    temp[0].currMin = 15.0;
     temp[0].notifications = false;
     temp[0].reset = false;
   }

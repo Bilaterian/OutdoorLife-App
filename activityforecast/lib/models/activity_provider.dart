@@ -82,47 +82,6 @@ class ActivityProvider extends ChangeNotifier {
 
   List<Activity> moreActivities = [
     Activity(
-        activity: "Run",
-        activityIcon: Icons.directions_run,
-        status: true,
-        temperatures: RangeValues(0, 0),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-    Activity(
-        activity: "Ski",
-        activityIcon: Icons.downhill_skiing,
-        status: true,
-        temperatures: RangeValues(0, 0),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-    // Activity(
-    //     activity: "Picnic",
-    //     activityIcon: Icons.,
-    //     condition: condition,
-    //     status: true),
-    Activity(
-        activity: "Surfing",
-        activityIcon: Icons.surfing,
-        status: true,
-        temperatures: RangeValues(0, 0),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-    Activity(
         activity: "Swim",
         activityIcon: Icons.pool,
         status: true,
@@ -220,5 +179,46 @@ class ActivityProvider extends ChangeNotifier {
         isSnowIdeal: true),
   ];
 
-  List<Activity> currentActivities = [];
+  List<Activity> currentActivities = [
+    Activity(
+      activity: "Run",
+      activityIcon: Icons.directions_run,
+      status: true,
+      temperatures: RangeValues(30, 70),
+      isSunnyIdeal: true,
+      isFogIdeal: true,
+      isCloudyIdeal: true,
+      isDrizzleIdeal: true,
+      isRainyIdeal: true,
+      isThunderstormIdeal: false,
+      isSnowIdeal: true),
+    Activity(
+        activity: "Ski",
+        activityIcon: Icons.downhill_skiing,
+        status: true,
+        temperatures: RangeValues(0, 40),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: true,
+        isRainyIdeal: true,
+        isThunderstormIdeal: true,
+        isSnowIdeal: true),
+    // Activity(
+    //     activity: "Picnic",
+    //     activityIcon: Icons.,
+    //     condition: condition,
+    //     status: true),
+    Activity(
+        activity: "Surfing",
+        activityIcon: Icons.surfing,
+        status: true,
+        temperatures: RangeValues(50, 70),
+        isSunnyIdeal: true,
+        isFogIdeal: true,
+        isCloudyIdeal: true,
+        isDrizzleIdeal: false,
+        isRainyIdeal: false,
+        isThunderstormIdeal: false,
+        isSnowIdeal: false),];
 }

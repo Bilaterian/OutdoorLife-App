@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
   //Icons.close, Icons.check_circle_outline
 
   // selected activity
-  late String selectedActivity;
+  late String selectedActivity = "";
   changeActivity(String activity, int index) {
     setState(() {
       selectedActivity = activity;
@@ -246,7 +246,14 @@ class _HomePageState extends State<HomePage> {
     //}
 
     // selected activity
+    // if (selectedActivity == null) {
+    //   selectedActivity = "";
+    // }
     if (currentActivities.length > 0) {
+      log("hello");
+      if (selectedActivity == "") {
+        selectedActivity = currentActivities[0].activity;
+      }
       // a activity is forecasted
 
       bool currentActivity = false;
@@ -264,6 +271,7 @@ class _HomePageState extends State<HomePage> {
         selectedActivityIndex = 0;
       }
     } else {
+      log("hello 2");
       // no activity to forecast
       selectedActivity = "";
       selectedActivityIndex = -1;
@@ -281,45 +289,48 @@ class _HomePageState extends State<HomePage> {
         activityIcons[i] = activity.activityIcon;
 
         // check if activity is ideal
-        bool valid = true;
-        if (temperatures[0] < activity.temperatures.end &&
-            temperatures[0] > activity.temperatures.start) {
+        if (activity.activity == "Swim") {
+          //log(activity.activity + activity.temperatures.start.toString() + "," + activity.temperatures.end.toString());
+        }
+        bool valid = false;
+        if (temperatures[0] <= activity.temperatures.end - 40 &&
+            temperatures[0] >= activity.temperatures.start - 40) {
           // within temperature range
           String weather = weatherIconsName[0];
           switch (weather) {
             case 'sunny':
-              if (!activity.isSunnyIdeal) {
-                valid = false;
+              if (activity.isSunnyIdeal) {
+                valid = true;
               }
               break;
             case 'fog':
-              if (!activity.isFogIdeal) {
-                valid = false;
+              if (activity.isFogIdeal) {
+                valid = true;
               }
               break;
             case 'cloudy':
-              if (!activity.isCloudyIdeal) {
-                valid = false;
+              if (activity.isCloudyIdeal) {
+                valid = true;
               }
               break;
             case 'drizzle':
-              if (!activity.isDrizzleIdeal) {
-                valid = false;
+              if (activity.isDrizzleIdeal) {
+                valid = true;
               }
               break;
             case 'rainy':
-              if (!activity.isRainyIdeal) {
-                valid = false;
+              if (activity.isRainyIdeal) {
+                valid = true;
               }
               break;
             case 'thunderstorm':
-              if (!activity.isThunderstormIdeal) {
-                valid = false;
+              if (activity.isThunderstormIdeal) {
+                valid = true;
               }
               break;
             case 'snowy':
-              if (!activity.isSnowIdeal) {
-                valid = false;
+              if (activity.isSnowIdeal) {
+                valid = true;
               }
               break;
             default:
@@ -344,46 +355,46 @@ class _HomePageState extends State<HomePage> {
           // get validity for all days for the selected activity
 
           for (int j = 0; j < daysDisplaying; j++) {
-            bool valid = true;
+            bool valid = false;
 
-            if (temperatures[j] < activity.temperatures.end &&
-                temperatures[j] > activity.temperatures.start) {
+            if (temperatures[j] <= activity.temperatures.end - 40 &&
+                temperatures[j] >= activity.temperatures.start - 40) {
               // within temperature range
               String weather = weatherIconsName[j];
               switch (weather) {
                 case 'sunny':
-                  if (!activity.isSunnyIdeal) {
-                    valid = false;
+                  if (activity.isSunnyIdeal) {
+                    valid = true;
                   }
                   break;
                 case 'fog':
-                  if (!activity.isFogIdeal) {
-                    valid = false;
+                  if (activity.isFogIdeal) {
+                    valid = true;
                   }
                   break;
                 case 'cloudy':
-                  if (!activity.isCloudyIdeal) {
-                    valid = false;
+                  if (activity.isCloudyIdeal) {
+                    valid = true;
                   }
                   break;
                 case 'drizzle':
-                  if (!activity.isDrizzleIdeal) {
-                    valid = false;
+                  if (activity.isDrizzleIdeal) {
+                    valid = true;
                   }
                   break;
                 case 'rainy':
-                  if (!activity.isRainyIdeal) {
-                    valid = false;
+                  if (activity.isRainyIdeal) {
+                    valid = true;
                   }
                   break;
                 case 'thunderstorm':
-                  if (!activity.isThunderstormIdeal) {
-                    valid = false;
+                  if (activity.isThunderstormIdeal) {
+                    valid = true;
                   }
                   break;
                 case 'snowy':
-                  if (!activity.isSnowIdeal) {
-                    valid = false;
+                  if (activity.isSnowIdeal) {
+                    valid = true;
                   }
                   break;
                 default:

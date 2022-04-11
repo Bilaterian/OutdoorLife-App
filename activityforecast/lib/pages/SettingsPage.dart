@@ -261,7 +261,7 @@ class _SettingsPageState extends State<SettingsPage> {
               });
             },
             leading: Text(
-              "Themes",
+              "Theme ${i+1}",
               style: TextStyle(
                 color: (i == _selectedThemeIndex)
                     ? widget.appBarContentsColor

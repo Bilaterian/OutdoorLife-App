@@ -406,7 +406,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                              "Activity Added",
+                              "Activity Edited",
                               style: TextStyle(color: widget.appBarColor),
                             ),
                             backgroundColor: widget.appBarTextColor,

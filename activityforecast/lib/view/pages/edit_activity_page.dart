@@ -495,26 +495,26 @@ class _EditActivityPageState extends State<EditActivityPage> {
     Activity activity = Activity.clone(activities[widget.activityToEditIndex]);
 
     widget.check_circle_selected[0] = (activity.isSunnyIdeal) ? true : false;
-    widget.close_selected[0] = (activity.isSunnyIdeal) ? true : false;
+    widget.close_selected[0] = (activity.isSunnyIdeal) ? false : true;
 
     widget.check_circle_selected[1] = (activity.isFogIdeal) ? true : false;
-    widget.close_selected[1] = (activity.isFogIdeal) ? true : false;
+    widget.close_selected[1] = (activity.isFogIdeal) ? false : true;
 
     widget.check_circle_selected[2] = (activity.isCloudyIdeal) ? true : false;
-    widget.close_selected[2] = (activity.isCloudyIdeal) ? true : false;
+    widget.close_selected[2] = (activity.isCloudyIdeal) ? false : true;
 
     widget.check_circle_selected[3] = (activity.isDrizzleIdeal) ? true : false;
-    widget.close_selected[3] = (activity.isDrizzleIdeal) ? true : false;
+    widget.close_selected[3] = (activity.isDrizzleIdeal) ? false : true;
 
     widget.check_circle_selected[4] = (activity.isRainyIdeal) ? true : false;
-    widget.close_selected[4] = (activity.isRainyIdeal) ? true : false;
+    widget.close_selected[4] = (activity.isRainyIdeal) ? false : true;
 
     widget.check_circle_selected[5] =
         (activity.isThunderstormIdeal) ? true : false;
-    widget.close_selected[5] = (activity.isThunderstormIdeal) ? true : false;
+    widget.close_selected[5] = (activity.isThunderstormIdeal) ? false : true;
 
     widget.check_circle_selected[6] = (activity.isSnowIdeal) ? true : false;
-    widget.close_selected[6] = (activity.isSnowIdeal) ? true : false;
+    widget.close_selected[6] = (activity.isSnowIdeal) ? false : true;
     // temperatures: widget._currentRangeValues,
 
     widget._currentRangeValues = activity.temperatures;
@@ -536,7 +536,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
   RangeSlider _buildTemperatureSlider() {
     return RangeSlider(
       activeColor: widget.appBarColor,
-      values: widget._currentRangeValues,
+      values: widget._currentRangeValues, // initial values
       min: 0,
       max: 80,
       divisions: 80,

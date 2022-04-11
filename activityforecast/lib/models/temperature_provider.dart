@@ -12,6 +12,7 @@ class TemperatureProvider extends ChangeNotifier{
         currMax: 27,
         currMin: 15,
         notifications: false,
+        reset: false,
     ),
   ];
 
@@ -102,5 +103,16 @@ class TemperatureProvider extends ChangeNotifier{
     temp[0].notifications = notif;
 
     notifyListeners();
+  }
+
+  void resetTemp(){
+    temp[0].temperatureSelect = false;
+    temp[0].max = 40.0;
+    temp[0].min = -40.0;
+    temp[0].invert = false;
+    temp[0].currMax = 27;
+    temp[0].currMin = 15;
+    temp[0].notifications = false;
+    temp[0].reset = false;
   }
 }

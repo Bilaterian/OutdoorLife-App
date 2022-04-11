@@ -8,6 +8,7 @@ class Temperature{
   double currMax;
   double currMin;
   bool notifications;
+  bool reset;
 
   Temperature({
     required this.temperatureSelect,
@@ -17,6 +18,7 @@ class Temperature{
     required this.currMax,
     required this.currMin,
     required this.notifications,
+    required this.reset,
   });
 
 

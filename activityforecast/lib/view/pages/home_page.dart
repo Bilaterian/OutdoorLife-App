@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:activityforecast/pages/SettingsPage.dart';
 import 'package:activityforecast/pages/manage_activities.dart';
 import 'package:activityforecast/view/pages/edit_activity_page.dart';
+import 'package:activityforecast/services/activities_database.dart';
 
 import 'package:provider/provider.dart';
 
@@ -158,9 +159,24 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+    refreshMyActivities();
     getUserLocation();
 
     //updateUI(widget.locationWeather);
+  }
+
+  @override
+  void dispose() {
+    ActivitiesDatabase.instance.close();
+    super.dispose();
+  }
+
+  Future refreshMyActivities() async {
+    print("***Refreshing***");
+    List<Activity> tempList =
+        await ActivitiesDatabase.instance.readAllActivities();
+    Provider.of<ActivityProvider>(context, listen: false)
+        .refreshMyActivityFromDatabase(tempList);
   }
 
   void updateUI(dynamic weatherData) {
@@ -286,12 +302,9 @@ class _HomePageState extends State<HomePage> {
         activityIcons[i] = activity.activityIcon;
 
         // check if activity is ideal
-        if (activity.activity == "Swim") {
-          //log(activity.activity + activity.temperatures.start.toString() + "," + activity.temperatures.end.toString());
-        }
         bool valid = false;
-        if (temperatures[0] <= activity.temperatures.end - 40 &&
-            temperatures[0] >= activity.temperatures.start - 40) {
+        if (temperatures[0] <= activity.maxTemp - 40 &&
+            temperatures[0] >= activity.minTemp - 40) {
           // within temperature range
           String weather = weatherIconsName[0];
           switch (weather) {
@@ -354,8 +367,8 @@ class _HomePageState extends State<HomePage> {
           for (int j = 0; j < daysDisplaying; j++) {
             bool valid = false;
 
-            if (temperatures[j] <= activity.temperatures.end - 40 &&
-                temperatures[j] >= activity.temperatures.start - 40) {
+            if (temperatures[j] <= activity.maxTemp - 40 &&
+                temperatures[j] >= activity.minTemp - 40) {
               // within temperature range
               String weather = weatherIconsName[j];
               switch (weather) {
@@ -418,10 +431,12 @@ class _HomePageState extends State<HomePage> {
           //"/": (BuildContext context) => MaterialApp(home: MyApp()),
           "/ManageActivities": (BuildContext context) =>
               MainActivitiesPage(title: "Manage Activities"),
+              // !<!<!< conflict
           // "/EditActivityPage": (BuildContext context) => EditActivityPage(
           //       whichActivityList: ActivityList.more,
           //       activityToEditIndex: 3,
           //     ),
+          // EDIT "/EditActivityPage": (BuildContext context) => EditActivityPage(),
           "/SettingsPage": (BuildContext context) => SettingsPage(),
         },
         home: Builder(
@@ -591,11 +606,14 @@ class _HomePageState extends State<HomePage> {
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: widget.backgroundColor)),
-                                onPressed:
-                                    //print("Edit Button Pressed");
-                                    // Navigator.of(context)
-                                    //     .push("/EditActivityPage");
-                                    //
+                                onPressed: () {
+                                  //print("hi");
+
+                                  //print("Edit Button Pressed");
+                                  // Navigator.of(context)
+                                  //     .push("/EditActivityPage");
+                                  //
+                                  /*
                                     (selectedActivityIndex == -1)
                                         ? null
                                         : () {
@@ -609,7 +627,10 @@ class _HomePageState extends State<HomePage> {
                                                       ActivityList.current,
                                                   list: currentActivities);
                                             }));
-                                          })
+                                          }
+                                          */
+                                }
+                              ),
                           ]),
                     ),
                         forecasts(),
@@ -679,7 +700,9 @@ class _HomePageState extends State<HomePage> {
             fit: BoxFit.scaleDown,
             child: InkWell(
               onTap: () => show
+              // !<!<!< conflict
                   ? changeActivity(activityNames[index], index)
+                  //? changeActivity(activityNames[index])
                   : log('clicked empty activity'),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,

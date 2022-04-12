@@ -12,6 +12,7 @@ import 'package:activityforecast/components/more_activity_card.dart';
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
 import 'package:activityforecast/components/themes/themes.dart';
 import 'package:activityforecast/view/pages/create_new_activity_page.dart';
+import 'package:activityforecast/services/activities_database.dart';
 import 'package:provider/provider.dart';
 import 'package:activityforecast/models/activity.dart';
 
@@ -60,6 +61,26 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
   late List<Activity> currentActivities;
   late List<Activity> moreActivities;
   late ColourScheme theme;
+
+  @override
+  void initState() {
+    super.initState();
+    refreshMyActivities();
+  }
+
+  @override
+  void dispose() {
+    ActivitiesDatabase.instance.close();
+    super.dispose();
+  }
+
+  Future refreshMyActivities() async {
+    print("***Refreshing***");
+    List<Activity> tempList =
+        await ActivitiesDatabase.instance.readAllActivities();
+    Provider.of<ActivityProvider>(context, listen: false)
+        .refreshMyActivityFromDatabase(tempList);
+  }
 
   refresh() {
     setState(() {});

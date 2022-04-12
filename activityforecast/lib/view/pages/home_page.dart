@@ -170,7 +170,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future refreshMyActivities() async {
-    print("***Refreshing***");
+    log("***Refreshing***");
     List<Activity> tempList =
         await ActivitiesDatabase.instance.readAllActivities();
     Provider.of<ActivityProvider>(context, listen: false)
@@ -500,7 +500,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                               onSubmitted: (value) async {
                                 /*
-                            print(value);
+                            log(value);
                             cityInput = value;
                             if (cityInput != null) {
                               var weatherData = await weather.getCityWeather(cityInput);
@@ -529,7 +529,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           onTap: () async {
                             FocusScope.of(context).unfocus();
-                            print(_searchController.text);
+                            log(_searchController.text);
                             cityInput = _searchController.text;
                             if (cityInput != null) {
                               var weatherData =
@@ -609,7 +609,7 @@ class _HomePageState extends State<HomePage> {
                                         fontSize: 18,
                                         color: widget.backgroundColor)),
                                 onPressed: () {
-                                  //print("Edit Button Pressed");
+                                  //log("Edit Button Pressed");
                                   Navigator.of(context)
                                       .pushNamed("/EditActivityPage");
                                 })
@@ -808,7 +808,7 @@ class _HomePageState extends State<HomePage> {
     return Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low).then((location) {
       if (location != null) {
         loc = location as Location;
-        //print("Location: ${location.latitude},${location.longitude}");
+        //log("Location: ${location.latitude},${location.longitude}");
         //locationRepository.store(location);
       }
       //return location;

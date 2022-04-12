@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:activityforecast/models/activity.dart';
 import 'package:activityforecast/models/activity_provider.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +41,7 @@ class _RemoveActivityState extends State<RemoveActivity> {
           // currentActivities.remove(currentActivities[widget.activityToRemove]);
           ActivitiesDatabase.instance.create2(activity);
           ActivitiesDatabase.instance.delete(widget.activityToRemove);
-          print("INSERT ACTIVITY");
+          log("INSERT ACTIVITY");
           widget.setStateOfAcitivity();
         },
         icon: Icon(widget.removeIcon, color: widget.iconColor));

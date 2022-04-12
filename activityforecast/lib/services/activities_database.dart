@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:activityforecast/components/themes/manage_activities_colors.dart';
 import 'package:flutter/material.dart';
@@ -174,9 +175,10 @@ class ActivitiesDatabase {
   Future<Database> _initDB(String filePath) async {
     // final dbPath = await getDatabasesPath();
     final path = join(await getDatabasesPath(), filePath);
-    print("***INIT DB***");
-    print(path);
-    // await deleteDatabase(path);
+    log("***INIT DB***");
+    log(path);
+    // !<!<!<
+    //await deleteDatabase(path);
     return await openDatabase(path, version: 1, onCreate: _createDB);
   }
 
@@ -213,7 +215,7 @@ class ActivitiesDatabase {
         ${ActivityFields.isThunderstormIdeal} $boolType,
         ${ActivityFields.isSnowIdeal} $boolType
       )''');
-    print("****Table1 is created ****** ");
+    log("****Table1 is created ****** ");
     await db.execute('''
       CREATE TABLE $tableActivities2 (
         ${ActivityFields.id} $idType,
@@ -238,7 +240,7 @@ class ActivitiesDatabase {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
     }
-    print("****Table2 is created ****** ");
+    log("****Table2 is created ****** ");
   }
 
   Future<Activity> create(Activity activity) async {
@@ -316,9 +318,9 @@ class ActivitiesDatabase {
     for (int i = 0; i < tasksQuery.length; i++) {
       if (id == i) {
         idd = tasksQuery[i]["_id"];
-        print("HELLLO");
+        //log("HELLLO");
 
-        print(idd);
+        //print(idd);
       }
     }
 
@@ -331,13 +333,13 @@ class ActivitiesDatabase {
     int idd = 0;
 
     List<Map> tasksQuery = await db.rawQuery("SELECT * FROM $tableActivities2");
-    print(tasksQuery);
+    //print(tasksQuery);
     for (int i = 0; i < tasksQuery.length; i++) {
       if (id == i) {
         idd = tasksQuery[i]["_id"];
-        // print(tasksQuery[i]["_id"]);
+        // log(tasksQuery[i]["_id"]);
 
-        print(idd);
+        //print(idd);
       }
     }
 

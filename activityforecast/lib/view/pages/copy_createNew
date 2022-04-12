@@ -445,7 +445,7 @@
 //     List<Widget> widgets = [];
 
 //     for (int i = 0; i < icons.length; i++) {
-//       // print(icons[i]);
+//       // log(icons[i]);
 //       widgets.add(_activityTabSelection(icons[i], i, tabIndex));
 //     }
 //     return widgets;

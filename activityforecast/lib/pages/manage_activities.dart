@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:ui';
 
 import 'package:activityforecast/models/activity.dart';
@@ -75,7 +76,7 @@ class _MainActivitiesPageState extends State<MainActivitiesPage> {
   }
 
   Future refreshMyActivities() async {
-    print("***Refreshing***");
+    log("***Refreshing***");
     List<Activity> tempList =
         await ActivitiesDatabase.instance.readAllActivities();
     Provider.of<ActivityProvider>(context, listen: false)

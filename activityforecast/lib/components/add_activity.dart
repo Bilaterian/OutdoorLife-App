@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:activityforecast/models/activity.dart';
 import 'package:activityforecast/models/activity_provider.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +42,7 @@ class _AddActivityState extends State<AddActivity> {
           widget.setStateOfAcitivity();
           ActivitiesDatabase.instance.create(activity);
           ActivitiesDatabase.instance.delete2(widget.activityToAdd);
-          print("INSERT ACTIVITY");
+          log("INSERT ACTIVITY");
         },
         icon: Icon(
           widget.addIcon,

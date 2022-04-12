@@ -150,8 +150,7 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  late int selectedActivityIndex = 0;
-
+  int selectedActivityIndex = 0;
   int numActivitiesPerRow = 5;
   int numRows = 2;
 
@@ -250,7 +249,6 @@ class _HomePageState extends State<HomePage> {
     //   selectedActivity = "";
     // }
     if (currentActivities.length > 0) {
-      log("hello");
       if (selectedActivity == "") {
         selectedActivity = currentActivities[0].activity;
       }
@@ -271,7 +269,6 @@ class _HomePageState extends State<HomePage> {
         selectedActivityIndex = 0;
       }
     } else {
-      log("hello 2");
       // no activity to forecast
       selectedActivity = "";
       selectedActivityIndex = -1;

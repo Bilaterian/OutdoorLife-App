@@ -1,6 +1,7 @@
 import 'package:activityforecast/components/activities.dart';
 import 'package:activityforecast/components/more_activity_card.dart';
 import 'package:activityforecast/models/activity.dart';
+import 'package:activityforecast/services/activities_database.dart';
 import 'package:flutter/material.dart';
 
 enum ActivityList {
@@ -18,23 +19,13 @@ class ActivityProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // When editing a (CURRENT ACTIVITY),
-  // @activity is the activity you edited
-  // @myactivityIndex, the index from the CURRENT ACTIVITY LIST that you want to replace (that you edited)
-  void editMyActivity(Activity activity, int myactivityIndex) {
-    currentActivities.removeAt(myactivityIndex);
-    currentActivities.insert(myactivityIndex, activity);
-
+  void refreshMyActivityFromDatabase(List<Activity> activity) {
+    currentActivities = List.from(activity);
     notifyListeners();
   }
 
-  // When editing a (MORE ACTIVITY),
-  // @activity is the activity you edited
-  // @moreactivityIndex, the index from the MORE ACTIVITY LIST that you want to replace (that you edited)
-  void editMoreActivity(Activity activity, int moreActivityIndex) {
-    moreActivities.removeAt(moreActivityIndex);
-    moreActivities.insert(moreActivityIndex, activity);
-
+  void refreshMyActivityFromDatabase2(List<Activity> activity) {
+    moreActivities = List.from(activity);
     notifyListeners();
   }
 
@@ -62,7 +53,7 @@ class ActivityProvider extends ChangeNotifier {
 
   // After creating a new activity, add to MORE ACTIVITIES
   void addCreatedActivity(Activity activity) {
-    moreActivities.insert(0, activity);
+    moreActivities.add(activity);
 
     notifyListeners();
   }
@@ -80,145 +71,7 @@ class ActivityProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  List<Activity> moreActivities = [
-    Activity(
-        activity: "Swim",
-        activityIcon: Icons.pool,
-        status: true,
-        temperatures: RangeValues(0, 0),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-    Activity(
-        activity: "Hike",
-        activityIcon: Icons.hiking,
-        status: true,
-        temperatures: RangeValues(0, 0),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-    Activity(
-        activity: "FootBall",
-        activityIcon: Icons.sports_football,
-        status: true,
-        temperatures: RangeValues(0, 0),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-    Activity(
-        activity: "BasketBall",
-        activityIcon: Icons.sports_baseball,
-        status: true,
-        temperatures: RangeValues(0, 0),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-    Activity(
-        activity: "Soccer",
-        activityIcon: Icons.sports_soccer,
-        status: true,
-        temperatures: RangeValues(0, 0),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-    Activity(
-        activity: "Cricket",
-        activityIcon: Icons.sports_cricket,
-        status: true,
-        temperatures: RangeValues(0, 0),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-    Activity(
-        activity: "Golf",
-        activityIcon: Icons.sports_golf,
-        status: true,
-        temperatures: RangeValues(0, 0),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-    Activity(
-        activity: "Mix Martial Arts",
-        activityIcon: Icons.sports_handball,
-        status: true,
-        temperatures: RangeValues(0, 0),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-  ];
+  List<Activity> moreActivities = [];
 
-  List<Activity> currentActivities = [
-    Activity(
-      activity: "Run",
-      activityIcon: Icons.directions_run,
-      status: true,
-      temperatures: RangeValues(30, 70),
-      isSunnyIdeal: true,
-      isFogIdeal: true,
-      isCloudyIdeal: true,
-      isDrizzleIdeal: true,
-      isRainyIdeal: true,
-      isThunderstormIdeal: false,
-      isSnowIdeal: true),
-    Activity(
-        activity: "Ski",
-        activityIcon: Icons.downhill_skiing,
-        status: true,
-        temperatures: RangeValues(0, 40),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: true,
-        isRainyIdeal: true,
-        isThunderstormIdeal: true,
-        isSnowIdeal: true),
-    // Activity(
-    //     activity: "Picnic",
-    //     activityIcon: Icons.,
-    //     condition: condition,
-    //     status: true),
-    Activity(
-        activity: "Surfing",
-        activityIcon: Icons.surfing,
-        status: true,
-        temperatures: RangeValues(50, 70),
-        isSunnyIdeal: true,
-        isFogIdeal: true,
-        isCloudyIdeal: true,
-        isDrizzleIdeal: false,
-        isRainyIdeal: false,
-        isThunderstormIdeal: false,
-        isSnowIdeal: false),];
+  List<Activity> currentActivities = [];
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:geolocator/geolocator.dart';
 
 class Location {
@@ -11,7 +13,8 @@ class Location {
       latitude = position.latitude;
       longitude = position.longitude;
     } catch (e) {
-      print(e);
+      //print(e);
+      log("error while trying to obtain location");
     }
   }
 }

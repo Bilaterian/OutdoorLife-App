@@ -7,12 +7,14 @@ import 'package:flutter/material.dart';
 import 'package:activityforecast/pages/SettingsPage.dart';
 import 'package:activityforecast/pages/manage_activities.dart';
 import 'package:activityforecast/view/pages/edit_activity_page.dart';
+import 'package:activityforecast/services/activities_database.dart';
 
 import 'package:provider/provider.dart';
 
 import '../../components/weather_icons.dart';
 import '../../models/activity.dart';
 import '../../models/activity_provider.dart';
+import '../../models/temperature_provider.dart';
 import '../../models/theme.dart';
 import '../../models/theme_provider.dart';
 import 'package:geolocator/geolocator.dart';
@@ -158,9 +160,28 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
 
+    refreshMyActivities();
     getUserLocation();
 
     //updateUI(widget.locationWeather);
+  }
+
+  @override
+  void dispose() {
+    ActivitiesDatabase.instance.close();
+    super.dispose();
+  }
+
+  Future refreshMyActivities() async {
+    log("***Refreshing***");
+    List<Activity> tempList =
+        await ActivitiesDatabase.instance.readAllActivities();
+    Provider.of<ActivityProvider>(context, listen: false)
+        .refreshMyActivityFromDatabase(tempList);
+    List<Activity> tempList2 =
+        await ActivitiesDatabase.instance.readAllActivities2();
+    Provider.of<ActivityProvider>(context, listen: false)
+        .refreshMyActivityFromDatabase2(tempList2);
   }
 
   void updateUI(dynamic weatherData) {
@@ -251,6 +272,7 @@ class _HomePageState extends State<HomePage> {
     if (currentActivities.length > 0) {
       if (selectedActivity == "") {
         selectedActivity = currentActivities[0].activity;
+        selectedActivityIndex = 0;
       }
       // a activity is forecasted
 
@@ -286,12 +308,9 @@ class _HomePageState extends State<HomePage> {
         activityIcons[i] = activity.activityIcon;
 
         // check if activity is ideal
-        if (activity.activity == "Swim") {
-          //log(activity.activity + activity.temperatures.start.toString() + "," + activity.temperatures.end.toString());
-        }
         bool valid = false;
-        if (temperatures[0] <= activity.temperatures.end - 40 &&
-            temperatures[0] >= activity.temperatures.start - 40) {
+        if (temperatures[0] <= activity.maxTemp - 40 &&
+            temperatures[0] >= activity.minTemp - 40) {
           // within temperature range
           String weather = weatherIconsName[0];
           switch (weather) {
@@ -354,8 +373,8 @@ class _HomePageState extends State<HomePage> {
           for (int j = 0; j < daysDisplaying; j++) {
             bool valid = false;
 
-            if (temperatures[j] <= activity.temperatures.end - 40 &&
-                temperatures[j] >= activity.temperatures.start - 40) {
+            if (temperatures[j] <= activity.maxTemp - 40 &&
+                temperatures[j] >= activity.minTemp - 40) {
               // within temperature range
               String weather = weatherIconsName[j];
               switch (weather) {
@@ -418,10 +437,12 @@ class _HomePageState extends State<HomePage> {
           //"/": (BuildContext context) => MaterialApp(home: MyApp()),
           "/ManageActivities": (BuildContext context) =>
               MainActivitiesPage(title: "Manage Activities"),
+              // !<!<!< conflict
           // "/EditActivityPage": (BuildContext context) => EditActivityPage(
           //       whichActivityList: ActivityList.more,
           //       activityToEditIndex: 3,
           //     ),
+          "/EditActivityPage": (BuildContext context) => EditActivityPage(activityToEditIndex: selectedActivityIndex, whichActivityList: ActivityList.current, list: currentActivities),
           "/SettingsPage": (BuildContext context) => SettingsPage(),
         },
         home: Builder(
@@ -591,11 +612,15 @@ class _HomePageState extends State<HomePage> {
                                     style: TextStyle(
                                         fontSize: 18,
                                         color: widget.backgroundColor)),
-                                onPressed:
-                                    //print("Edit Button Pressed");
-                                    // Navigator.of(context)
-                                    //     .push("/EditActivityPage");
-                                    //
+                                onPressed: () {
+                                  //print("Edit Button Pressed");
+
+                                  if (selectedActivityIndex >= 0) {
+                                      Navigator.of(context).pushNamed("/EditActivityPage");
+                                  }
+
+                                  // !<!<!< conflict
+                                  /*
                                     (selectedActivityIndex == -1)
                                         ? null
                                         : () {
@@ -609,7 +634,10 @@ class _HomePageState extends State<HomePage> {
                                                       ActivityList.current,
                                                   list: currentActivities);
                                             }));
-                                          })
+                                          }
+                                 */
+                                  }
+                                          )
                           ]),
                     ),
                         forecasts(),
@@ -679,7 +707,9 @@ class _HomePageState extends State<HomePage> {
             fit: BoxFit.scaleDown,
             child: InkWell(
               onTap: () => show
+              // !<!<!< conflict
                   ? changeActivity(activityNames[index], index)
+                  //? changeActivity(activityNames[index])
                   : log('clicked empty activity'),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -754,12 +784,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Row completeForecastRow({day: 0, screenWidth: 1440.0}) {
+    bool celsius = Provider.of<TemperatureProvider>(context).getTemperatureSelect();
+    int avgTemp = celsius ? temperatures[day] : ((temperatures[day] * 9/5) + 32).toInt();
+    int minTemp = celsius ? temperaturesMin[day] : ((temperaturesMin[day] * 9/5) + 32).toInt();
+
     return Row(
         children: forecastRow(
       day: '${dayNames[day]}',
       valid: forecastActivityValids[day],
       weather: weatherIcons[weatherIconsName[day]],
-      temperature: '${temperatures[day]}°, ${temperaturesMin[day]}° low',
+      temperature: '${avgTemp}°, ${minTemp}° low',
       screenWidth: screenWidth,
     ));
   }
@@ -824,7 +858,7 @@ class _HomePageState extends State<HomePage> {
     return Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low).then((location) {
       if (location != null) {
         loc = location as Location;
-        //print("Location: ${location.latitude},${location.longitude}");
+        //log("Location: ${location.latitude},${location.longitude}");
         //locationRepository.store(location);
       }
       //return location;

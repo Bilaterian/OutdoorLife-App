@@ -72,6 +72,7 @@ class _CurrentActivityCardState extends State<CurrentActivityCard> {
           borderRadius: BorderRadius.circular(15.0),
         ),
         child: ListTile(
+          // !<!<!< conflict
             onTap: () {},
             key: widget.key,
             title: Text(widget.activity,
@@ -79,9 +80,23 @@ class _CurrentActivityCardState extends State<CurrentActivityCard> {
                     color: widget.activityTextColor,
                     fontWeight: FontWeight.bold)),
             leading: _leadingIcons(),
-            trailing: _tralingIcon()),
-      ),
-    );
+            trailing: _tralingIcon()
+        ),
+            /*
+          onTap: () {},
+          key: widget.key,
+          title: Text(widget.activity,
+              style: TextStyle(
+                  color: widget.activityTextColor,
+                  fontWeight: FontWeight.bold)),
+          leading: _leadingIcons(),
+          // trailing: ReorderableDragStartListener(
+          //   index: widget.index,
+          //   child: Icon(Icons.drag_handle, color: widget.dragIconColor),
+          // ),
+          */
+        ),
+      );
   }
 
   Widget _tralingIcon() {

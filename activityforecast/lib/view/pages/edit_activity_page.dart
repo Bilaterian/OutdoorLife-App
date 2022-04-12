@@ -378,29 +378,22 @@ class _EditActivityPageState extends State<EditActivityPage> {
                 (selectedIcon == null || (activityNameController.text.isEmpty))
                     ? null
                     : () {
-                        Activity activity = Activity(
-                            activity: activityNameController.text,
-                            activityIcon: selectedIcon,
-                            temperatures: widget._currentRangeValues,
-                            isSunnyIdeal: widget.check_circle_selected[0],
-                            isFogIdeal: widget.check_circle_selected[1],
-                            isCloudyIdeal: widget.check_circle_selected[2],
-                            isDrizzleIdeal: widget.check_circle_selected[3],
-                            isRainyIdeal: widget.check_circle_selected[4],
-                            isThunderstormIdeal:
-                                widget.check_circle_selected[5],
-                            isSnowIdeal: widget.check_circle_selected[6],
-                            status: false);
-                        if (widget.whichActivityList == ActivityList.more) {
-                          Provider.of<ActivityProvider>(context, listen: false)
-                              .editMoreActivity(
-                                  activity, widget.activityToEditIndex);
-                        } else if (widget.whichActivityList ==
-                            ActivityList.current) {
-                          Provider.of<ActivityProvider>(context, listen: false)
-                              .editMyActivity(
-                                  activity, widget.activityToEditIndex);
-                        }
+                        Provider.of<ActivityProvider>(context, listen: false)
+                            .addCreatedActivity(Activity(
+                                activity: activityNameController.text,
+                                activityIcon: selectedIcon,
+                                minTemp:
+                                    widget._currentRangeValues.start.toInt(),
+                                maxTemp: widget._currentRangeValues.end.toInt(),
+                                isSunnyIdeal: widget.check_circle_selected[0],
+                                isFogIdeal: widget.check_circle_selected[1],
+                                isCloudyIdeal: widget.check_circle_selected[2],
+                                isDrizzleIdeal: widget.check_circle_selected[3],
+                                isRainyIdeal: widget.check_circle_selected[4],
+                                isThunderstormIdeal:
+                                    widget.check_circle_selected[5],
+                                isSnowIdeal: widget.check_circle_selected[6],
+                                status: false));
                         Navigator.of(context).pop();
 
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -517,7 +510,7 @@ class _EditActivityPageState extends State<EditActivityPage> {
     widget.close_selected[6] = (activity.isSnowIdeal) ? false : true;
     // temperatures: widget._currentRangeValues,
 
-    widget._currentRangeValues = activity.temperatures;
+    widget._currentRangeValues = RangeValues(activity.minTemp.toDouble(), activity.maxTemp.toDouble());
 
     for (int i = 0; i < (activityIcons["all"] as List).length; i++) {
       if ((activityIcons["all"] as List)[i] == activity.activityIcon) {
